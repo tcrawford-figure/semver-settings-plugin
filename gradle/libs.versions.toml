@@ -1,0 +1,9 @@
+[versions]
+
+jgit = "6.5.0.202303070854-r"
+kotest = "5.6.2"
+
+[libraries]
+
+jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
