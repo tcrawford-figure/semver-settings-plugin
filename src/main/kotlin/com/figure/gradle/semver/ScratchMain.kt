@@ -1,7 +1,6 @@
 package com.figure.gradle.semver
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.revwalk.RevWalk
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -10,20 +9,12 @@ fun main(args: Array<String>) {
     val currentBranch = git.repository.branch
     println("Current branch: $currentBranch")
 
-    val parentBranch = git.getBranchName()
-    println("Parent branch: $parentBranch")
-}
+    val commits = git.log().call().toList()
 
-fun Git.getBranchName(): String {
-    val revWalk = RevWalk(repository)
+    val uniqueBranches = commits
+        .map { git.branchList().setContains(it.name).call() }
+        .flatten()
+        .toSet()
 
-    val head = revWalk.parseCommit(repository.findRef("HEAD").objectId)
-    val parents = head.parents
-
-    if (parents.isEmpty()) {
-        return ""
-    }
-
-    val parent = parents[0]
-    return parent.name
+    println(uniqueBranches)
 }
