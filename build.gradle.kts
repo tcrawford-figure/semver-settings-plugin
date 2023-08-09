@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     `embedded-kotlin`
     id("com.gradle.plugin-publish") version "1.2.0"
@@ -28,6 +30,12 @@ tasks.wrapper {
 
 kotlin {
     jvmToolchain(8)
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-receivers")
+    }
 }
 
 gradlePlugin {
