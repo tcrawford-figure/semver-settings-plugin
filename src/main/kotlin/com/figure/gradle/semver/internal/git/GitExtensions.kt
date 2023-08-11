@@ -7,14 +7,14 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.revwalk.RevCommit
 import org.eclipse.jgit.revwalk.RevWalk
 
-val Repository.headRef: ObjectId
+internal val Repository.headRef: ObjectId
     get() = exactRef(Constants.HEAD).objectId
 
 context(Git)
-val RevWalk.headCommit: RevCommit
+internal val RevWalk.headCommit: RevCommit
     get() = parseCommit(repository.headRef)
 
-fun Git.commitsSinceBranchPoint(): Int =
+internal fun Git.commitsSinceBranchPoint(): Int =
     RevWalk(repository).use { revWalk ->
         revWalk.markStart(revWalk.headCommit)
         revWalk.indexOfFirst { commit -> branchList().setContains(commit.name).call().size > 1 }

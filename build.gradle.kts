@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(libs.jgit)
+    implementation(libs.kotlin.semver)
 
     testImplementation(gradleTestKit())
     testImplementation(libs.kotest.runner)
@@ -29,7 +30,7 @@ tasks.wrapper {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11)
 }
 
 tasks.withType<KotlinCompile>().configureEach {
@@ -41,7 +42,7 @@ tasks.withType<KotlinCompile>().configureEach {
 gradlePlugin {
     plugins {
         create(project.name) {
-            id = "com.figure.gradle.semver.settings"
+            id = "com.figure.gradle.settings.semver"
             displayName = "Semver Settings Plugin"
             description = "Semver Settings Plugin"
             implementationClass = "com.figure.gradle.semver.SemverSettingsPlugin"

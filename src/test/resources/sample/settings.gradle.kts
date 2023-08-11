@@ -1,3 +1,3 @@
 plugins {
-    id("com.figure.gradle.semver.settings")
+    id("com.figure.gradle.settings.semver")
 }
