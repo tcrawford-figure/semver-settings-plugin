@@ -24,7 +24,8 @@ internal val RevWalk.headCommit: RevCommit
     get() = parseCommit(repository.headRef)
 
 /**
- * TODO: Handle when in detached-head state
+ * Gets the number of commits since the branch point.
+ * This should account
  */
 internal fun Git.commitsSinceBranchPoint(): Int =
     RevWalk(repository).use { revWalk ->
