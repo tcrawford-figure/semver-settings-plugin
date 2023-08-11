@@ -1,14 +1,9 @@
 package com.figure.gradle.semver
 
-import org.eclipse.jgit.api.Git
-import java.io.File
+import com.figure.gradle.semver.internal.git.commitsSinceBranchPoint
+import com.figure.gradle.semver.internal.git.openNearestGitRepo
 
 fun main(args: Array<String>) {
-    val git = Git.open(File("/Users/tylercrawford/dev/figure/stream-data/.git"))
-
-    git.repository.refDatabase.refs.forEach {
-        println(it.name)
-    }
-
-    // println(git.commitsSinceBranchPoint())
+    val git = openNearestGitRepo()
+    log.lifecycle("Commits since branch point: ${git.commitsSinceBranchPoint()}")
 }
