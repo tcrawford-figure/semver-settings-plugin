@@ -23,11 +23,6 @@ context(Git)
 internal val RevWalk.headCommit: RevCommit
     get() = parseCommit(repository.headRef)
 
-internal fun Git.isDetachedHead(): Boolean {
-    val branchRef = repository.findRef("HEAD")
-    return branchRef != null && !branchRef.isSymbolic
-}
-
 /**
  * TODO: Handle when in detached-head state
  */
