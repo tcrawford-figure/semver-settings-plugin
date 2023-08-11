@@ -14,8 +14,23 @@ context(Git)
 internal val RevWalk.headCommit: RevCommit
     get() = parseCommit(repository.headRef)
 
+internal fun Git.isDetachedHead(): Boolean {
+    val branchRef = repository.findRef("HEAD")
+    return branchRef != null && !branchRef.isSymbolic
+}
+
+/**
+ * TODO: Handle when in detached-head state
+ */
 internal fun Git.commitsSinceBranchPoint(): Int =
     RevWalk(repository).use { revWalk ->
         revWalk.markStart(revWalk.headCommit)
-        revWalk.indexOfFirst { commit -> branchList().setContains(commit.name).call().size > 1 }
+        revWalk.indexOfFirst { commit ->
+            branchList()
+                .setContains(commit.name)
+                .call()
+                .map { it.name }
+                .filterNot { it == Constants.HEAD }
+                .size > 1
+        }
     }
