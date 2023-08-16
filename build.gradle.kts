@@ -16,6 +16,8 @@ dependencies {
     implementation(gradleApi())
     implementation(libs.jgit)
     implementation(libs.kotlin.semver)
+    implementation(libs.kotlin.result)
+    implementation(libs.plexus.utils)
 
     testImplementation(gradleTestKit())
     testImplementation(libs.kotest.runner)
