@@ -5,6 +5,7 @@ import java.io.File
 
 class GitWrapper(
     private val directory: File? = null,
+    private val bare: Boolean = false,
     private val providedGit: Git? = null,
 ) {
     companion object {
@@ -13,15 +14,22 @@ class GitWrapper(
     }
 
     val git by lazy {
-        providedGit ?: run {
-            requireNotNull(directory) { "A git directory must be provided" }
-            init(directory)
-        }
+        providedGit ?: if (directory != null) init(directory, bare) else open()
+    }
+
+    fun author(name: String, email: String) {
+
     }
 
     val add = AddCommandWrapper(git)
+    val checkout = CheckoutCommandWrapper(git)
+    val config = ConfigCommand(git)
+    val branches = BranchListCommandWrapper(git)
     val commit = CommitCommandWrapper(git)
     val push = PushCommandWrapper(git)
+    val remote = RemoteCommand(git)
     val tag = TagCommandWrapper(git)
     val tags = TagListCommandWrapper(git)
+
+    fun close() = git.close()
 }

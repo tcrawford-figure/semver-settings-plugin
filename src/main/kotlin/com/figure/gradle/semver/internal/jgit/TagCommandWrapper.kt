@@ -1,11 +1,10 @@
 package com.figure.gradle.semver.internal.jgit
 
-import com.github.michaelbull.result.getOrThrow
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Ref
 
 class TagCommandWrapper(
-    private val git: Git
+    private val git: Git,
 ) {
     operator fun invoke(tagName: String): Ref? =
         git.tag()

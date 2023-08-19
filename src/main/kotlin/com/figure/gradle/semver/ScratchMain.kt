@@ -6,9 +6,9 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 
 fun main(args: Array<String>) {
-    val git = GitWrapper.open()
+    val gitWrapper = GitWrapper()
 
-    println(git.latestCommitOnBranch().name)
+    println(gitWrapper.git.latestCommitOnBranch().name)
 }
 
 fun Git.latestCommitOnBranch(): RevCommit =
