@@ -1,9 +1,9 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 
-class CommitCommandWrapper(
+internal class Commit(
     private val git: Git,
 ) {
     operator fun invoke(

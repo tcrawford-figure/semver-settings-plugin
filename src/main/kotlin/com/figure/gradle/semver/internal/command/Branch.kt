@@ -1,11 +1,12 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
+import com.figure.gradle.semver.internal.command.extension.revWalk
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.revwalk.RevCommit
 
-class BranchCommand(
+internal class Branch(
     private val git: Git,
 ) {
     val shortName: String = git.repository.branch

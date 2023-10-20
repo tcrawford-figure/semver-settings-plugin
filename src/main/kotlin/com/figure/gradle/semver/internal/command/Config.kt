@@ -1,9 +1,9 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ConfigConstants
 
-class ConfigCommand(
+internal class Config(
     private val git: Git
 ) {
     fun author(name: String, email: String) {

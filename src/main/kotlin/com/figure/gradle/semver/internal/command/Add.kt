@@ -1,9 +1,9 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.dircache.DirCache
 
-class AddCommandWrapper(
+internal class Add(
     private val git: Git,
 ) {
     operator fun invoke(filename: String): DirCache? =

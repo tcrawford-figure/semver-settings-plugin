@@ -1,10 +1,10 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import java.io.File
 
-object OpenCommand {
+internal object Open {
     operator fun invoke(): Git = Git(
         FileRepositoryBuilder()
             .readEnvironment()

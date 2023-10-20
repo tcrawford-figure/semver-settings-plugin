@@ -1,11 +1,11 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Ref
 
-class BranchListCommandWrapper(
+internal class BranchList(
     private val git: Git,
 ) {
 

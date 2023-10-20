@@ -1,14 +1,14 @@
 package com.figure.gradle.semver
 
-import com.figure.gradle.semver.internal.jgit.GitWrapper
-import com.figure.gradle.semver.internal.jgit.revWalk
+import com.figure.gradle.semver.internal.command.KGit
+import com.figure.gradle.semver.internal.command.extension.revWalk
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 
 fun main(args: Array<String>) {
-    val gitWrapper = GitWrapper()
+    val kgit = KGit()
 
-    println(gitWrapper.git.latestCommitOnBranch().name)
+    println(kgit.git.latestCommitOnBranch().name)
 }
 
 fun Git.latestCommitOnBranch(): RevCommit =

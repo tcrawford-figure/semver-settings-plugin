@@ -1,4 +1,4 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Constants
@@ -6,7 +6,7 @@ import org.eclipse.jgit.transport.RemoteConfig
 import org.eclipse.jgit.transport.URIish
 import java.net.URL
 
-class RemoteCommand(
+internal class Remote(
     private val git: Git,
 ) {
     fun add(

@@ -10,6 +10,7 @@ internal val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 class SemverSettingsPlugin : Plugin<Settings> {
     override fun apply(settings: Settings) {
         settings.gradle.beforeProject {
+            it.gradle.startParameter
             it.version = "0.1.0"
         }
     }

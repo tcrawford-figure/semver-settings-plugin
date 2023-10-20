@@ -1,10 +1,10 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.transport.PushResult
 import org.eclipse.jgit.transport.RefSpec
 
-class PushCommandWrapper(
+internal class Push(
     private val git: Git,
 ) {
     operator fun invoke(): MutableIterable<PushResult>? =

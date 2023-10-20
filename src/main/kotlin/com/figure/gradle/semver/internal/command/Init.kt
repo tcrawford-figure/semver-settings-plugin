@@ -1,9 +1,9 @@
-package com.figure.gradle.semver.internal.jgit
+package com.figure.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
 import java.io.File
 
-object InitCommandWrapper {
+internal object Init {
     operator fun invoke(
         directory: File,
         bare: Boolean = false,
