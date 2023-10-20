@@ -32,16 +32,11 @@ Note: This accepts short or long hash
 git branch --contains b774d50
 ```
 
-Get nearest parent:
+Get commits since development branch:
 
 ```shell
-git show-branch -a | sed "s/].*//" | grep "\*" | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed "s/^.*\[//"
-```
-
-Get commits since parent:
-
-```shell
-git rev-list --count feat-1..sub-feat-1
+git rev-list --count develop..sub-feat-1
+git rev-list --count main..sub-feat-1
 ```
 
 #### Validate the following scenarios
