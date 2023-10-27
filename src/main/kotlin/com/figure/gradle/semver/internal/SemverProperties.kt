@@ -20,10 +20,14 @@ internal val Project.stageProperty: Provider<String>
 internal val Project.tagPrefixProperty: Provider<String>
     get() = semverProperty(SemverProperty.TagPrefix).orElse("v")
 
+internal val Project.overrideVersion: Provider<String>
+    get() = semverProperty(SemverProperty.OverrideVersion)
+
 internal enum class SemverProperty(val property: String) {
     Stage("semver.stage"),
     Modifier("semver.modifier"),
     TagPrefix("semver.tagPrefix"),
+    OverrideVersion("semver.overrideVersion"),
 }
 
 internal enum class Modifier(val value: String) {

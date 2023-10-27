@@ -1,6 +1,6 @@
 package com.figure.gradle.semver.internal.calculator
 
-import com.figure.gradle.semver.internal.SemverContext
+import com.figure.gradle.semver.SemverExtension
 import org.gradle.api.Project
 
 /**
@@ -18,7 +18,7 @@ import org.gradle.api.Project
  * https://docs.gradle.org/current/userguide/single_versions.html#version_ordering
  */
 class PrereleaseVersionCalculator : VersionCalculator {
-    override fun calculate(semverContext: SemverContext, rootProject: Project): String {
+    override fun calculate(semverExtension: SemverExtension, rootProject: Project): String {
         TODO("Not yet implemented")
     }
 }

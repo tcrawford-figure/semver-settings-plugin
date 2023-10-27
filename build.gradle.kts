@@ -14,6 +14,8 @@ repositories {
 
 dependencies {
     implementation(gradleApi())
+    implementation(gradleKotlinDsl())
+
     implementation(libs.jgit)
     implementation(libs.kotlin.semver)
     implementation(libs.kotlin.result)
