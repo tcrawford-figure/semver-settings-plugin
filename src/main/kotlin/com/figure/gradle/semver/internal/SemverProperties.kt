@@ -41,7 +41,7 @@ internal enum class Stage(val value: String) {
     Preview("rc"),
     Snapshot("snapshot"),
     Final("final"),
-    Ga("ga"),
+    GA("ga"),
     Release("release"),
     Stable("stable"),
 }

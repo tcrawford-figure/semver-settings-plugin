@@ -1,5 +1,8 @@
 package com.figure.gradle.semver.internal.calculator
 
+import com.figure.gradle.semver.internal.SemverContext
+import org.gradle.api.Project
+
 /**
  * Should calculate the next version based on the prerelease identifier provided.
  *
@@ -15,7 +18,7 @@ package com.figure.gradle.semver.internal.calculator
  * https://docs.gradle.org/current/userguide/single_versions.html#version_ordering
  */
 class PrereleaseVersionCalculator : VersionCalculator {
-    override fun calculate(): String {
+    override fun calculate(semverContext: SemverContext, rootProject: Project): String {
         TODO("Not yet implemented")
     }
 }

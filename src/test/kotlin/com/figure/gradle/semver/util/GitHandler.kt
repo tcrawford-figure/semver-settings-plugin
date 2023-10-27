@@ -85,6 +85,11 @@ class GitHandler(
         git.repository.refDatabase.refs.forEach { ref ->
             log.lifecycle("  - ${ref.name}")
         }
+
+        log.lifecycle("Tags:")
+        git.tagList().call().forEach { tag ->
+            log.lifecycle("  - ${tag.name}")
+        }
     }
 
     private fun Int.toLocalDateTime(): LocalDateTime {

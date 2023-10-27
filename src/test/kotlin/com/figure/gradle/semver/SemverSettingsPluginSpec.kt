@@ -11,7 +11,9 @@ class SemverSettingsPluginSpec : FunSpec({
     listener(gradleProjectListener)
 
     test("should have git dir") {
-        val runner = gradleProjectListener.initGradleRunner()
+        val runner = gradleProjectListener
+            .initGradleRunner()
+            .withArguments("-Psemver.stage=alpha", "-Psemver.modifier=patch", "-Psemver.tagPrefix=a")
 
         runner.build()
     }
