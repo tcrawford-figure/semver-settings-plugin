@@ -1,7 +1,16 @@
 package com.figure.gradle.semver.internal.calculator
 
-import com.figure.gradle.semver.SemverExtension
+import com.figure.gradle.semver.internal.Modifier
+import com.figure.gradle.semver.internal.Stage
 import com.figure.gradle.semver.internal.command.KGit
+import com.figure.gradle.semver.internal.extensions.newPreRelease
+import com.figure.gradle.semver.internal.extensions.nextPreRelease
+import com.figure.gradle.semver.internal.extensions.nextSnapshot
+import com.figure.gradle.semver.internal.extensions.nextStable
+import com.figure.gradle.semver.internal.extensions.toInc
+import com.figure.gradle.semver.internal.modifierProperty
+import com.figure.gradle.semver.internal.stageProperty
+import io.github.z4kn4fein.semver.Version
 import org.gradle.api.Project
 
 /**
@@ -21,7 +30,65 @@ import org.gradle.api.Project
 internal class StageBasedVersionCalculator(
     private val kGit: KGit,
 ) : VersionCalculator {
-    override fun calculate(semverExtension: SemverExtension, rootProject: Project): String {
-        TODO("Not yet implemented")
+    override fun calculate(rootProject: Project, latestVersion: Version): String {
+        val stage = rootProject.stageProperty.get()
+        val modifier = rootProject.modifierProperty.get()
+        val incrementer = modifier.value.uppercase().toInc()
+
+        val nextVersion = when {
+            // next stable
+            shouldComputeNextStable(stage, latestVersion) -> {
+                latestVersion.nextStable(incrementer)
+            }
+            // next snapshot (next stable with SNAPSHOT label)
+            shouldComputeNextSnapshot(stage) -> {
+                latestVersion.nextSnapshot(incrementer)
+            }
+            // new pre-release (last version is stable or pre-release, next is new pre-release)
+            // TODO: Throw error if new version would be less than the latest version???
+            shouldComputeNewPreRelease(stage, modifier, latestVersion) -> {
+                latestVersion.newPreRelease(incrementer, stage)
+            }
+            // next pre-release (last version is pre-release, next is pre-release)
+            shouldComputeNextPreRelease(stage, modifier, latestVersion) -> {
+                latestVersion.nextPreRelease()
+            }
+
+            else -> {
+                error(
+                    "Could not determine next version for: " +
+                        "stage=${stage.value} modifier=${modifier.value} latest version=$latestVersion"
+                )
+            }
+        }
+
+        return nextVersion.toString()
     }
+
+    private fun shouldComputeNextStable(stage: Stage, latestVersion: Version): Boolean =
+        stage == Stage.Auto && latestVersion.isStable
+
+    /**
+     * Should compute next stable with SNAPSHOT label?
+     */
+    private fun shouldComputeNextSnapshot(stage: Stage): Boolean =
+        stage == Stage.Snapshot
+
+    /**
+     * Stage is provided (not auto) AND either:
+     * - the latest version is stable
+     * - the latest version is pre-release and the modifier is auto and the latest pre-release label isn't the
+     *   same as the provided stage
+     */
+    private fun shouldComputeNewPreRelease(stage: Stage, modifier: Modifier, latestVersion: Version): Boolean =
+        stage != Stage.Auto && (
+            latestVersion.isStable || (
+                latestVersion.isPreRelease &&
+                    modifier == Modifier.Auto &&
+                    latestVersion.preRelease?.lowercase() != stage.value.lowercase()
+                )
+            )
+
+    private fun shouldComputeNextPreRelease(stage: Stage, modifier: Modifier, latestVersion: Version): Boolean =
+        stage != Stage.Auto && latestVersion.isPreRelease
 }

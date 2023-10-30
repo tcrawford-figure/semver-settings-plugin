@@ -28,19 +28,23 @@ internal object VersionFactory {
         log.lifecycle("Main branch: ${kgit.branches.mainBranch.name}")
         log.lifecycle("Development branch: ${kgit.branches.developmentBranch.name}")
 
+        val latestVersion = kgit.tags.latestOrInitial(semverExtension.initialVersion)
+
         val version = when {
+            // TODO: Handle version override as highest priority
+
             // Stage is the highest priority, so it can be used from any branch
-            stage != Stage.Auto -> {
+            stage != Stage.Auto && latestVersion.isPreRelease -> {
                 val stageBasedVersionCalculator = StageBasedVersionCalculator(kgit)
-                stageBasedVersionCalculator.calculate(semverExtension, rootProject)
+                stageBasedVersionCalculator.calculate(rootProject, latestVersion)
             }
             kgit.branch.isOnMainBranch(forTesting) -> {
-                val stableVersionCalculator = StableVersionCalculator(kgit)
-                stableVersionCalculator.calculate(semverExtension, rootProject)
+                val stableVersionCalculator = StableVersionCalculator()
+                stableVersionCalculator.calculate(rootProject, latestVersion)
             }
             kgit.branch.isOnDevelopmentBranch(forTesting) -> {
                 val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
-                branchBasedVersionCalculator.calculate(semverExtension, rootProject)
+                branchBasedVersionCalculator.calculate(rootProject, latestVersion)
             }
             else -> error("Could not determine versioning strategy")
         }
