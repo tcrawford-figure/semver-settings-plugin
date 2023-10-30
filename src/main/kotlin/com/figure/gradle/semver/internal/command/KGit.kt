@@ -17,15 +17,11 @@ internal class KGit(
         providedGit ?: if (directory != null) init(directory, bare) else open()
     }
 
-    fun author(name: String, email: String) {
-
-    }
-
     val add = Add(git)
     val checkout = Checkout(git)
     val config = Config(git)
-    val branch = Branch(git)
     val branches = BranchList(git)
+    val branch = Branch(git, branches)
     val commit = Commit(git)
     val log = Log(git)
     val push = Push(git)

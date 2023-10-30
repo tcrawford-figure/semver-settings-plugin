@@ -11,13 +11,13 @@ import org.gradle.api.Project
 /**
  * Should calculate the next stable semantic version
  */
-class StableVersionCalculator : VersionCalculator {
+internal class StableVersionCalculator(
+    private val kGit: KGit,
+) : VersionCalculator {
     override fun calculate(semverExtension: SemverExtension, rootProject: Project): String {
-        val kgit = KGit(directory = rootProject.rootDir)
+        val incrementer = rootProject.modifierProperty.map { it.value.uppercase().toInc() }.get()
 
-        val incrementer = rootProject.modifierProperty.map { it.uppercase().toInc() }.get()
-
-        val latestTag = kgit.tags.latest ?: semverExtension.initialVersion.map { it.toVersion() }.get()
+        val latestTag = kGit.tags.latest ?: semverExtension.initialVersion.map { it.toVersion() }.get()
         return latestTag.inc(incrementer).toString()
     }
 }

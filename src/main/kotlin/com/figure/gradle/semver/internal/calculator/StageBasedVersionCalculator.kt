@@ -1,6 +1,7 @@
 package com.figure.gradle.semver.internal.calculator
 
 import com.figure.gradle.semver.SemverExtension
+import com.figure.gradle.semver.internal.command.KGit
 import org.gradle.api.Project
 
 /**
@@ -17,7 +18,9 @@ import org.gradle.api.Project
  * Use Gradle's version ordering (if kotlin-semver doesn't support it) to determine prerelease ordering:
  * https://docs.gradle.org/current/userguide/single_versions.html#version_ordering
  */
-class PrereleaseVersionCalculator : VersionCalculator {
+internal class StageBasedVersionCalculator(
+    private val kGit: KGit,
+) : VersionCalculator {
     override fun calculate(semverExtension: SemverExtension, rootProject: Project): String {
         TODO("Not yet implemented")
     }

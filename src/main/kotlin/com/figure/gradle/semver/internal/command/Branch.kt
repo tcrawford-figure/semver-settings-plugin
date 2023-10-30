@@ -8,14 +8,37 @@ import org.eclipse.jgit.revwalk.RevCommit
 
 internal class Branch(
     private val git: Git,
+    private val branchList: BranchList,
 ) {
-    val shortName: String = git.repository.branch
-    val fullName: String = git.repository.fullBranch
+    val GITHUB_HEAD_REF: String = "GITHUB_HEAD_REF"
 
-    val branchRef: Ref = git.repository.findRef(shortName)
+    val shortName: String
+        get() = git.repository.branch
 
-    val headRef: Ref = git.repository.exactRef(Constants.HEAD)
-    val headCommit: RevCommit = git.revWalk { it.parseCommit(branchRef.objectId) }
+    val fullName: String
+        get() = git.repository.fullBranch
+
+    val branchRef: Ref
+        get() = git.repository.findRef(shortName)
+
+    val headRef: Ref
+        get() = git.repository.exactRef(Constants.HEAD)
+
+    val headCommit: RevCommit
+        get() = git.revWalk { it.parseCommit(branchRef.objectId) }
+
+    fun currentRef(forTesting: Boolean = false): Ref =
+        if (forTesting) {
+            branchRef
+        } else {
+            git.repository.findRef(System.getenv(GITHUB_HEAD_REF) ?: shortName)
+        }
+
+    fun isOnMainBranch(forTesting: Boolean = false): Boolean =
+        currentRef(forTesting).name == branchList.mainBranch.name
+
+    fun isOnDevelopmentBranch(forTesting: Boolean = false): Boolean =
+        currentRef(forTesting).name == branchList.developmentBranch.name
 
     fun create(branchName: String): Ref =
         git.branchCreate()

@@ -2,20 +2,30 @@ package com.figure.gradle.semver.internal.calculator
 
 import com.figure.gradle.semver.SemverExtension
 import com.figure.gradle.semver.internal.command.KGit
+import com.figure.gradle.semver.internal.extensions.sanitizedWithoutPrefix
+import com.figure.gradle.semver.internal.extensions.toInc
+import com.figure.gradle.semver.internal.forTesting
+import com.figure.gradle.semver.internal.modifierProperty
+import io.github.z4kn4fein.semver.inc
 import org.gradle.api.Project
 
 /**
  * Should calculate the next version based on the current branch name
  */
-class BranchBasedVersionCalculator : VersionCalculator {
+internal class BranchBasedVersionCalculator(
+    private val kGit: KGit,
+) : VersionCalculator {
     override fun calculate(semverExtension: SemverExtension, rootProject: Project): String {
-        val kgit = KGit(directory = rootProject.rootDir)
+        val latestVersion = kGit.tags.latestOrInitial(semverExtension.initialVersion)
+        val currentBranch = kGit.branch.currentRef(rootProject.forTesting.get())
+        val developmentBranch = kGit.branches.developmentBranch
 
-        // val latestTag = kgit.tags.latestOrInitial(semverExtension.initialVersion)
+        val prereleaseLabel = currentBranch.sanitizedWithoutPrefix()
+        val commitCount = kGit.branches.commitCountBetween(developmentBranch.name, currentBranch.name)
+        val prereleaseLabelWithCommitCount = "$prereleaseLabel.$commitCount"
 
-        // TODO: Test checking out the head ref and figure out the branch it belongs to from there
-        kgit.checkout(kgit.branch.headCommit.name)
+        val incrementer = rootProject.modifierProperty.map { it.value.uppercase().toInc() }.get()
 
-        return "0.0.1"
+        return latestVersion.inc(incrementer).copy(preRelease = prereleaseLabelWithCommitCount).toString()
     }
 }
