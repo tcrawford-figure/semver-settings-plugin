@@ -11,6 +11,9 @@ import io.github.z4kn4fein.semver.nextPreRelease
 internal fun Version.nextStable(incrementer: Inc): Version =
     inc(incrementer)
 
+internal fun Version.nextStableWithPreRelease(incrementer: Inc, preRelease: String?): Version =
+    inc(incrementer, preRelease)
+
 internal fun Version.nextSnapshot(incrementer: Inc): Version =
     inc(incrementer, Stage.Snapshot.value)
 
@@ -21,6 +24,10 @@ internal val Version.stage: Stage?
     get() = Stage.values().find { preRelease?.contains(it.value, ignoreCase = true) == true }
 
 fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
+    (providedStage == Stage.Snapshot) -> {
+        nextSnapshot(providedModifier.toInc())
+    }
+
     // next pre-release
     (providedModifier == Modifier.Auto && this.isPreRelease) &&
         (providedStage == Stage.Auto || providedStage == this.stage) -> {
@@ -29,17 +36,17 @@ fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Versi
 
     // next stable
     (providedStage == Stage.Auto && this.isStable) || providedStage == Stage.Stable -> {
-        inc(providedModifier.toInc())
+        nextStable(providedModifier.toInc())
     }
 
     // next stable with next pre-release identifier
     providedStage == Stage.Auto && this.isPreRelease -> {
-        inc(providedModifier.toInc(), this.preRelease)
+        nextStableWithPreRelease(providedModifier.toInc(), this.preRelease)
     }
 
     // next stable with new pre-release identifier
     providedModifier != Modifier.Auto -> {
-        inc(providedModifier.toInc(), "${providedStage.value}.1")
+        newPreRelease(providedModifier.toInc(), providedStage)
     }
 
     // next patch with new pre-release identifier

@@ -44,6 +44,19 @@ class VersionExtensionKtSpec : FunSpec({
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
         }
+
+        context(Stage.Snapshot.name) {
+            val inputVersion = "1.0.0".toVersion()
+            val stage = Stage.Snapshot
+            withData(
+                TestData(Modifier.Major, "2.0.0-${stage.value}"),
+                TestData(Modifier.Minor, "1.1.0-${stage.value}"),
+                TestData(Modifier.Patch, "1.0.1-${stage.value}"),
+                TestData(Modifier.Auto, "1.0.1-${stage.value}"),
+            ) {
+                inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
+            }
+        }
     }
 
     context("next version from pre-release") {
@@ -114,6 +127,19 @@ class VersionExtensionKtSpec : FunSpec({
                 ) {
                     inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
                 }
+            }
+        }
+
+        context(Stage.Snapshot.name) {
+            val inputVersion = "1.0.0-alpha.1".toVersion()
+            val stage = Stage.Snapshot
+            withData(
+                TestData(Modifier.Major, "2.0.0-${stage.value}"),
+                TestData(Modifier.Minor, "1.1.0-${stage.value}"),
+                TestData(Modifier.Patch, "1.0.1-${stage.value}"),
+                TestData(Modifier.Auto, "1.0.1-${stage.value}"),
+            ) {
+                inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
         }
     }
