@@ -4,9 +4,10 @@ import com.figure.gradle.semver.internal.Modifier
 import com.figure.gradle.semver.internal.Stage
 import com.figure.gradle.semver.internal.command.KGit
 import com.figure.gradle.semver.internal.extensions.newPreRelease
-import com.figure.gradle.semver.internal.extensions.nextPreRelease
+// import com.figure.gradle.semver.internal.extensions.nextPreRelease
 import com.figure.gradle.semver.internal.extensions.nextSnapshot
 import com.figure.gradle.semver.internal.extensions.nextStable
+// import com.figure.gradle.semver.internal.extensions.currentStage
 import com.figure.gradle.semver.internal.extensions.toInc
 import com.figure.gradle.semver.internal.modifierProperty
 import com.figure.gradle.semver.internal.stageProperty
@@ -44,14 +45,14 @@ internal class StageBasedVersionCalculator(
             shouldComputeNextSnapshot(stage) -> {
                 latestVersion.nextSnapshot(incrementer)
             }
-            // new pre-release (last version is stable or pre-release, next is new pre-release)
-            // TODO: Throw error if new version would be less than the latest version???
+            // new pre-release (last version is stable or different pre-release stage, next is new pre-release)
             shouldComputeNewPreRelease(stage, modifier, latestVersion) -> {
                 latestVersion.newPreRelease(incrementer, stage)
             }
             // next pre-release (last version is pre-release, next is pre-release)
             shouldComputeNextPreRelease(stage, modifier, latestVersion) -> {
-                latestVersion.nextPreRelease()
+                TODO()
+                // latestVersion.nextPreRelease()
             }
 
             else -> {
@@ -75,7 +76,7 @@ internal class StageBasedVersionCalculator(
         stage == Stage.Snapshot
 
     /**
-     * Stage is provided (not auto) AND either:
+     * Stage is provided (and it's not AUTO) AND either:
      * - the latest version is stable
      * - the latest version is pre-release and the modifier is auto and the latest pre-release label isn't the
      *   same as the provided stage
@@ -89,6 +90,17 @@ internal class StageBasedVersionCalculator(
                 )
             )
 
-    private fun shouldComputeNextPreRelease(stage: Stage, modifier: Modifier, latestVersion: Version): Boolean =
-        stage != Stage.Auto && latestVersion.isPreRelease
+    private fun shouldComputeNextPreRelease(
+        stage: Stage,
+        modifier: Modifier,
+        latestVersion: Version,
+    ): Boolean {
+        TODO()
+        // if (latestVersion.isPreRelease && latestVersion.currentStage() == stage) {
+        //     return true
+        // }
+        //
+        //
+        // return stage != Stage.Auto && latestVersion.isPreRelease
+    }
 }

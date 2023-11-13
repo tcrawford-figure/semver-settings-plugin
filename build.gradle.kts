@@ -23,6 +23,7 @@ dependencies {
 
     testImplementation(gradleTestKit())
     testImplementation(libs.kotest.runner)
+    testImplementation(libs.kotest.datatest)
 }
 
 tasks.test {

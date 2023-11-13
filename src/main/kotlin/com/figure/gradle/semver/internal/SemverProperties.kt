@@ -1,5 +1,6 @@
 package com.figure.gradle.semver.internal
 
+import io.github.z4kn4fein.semver.Inc
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.Project
@@ -37,11 +38,18 @@ internal enum class SemverProperty(val property: String) {
     ForTesting("semver.forTesting"),
 }
 
-internal enum class Modifier(val value: String) {
+enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
     Auto("auto");
+
+    fun toInc(): Inc = when (this) {
+        Major -> Inc.MAJOR
+        Minor -> Inc.MINOR
+        Patch -> Inc.PATCH
+        Auto -> Inc.PATCH
+    }
 
     companion object {
         fun fromValue(value: String): Modifier =
@@ -50,15 +58,16 @@ internal enum class Modifier(val value: String) {
 }
 
 // In order from lowest to highest priority
-internal enum class Stage(val value: String) {
+enum class Stage(val value: String) {
     Dev("dev"),
     Alpha("alpha"),
     Beta("beta"),
-    Preview("rc"),
+    RC("rc"),
     Snapshot("SNAPSHOT"),
     Final("final"),
     GA("ga"),
     Release("release"),
+    Stable("stable"),
     Auto("auto");
 
     companion object {

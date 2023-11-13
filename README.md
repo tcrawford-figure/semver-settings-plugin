@@ -3,24 +3,32 @@
 ## Plugin Needs
 
 Support the following modes (Both need better names):
-- Hash mode
+
 - Commit Increment Mode
+- Hash mode - lower priority
 
 Support the following scenarios:
+
 - Ensure you can support configuration cache early on in development!!!
 - No remote set
 - No semver tags or tags at all
 - Add suggestions if no git directory can be found
-- `+DIRTY` - dirty mode, where changes have been made, but no commit made yet. Applies to both modes above
+- Build or dirty mode (possibly lower priority):
+    - `+build.#` - build mode, for local development. `#` starts at 1 and incremented on each build. Guarantees
+      uniqueness without needing to make a commit.
+    - `+DIRTY` - dirty mode, where changes have been made, but no commit made yet. Applies to both modes above
 - Somehow support tests in GHA that are currently not possible. More documentation can be found in current plugin.
+- Enable successful builds during merge/rebase conflicts by supporting either:
+    - a fallback version in the event of a merge/rebase conflict
+    - actually calculating the next version properly
 
 ### Library Considerations
 
 - kotlin-semver
 - Some alternative Result library (consider current and future support)
-  - Arrow (much smaller footprint now)
-  - kotlin-result: https://github.com/michaelbull/kotlin-result
-  - Result: https://github.com/kittinunf/Result
+    - Arrow (much smaller footprint now)
+    - kotlin-result: https://github.com/michaelbull/kotlin-result
+    - Result: https://github.com/kittinunf/Result
 
 ### Commit Increment Mode Resources
 
@@ -58,17 +66,20 @@ git rev-list --count main..sub-feat-1
 ### Git Flow
 
 Resources:
+
 - https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
 ### GitHub Flow
 
 Resources:
+
 - https://githubflow.github.io/
 - https://docs.github.com/en/get-started/quickstart/github-flow
 
 ### GitLab Flow
 
 Resources:
+
 - https://about.gitlab.com/topics/version-control/what-is-gitlab-flow/
 
 ### Other Workflows to consider later
