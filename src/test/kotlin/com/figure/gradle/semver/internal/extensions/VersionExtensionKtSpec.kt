@@ -145,7 +145,7 @@ class VersionExtensionKtSpec : FunSpec({
     }
 })
 
-data class TestData(
+internal data class TestData(
     val modifier: Modifier,
     private val expectedVersionString: String,
 ) {

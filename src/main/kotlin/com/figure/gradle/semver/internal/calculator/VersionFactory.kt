@@ -33,20 +33,21 @@ internal object VersionFactory {
         val version = when {
             // TODO: Handle version override as highest priority
 
-            // Stage is the highest priority, so it can be used from any branch
-            stage != Stage.Auto && latestVersion.isPreRelease -> {
-                val stageBasedVersionCalculator = StageBasedVersionCalculator(kgit)
+            kgit.branch.isOnMainBranch(forTesting) -> {
+                val stageBasedVersionCalculator = StageBasedVersionCalculator()
                 stageBasedVersionCalculator.calculate(rootProject, latestVersion)
             }
-            kgit.branch.isOnMainBranch(forTesting) -> {
-                val stableVersionCalculator = StableVersionCalculator()
-                stableVersionCalculator.calculate(rootProject, latestVersion)
+            // Works for any branch
+            else -> {
+                // Compute based on the branch name, otherwise, use the stage to compute the next version
+                if (stage == Stage.Auto) {
+                    val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
+                    branchBasedVersionCalculator.calculate(rootProject, latestVersion)
+                } else {
+                    val stageBasedVersionCalculator = StageBasedVersionCalculator()
+                    stageBasedVersionCalculator.calculate(rootProject, latestVersion)
+                }
             }
-            kgit.branch.isOnDevelopmentBranch(forTesting) -> {
-                val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
-                branchBasedVersionCalculator.calculate(rootProject, latestVersion)
-            }
-            else -> error("Could not determine versioning strategy")
         }
 
         return version

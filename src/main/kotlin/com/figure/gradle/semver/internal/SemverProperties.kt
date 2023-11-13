@@ -14,9 +14,11 @@ internal val Project.gradlePropertiesFile: File
 internal val Project.gradleProperties: Properties
     get() = Properties().apply { load(gradlePropertiesFile.inputStream()) }
 
+// TODO: Add error handling for `fromValue` when bad input is provided
 internal val Project.modifierProperty: Provider<Modifier>
     get() = semverProperty(SemverProperty.Modifier).map { Modifier.fromValue(it) }.orElse(Modifier.Auto)
 
+// TODO: Add error handling for `fromValue` when bad input is provided
 internal val Project.stageProperty: Provider<Stage>
     get() = semverProperty(SemverProperty.Stage).map { Stage.fromValue(it) }.orElse(Stage.Auto)
 
@@ -38,7 +40,7 @@ internal enum class SemverProperty(val property: String) {
     ForTesting("semver.forTesting"),
 }
 
-enum class Modifier(val value: String) {
+internal enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
@@ -58,7 +60,7 @@ enum class Modifier(val value: String) {
 }
 
 // In order from lowest to highest priority
-enum class Stage(val value: String) {
+internal enum class Stage(val value: String) {
     Dev("dev"),
     Alpha("alpha"),
     Beta("beta"),

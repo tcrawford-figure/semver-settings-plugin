@@ -8,22 +8,7 @@ import io.github.z4kn4fein.semver.inc
 import io.github.z4kn4fein.semver.nextPatch
 import io.github.z4kn4fein.semver.nextPreRelease
 
-internal fun Version.nextStable(incrementer: Inc): Version =
-    inc(incrementer)
-
-internal fun Version.nextStableWithPreRelease(incrementer: Inc, preRelease: String?): Version =
-    inc(incrementer, preRelease)
-
-internal fun Version.nextSnapshot(incrementer: Inc): Version =
-    inc(incrementer, Stage.Snapshot.value)
-
-internal fun Version.newPreRelease(incrementer: Inc, stage: Stage): Version =
-    inc(incrementer, "${stage.value}.1")
-
-internal val Version.stage: Stage?
-    get() = Stage.values().find { preRelease?.contains(it.value, ignoreCase = true) == true }
-
-fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
+internal fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
     (providedStage == Stage.Snapshot) -> {
         nextSnapshot(providedModifier.toInc())
     }
@@ -54,3 +39,18 @@ fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Versi
         nextPatch("${providedStage.value}.1")
     }
 }
+
+private fun Version.nextStable(incrementer: Inc): Version =
+    inc(incrementer)
+
+private fun Version.nextStableWithPreRelease(incrementer: Inc, preRelease: String?): Version =
+    inc(incrementer, preRelease)
+
+private fun Version.nextSnapshot(incrementer: Inc): Version =
+    inc(incrementer, Stage.Snapshot.value)
+
+private fun Version.newPreRelease(incrementer: Inc, stage: Stage): Version =
+    inc(incrementer, "${stage.value}.1")
+
+private val Version.stage: Stage?
+    get() = Stage.values().find { preRelease?.contains(it.value, ignoreCase = true) == true }
