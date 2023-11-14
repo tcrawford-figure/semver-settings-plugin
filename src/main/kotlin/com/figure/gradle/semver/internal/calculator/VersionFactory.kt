@@ -11,6 +11,7 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 
+@Suppress("LongParameterList")
 internal fun ProviderFactory.versionFactory(
     initialVersion: Property<String>,
     stage: Provider<Stage>,

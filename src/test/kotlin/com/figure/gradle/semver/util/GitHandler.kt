@@ -9,9 +9,6 @@ import org.eclipse.jgit.api.Git
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import java.io.File
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 private val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 
@@ -69,20 +66,10 @@ class GitHandler(
     }
 
     private fun logGitObjects(git: Git) {
-        // val dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-
         log.lifecycle("Commits:")
         git.log().call().forEach { commit ->
             log.lifecycle("  - $commit")
         }
-
-        // git.log().call().forEachIndexed { index, commit: RevCommit ->
-        //     val commitTime = commit.commitTime.toLocalDateTime()
-        //     log.lifecycle("Commit ${index + 1}:")
-        //     log.lifecycle("  - Name: ${commit.name}")
-        //     log.lifecycle("  - Commit Time: ${commitTime.format(dateTimeFormatter)}")
-        //     log.lifecycle("  - Message: ${commit.fullMessage}")
-        // }
 
         log.lifecycle("Refs:")
         git.repository.refDatabase.refs.forEach { ref ->
@@ -93,9 +80,5 @@ class GitHandler(
         git.tagList().call().forEach { tag ->
             log.lifecycle("  - ${tag.name}")
         }
-    }
-
-    private fun Int.toLocalDateTime(): LocalDateTime {
-        return LocalDateTime.ofInstant(Instant.ofEpochSecond(this.toLong()), ZoneId.systemDefault())
     }
 }

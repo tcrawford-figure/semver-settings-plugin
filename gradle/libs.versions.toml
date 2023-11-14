@@ -1,16 +1,31 @@
 [versions]
 
+kotlin = "1.9.10"
+
 jgit = "6.5.0.202303070854-r"
 kotest = "5.6.2"
 kotlin-semver = "1.4.2"
 kotlin-result = "1.1.18"
-plexus-utils = "4.0.0"
+
+dependency-analysis = "1.25.0"
+detekt = "1.23.3"
+ktlint = "11.6.1"
+test-logger = "4.0.0"
 
 [libraries]
 
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
-kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+
 kotest-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
-kotlin-semver = { module = "io.github.z4kn4fein:semver", version.ref = "kotlin-semver" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+
 kotlin-result = { module = "com.michael-bull.kotlin-result:kotlin-result", version.ref = "kotlin-result" }
-plexus-utils = { module = "org.codehaus.plexus:plexus-utils", version.ref = "plexus-utils" }
+kotlin-semver = { module = "io.github.z4kn4fein:semver", version.ref = "kotlin-semver" }
+
+[plugins]
+
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }

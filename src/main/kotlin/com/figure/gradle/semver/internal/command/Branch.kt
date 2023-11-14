@@ -10,7 +10,7 @@ internal class Branch(
     private val git: Git,
     private val branchList: BranchList
 ) {
-    val GITHUB_HEAD_REF: String = "GITHUB_HEAD_REF"
+    private val githubHeadRef: String = "GITHUB_HEAD_REF"
 
     val shortName: String
         get() = git.repository.branch
@@ -31,7 +31,7 @@ internal class Branch(
         if (forTesting) {
             branchRef
         } else {
-            git.repository.findRef(System.getenv(GITHUB_HEAD_REF) ?: shortName)
+            git.repository.findRef(System.getenv(githubHeadRef) ?: shortName)
         }
 
     fun isOnMainBranch(forTesting: Boolean = false): Boolean =
