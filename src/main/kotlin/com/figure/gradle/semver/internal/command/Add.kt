@@ -4,7 +4,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.dircache.DirCache
 
 internal class Add(
-    private val git: Git,
+    private val git: Git
 ) {
     operator fun invoke(filename: String): DirCache? =
         git.add().addFilepattern(filename).call()

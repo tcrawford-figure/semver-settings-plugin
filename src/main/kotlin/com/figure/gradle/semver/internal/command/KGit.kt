@@ -6,7 +6,7 @@ import java.io.File
 internal class KGit(
     private val directory: File? = null,
     private val bare: Boolean = false,
-    private val providedGit: Git? = null,
+    private val providedGit: Git? = null
 ) {
     companion object {
         val init = Init

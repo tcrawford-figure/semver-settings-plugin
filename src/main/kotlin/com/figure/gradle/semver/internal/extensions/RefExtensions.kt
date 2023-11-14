@@ -12,6 +12,5 @@ fun Ref.sanitizedWithoutPrefix(): String =
         .lowercase()
         .replace(Constants.R_HEADS, "")
         .replace("$R_REMOTES_ORIGIN/", "")
-        .replaceBefore("/", "")
         .removePrefix("/")
         .replace(validCharacters, "-")

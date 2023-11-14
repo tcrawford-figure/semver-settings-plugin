@@ -5,7 +5,7 @@ import org.eclipse.jgit.transport.PushResult
 import org.eclipse.jgit.transport.RefSpec
 
 internal class Push(
-    private val git: Git,
+    private val git: Git
 ) {
     operator fun invoke(): MutableIterable<PushResult>? =
         git.push().call()

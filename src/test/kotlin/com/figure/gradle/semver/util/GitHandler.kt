@@ -1,21 +1,24 @@
 package com.figure.gradle.semver.util
 
 import com.figure.gradle.semver.internal.command.KGit
-import com.figure.gradle.semver.log
 import io.github.z4kn4fein.semver.Inc
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.inc
 import io.github.z4kn4fein.semver.toVersion
 import org.eclipse.jgit.api.Git
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import java.io.File
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+private val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
+
 class GitHandler(
     localRepoDir: File,
     remoteRepoDir: File,
-    private var startingTag: Version = "1.0.0".toVersion(),
+    private var startingTag: Version = "1.0.0".toVersion()
 ) {
     private val localKGit = KGit(localRepoDir)
     private val remoteKGit = KGit(remoteRepoDir, bare = true)
@@ -35,7 +38,7 @@ class GitHandler(
             startingTag = startingTag.inc(incrementBy)
 
             localKGit.commit("Empty commit", allowEmptyCommit = true)
-            localKGit.tag("v${startingTag}")
+            localKGit.tag("v$startingTag")
         }
         return this
     }

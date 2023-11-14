@@ -17,14 +17,14 @@ class VersionExtensionKtSpec : FunSpec({
             Stage.RC,
             Stage.Final,
             Stage.GA,
-            Stage.Release,
+            Stage.Release
         ) { stage ->
             val inputVersion = "1.0.0".toVersion()
             withData(
                 TestData(Modifier.Major, "2.0.0-${stage.value}.1"),
                 TestData(Modifier.Minor, "1.1.0-${stage.value}.1"),
                 TestData(Modifier.Patch, "1.0.1-${stage.value}.1"),
-                TestData(Modifier.Auto, "1.0.1-${stage.value}.1"),
+                TestData(Modifier.Auto, "1.0.1-${stage.value}.1")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -32,14 +32,14 @@ class VersionExtensionKtSpec : FunSpec({
 
         withData(
             Stage.Stable,
-            Stage.Auto,
+            Stage.Auto
         ) { stage ->
             val inputVersion = "1.0.0".toVersion()
             withData(
                 TestData(Modifier.Major, "2.0.0"),
                 TestData(Modifier.Minor, "1.1.0"),
                 TestData(Modifier.Patch, "1.0.1"),
-                TestData(Modifier.Auto, "1.0.1"),
+                TestData(Modifier.Auto, "1.0.1")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -52,7 +52,7 @@ class VersionExtensionKtSpec : FunSpec({
                 TestData(Modifier.Major, "2.0.0-${stage.value}"),
                 TestData(Modifier.Minor, "1.1.0-${stage.value}"),
                 TestData(Modifier.Patch, "1.0.1-${stage.value}"),
-                TestData(Modifier.Auto, "1.0.1-${stage.value}"),
+                TestData(Modifier.Auto, "1.0.1-${stage.value}")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -67,7 +67,7 @@ class VersionExtensionKtSpec : FunSpec({
             Stage.RC,
             Stage.Final,
             Stage.GA,
-            Stage.Release,
+            Stage.Release
         ) { stage ->
             val inputVersion = "1.0.0-${stage.value}.1".toVersion()
 
@@ -75,7 +75,7 @@ class VersionExtensionKtSpec : FunSpec({
                 TestData(Modifier.Major, "2.0.0-${stage.value}.1"),
                 TestData(Modifier.Minor, "1.1.0-${stage.value}.1"),
                 TestData(Modifier.Patch, "1.0.1-${stage.value}.1"),
-                TestData(Modifier.Auto, "1.0.0-${stage.value}.2"),
+                TestData(Modifier.Auto, "1.0.0-${stage.value}.2")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -89,7 +89,7 @@ class VersionExtensionKtSpec : FunSpec({
                 TestData(Modifier.Major, "2.0.0"),
                 TestData(Modifier.Minor, "1.1.0"),
                 TestData(Modifier.Patch, "1.0.0"),
-                TestData(Modifier.Auto, "1.0.0"),
+                TestData(Modifier.Auto, "1.0.0")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -103,7 +103,7 @@ class VersionExtensionKtSpec : FunSpec({
                 TestData(Modifier.Major, "2.0.0-alpha.1"),
                 TestData(Modifier.Minor, "1.1.0-alpha.1"),
                 TestData(Modifier.Patch, "1.0.1-alpha.1"),
-                TestData(Modifier.Auto, "1.0.0-alpha.2"),
+                TestData(Modifier.Auto, "1.0.0-alpha.2")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -116,14 +116,14 @@ class VersionExtensionKtSpec : FunSpec({
                 Stage.RC,
                 Stage.Final,
                 Stage.GA,
-                Stage.Release,
+                Stage.Release
             ) { stage ->
                 val inputVersion = "1.0.0-alpha.1".toVersion()
                 withData(
                     TestData(Modifier.Major, "2.0.0-${stage.value}.1"),
                     TestData(Modifier.Minor, "1.1.0-${stage.value}.1"),
                     TestData(Modifier.Patch, "1.0.1-${stage.value}.1"),
-                    TestData(Modifier.Auto, "1.0.1-${stage.value}.1"),
+                    TestData(Modifier.Auto, "1.0.1-${stage.value}.1")
                 ) {
                     inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
                 }
@@ -137,7 +137,7 @@ class VersionExtensionKtSpec : FunSpec({
                 TestData(Modifier.Major, "2.0.0-${stage.value}"),
                 TestData(Modifier.Minor, "1.1.0-${stage.value}"),
                 TestData(Modifier.Patch, "1.0.1-${stage.value}"),
-                TestData(Modifier.Auto, "1.0.1-${stage.value}"),
+                TestData(Modifier.Auto, "1.0.1-${stage.value}")
             ) {
                 inputVersion.nextVersion(stage, it.modifier) shouldBe it.expectedVersion
             }
@@ -147,7 +147,7 @@ class VersionExtensionKtSpec : FunSpec({
 
 internal data class TestData(
     val modifier: Modifier,
-    private val expectedVersionString: String,
+    private val expectedVersionString: String
 ) {
     val expectedVersion: Version
         get() = expectedVersionString.toVersion()

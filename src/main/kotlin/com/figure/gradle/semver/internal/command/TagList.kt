@@ -8,7 +8,7 @@ import org.eclipse.jgit.lib.Ref
 import org.gradle.api.provider.Property
 
 internal class TagList(
-    private val git: Git,
+    private val git: Git
 ) {
     operator fun invoke(): MutableList<Ref>? =
         git.tagList().call()

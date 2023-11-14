@@ -8,7 +8,7 @@ import org.eclipse.jgit.revwalk.RevCommit
 
 internal class Branch(
     private val git: Git,
-    private val branchList: BranchList,
+    private val branchList: BranchList
 ) {
     val GITHUB_HEAD_REF: String = "GITHUB_HEAD_REF"
 

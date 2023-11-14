@@ -1,3 +1,5 @@
+rootProject.name = "semver-settings-plugin"
+
 pluginManagement {
     repositories {
         mavenCentral()
@@ -5,8 +7,13 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
-
-rootProject.name = "semver-settings-plugin"

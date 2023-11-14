@@ -37,4 +37,3 @@ fun File.setupProjectDirectory(buildCacheDir: File, resourcesDirectory: File) {
     // Append build cache configuration to settings.gradle.kts
     appendBuildCacheConfiguration(buildCacheDir)
 }
-

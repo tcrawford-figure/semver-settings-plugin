@@ -9,7 +9,7 @@ import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 
 internal class BranchList(
-    private val git: Git,
+    private val git: Git
 ) {
     val developmentBranch: Ref
         get() = find("develop")
@@ -47,7 +47,7 @@ internal class BranchList(
         // Try to resolve the remote branch first, then fall back to the local branch
         // This should fix situations where you're on the base branch with commits locally.
         // If that's the case, you'll likely get 0 commits between the base and the target branch.
-        val baseBranch: ObjectId = git.repository.resolve("$R_REMOTES_ORIGIN/${baseBranchName}")
+        val baseBranch: ObjectId = git.repository.resolve("$R_REMOTES_ORIGIN/$baseBranchName")
             ?: git.repository.resolve(baseBranchName)
 
         val targetBranch: ObjectId = git.repository.resolve(targetBranchName)

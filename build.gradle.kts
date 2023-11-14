@@ -1,16 +1,11 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    `embedded-kotlin`
+    kotlin("jvm") version "1.9.10"
     id("com.gradle.plugin-publish") version "1.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
 }
 
 group = "com.figure.gradle.semver"
 version = "0.0.6"
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation(gradleApi())
@@ -36,12 +31,6 @@ tasks.wrapper {
 
 kotlin {
     jvmToolchain(11)
-}
-
-tasks.withType<KotlinCompile>().configureEach {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-receivers")
-    }
 }
 
 gradlePlugin {

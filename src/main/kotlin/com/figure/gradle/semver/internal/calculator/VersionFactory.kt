@@ -1,51 +1,74 @@
 package com.figure.gradle.semver.internal.calculator
 
-import com.figure.gradle.semver.SemverExtension
+import com.figure.gradle.semver.internal.Modifier
 import com.figure.gradle.semver.internal.Stage
 import com.figure.gradle.semver.internal.command.KGit
-import com.figure.gradle.semver.internal.forTesting
-import com.figure.gradle.semver.internal.modifierProperty
-import com.figure.gradle.semver.internal.stageProperty
-import com.figure.gradle.semver.internal.tagPrefixProperty
-import com.figure.gradle.semver.log
-import org.gradle.api.Project
+import io.github.z4kn4fein.semver.Version
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
 
-internal object VersionFactory {
-    fun nextVersion(semverExtension: SemverExtension, rootProject: Project): String {
-        val kgit = KGit(directory = rootProject.rootDir)
-        val forTesting = rootProject.forTesting.get()
+internal fun ProviderFactory.versionFactory(
+    initialVersion: Property<String>,
+    stage: Provider<Stage>,
+    modifier: Provider<Modifier>,
+    forTesting: Provider<Boolean>,
+    overrideVersion: Provider<Version>,
+    rootDir: RegularFileProperty
+): Provider<String> =
+    of(VersionFactory::class.java) { spec ->
+        spec.parameters {
+            it.initialVersion.set(initialVersion)
+            it.stage.set(stage)
+            it.modifier.set(modifier)
+            it.forTesting.set(forTesting)
+            it.overrideVersion.set(overrideVersion)
+            it.rootDir.set(rootDir)
+        }
+    }
 
-        val stage = rootProject.stageProperty.get()
-        val modifier = rootProject.modifierProperty.get()
-        val tagPrefix = rootProject.tagPrefixProperty.get()
+internal abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
+    interface Params : ValueSourceParameters {
+        val initialVersion: Property<String>
+        val stage: Property<Stage>
+        val modifier: Property<Modifier>
+        val forTesting: Property<Boolean>
+        val overrideVersion: Property<Version>
+        val rootDir: RegularFileProperty
+    }
 
-        val currentBranch = kgit.branch.currentRef(forTesting).name
+    override fun obtain(): String? {
+        val rootDir = parameters.rootDir.map { it.asFile }
+        val kgit = KGit(directory = rootDir.get())
 
-        log.lifecycle("Stage: $stage")
-        log.lifecycle("Modifier: $modifier")
-        log.lifecycle("Tag prefix: $tagPrefix")
-        log.lifecycle("Current Branch: $currentBranch")
-        log.lifecycle("Main branch: ${kgit.branches.mainBranch.name}")
-        log.lifecycle("Development branch: ${kgit.branches.developmentBranch.name}")
-
-        val latestVersion = kgit.tags.latestOrInitial(semverExtension.initialVersion)
+        val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
+        val overrideVersion = parameters.overrideVersion.orNull
+        val stage = parameters.stage.get()
+        val modifier = parameters.modifier.get()
+        val forTesting = parameters.forTesting.get()
 
         val version = when {
-            // TODO: Handle version override as highest priority
-
-            kgit.branch.isOnMainBranch(forTesting) -> {
-                val stageBasedVersionCalculator = StageBasedVersionCalculator()
-                stageBasedVersionCalculator.calculate(rootProject, latestVersion)
+            overrideVersion != null -> {
+                overrideVersion.toString()
             }
+
+            kgit.branch.isOnMainBranch(parameters.forTesting.get()) -> {
+                val stageBasedVersionCalculator = StageBasedVersionCalculator()
+                stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
+            }
+
             // Works for any branch
             else -> {
                 // Compute based on the branch name, otherwise, use the stage to compute the next version
                 if (stage == Stage.Auto) {
                     val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
-                    branchBasedVersionCalculator.calculate(rootProject, latestVersion)
+                    branchBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
                 } else {
                     val stageBasedVersionCalculator = StageBasedVersionCalculator()
-                    stageBasedVersionCalculator.calculate(rootProject, latestVersion)
+                    stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
                 }
             }
         }

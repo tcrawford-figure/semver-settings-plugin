@@ -7,11 +7,11 @@ import org.eclipse.jgit.transport.URIish
 import java.net.URL
 
 internal class Remote(
-    private val git: Git,
+    private val git: Git
 ) {
     fun add(
         remoteGit: Git,
-        remoteName: String = Constants.DEFAULT_REMOTE_NAME,
+        remoteName: String = Constants.DEFAULT_REMOTE_NAME
     ): RemoteConfig =
         git.remoteAdd()
             .setName(remoteName)
@@ -20,7 +20,7 @@ internal class Remote(
 
     fun add(
         remoteUri: String,
-        remoteName: String = Constants.DEFAULT_REMOTE_NAME,
+        remoteName: String = Constants.DEFAULT_REMOTE_NAME
     ): RemoteConfig =
         git.remoteAdd()
             .setName(remoteName)
@@ -29,7 +29,7 @@ internal class Remote(
 
     fun add(
         remoteUri: URL,
-        remoteName: String = Constants.DEFAULT_REMOTE_NAME,
+        remoteName: String = Constants.DEFAULT_REMOTE_NAME
     ): RemoteConfig =
         git.remoteAdd()
             .setName(remoteName)

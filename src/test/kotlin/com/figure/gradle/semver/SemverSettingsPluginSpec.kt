@@ -19,9 +19,9 @@ class SemverSettingsPluginSpec : FunSpec({
                 "-Psemver.tagPrefix=a",
                 "-Psemver.forTesting=true",
                 "--stacktrace",
-                // "--parallel",
-                // "--build-cache",
-                // "--configuration-cache",
+                "--parallel",
+                "--build-cache",
+                "--configuration-cache"
             )
 
         runner.build()
