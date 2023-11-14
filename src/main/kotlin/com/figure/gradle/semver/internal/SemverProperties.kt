@@ -55,7 +55,8 @@ internal enum class Modifier(val value: String) {
 
     companion object {
         fun fromValue(value: String): Modifier =
-            values().find { it.value.lowercase() == value.lowercase() } ?: error("Invalid modifier provided: $value")
+            entries.find { it.value.lowercase() == value.lowercase() }
+                ?: error("Invalid modifier provided: $value")
     }
 }
 
@@ -74,7 +75,8 @@ internal enum class Stage(val value: String) {
 
     companion object {
         fun fromValue(value: String): Stage =
-            values().find { it.value.lowercase() == value.lowercase() } ?: error("Invalid stage provided: $value")
+            entries.find { it.value.lowercase() == value.lowercase() }
+                ?: error("Invalid stage provided: $value")
     }
 }
 

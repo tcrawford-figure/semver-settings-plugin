@@ -12,13 +12,6 @@ internal object Open {
             .build()
     )
 
-    fun byRepoDir(repoDir: String): Git = Git.open(File(repoDir))
-
-    fun byGitDir(gitDir: String): Git = Git(
-        FileRepositoryBuilder()
-            .setGitDir(File(gitDir))
-            .readEnvironment()
-            .findGitDir()
-            .build()
-    )
+    operator fun invoke(rootDir: File): Git =
+        Git.open(rootDir)
 }

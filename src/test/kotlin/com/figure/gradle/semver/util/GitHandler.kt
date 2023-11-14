@@ -1,5 +1,6 @@
 package com.figure.gradle.semver.util
 
+import com.figure.gradle.semver.internal.command.InitializeRepo
 import com.figure.gradle.semver.internal.command.KGit
 import io.github.z4kn4fein.semver.Inc
 import io.github.z4kn4fein.semver.Version
@@ -17,8 +18,8 @@ class GitHandler(
     remoteRepoDir: File,
     private var startingTag: Version = "1.0.0".toVersion()
 ) {
-    private val localKGit = KGit(localRepoDir)
-    private val remoteKGit = KGit(remoteRepoDir, bare = true)
+    private val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false))
+    private val remoteKGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true))
 
     init {
         localKGit.config.author("Anita Bath", "anita@spla.sh")

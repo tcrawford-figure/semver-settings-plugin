@@ -4,17 +4,20 @@ import org.eclipse.jgit.api.Git
 import java.io.File
 
 internal class KGit(
-    private val directory: File? = null,
-    private val bare: Boolean = false,
-    private val providedGit: Git? = null
+    directory: File? = null,
+    initializeRepo: InitializeRepo? = null
 ) {
+    val git: Git by lazy {
+        when {
+            directory != null && initializeRepo != null -> init(directory, bare = initializeRepo.bare)
+            directory != null -> open(directory)
+            else -> open()
+        }
+    }
+
     companion object {
         val init = Init
         val open = Open
-    }
-
-    val git by lazy {
-        providedGit ?: if (directory != null) init(directory, bare) else open()
     }
 
     val add = Add(git)
@@ -31,3 +34,7 @@ internal class KGit(
 
     fun close() = git.close()
 }
+
+internal data class InitializeRepo(
+    val bare: Boolean
+)

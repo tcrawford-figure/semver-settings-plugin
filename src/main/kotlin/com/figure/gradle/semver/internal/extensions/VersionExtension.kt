@@ -53,4 +53,4 @@ private fun Version.newPreRelease(incrementer: Inc, stage: Stage): Version =
     inc(incrementer, "${stage.value}.1")
 
 private val Version.stage: Stage?
-    get() = Stage.values().find { preRelease?.contains(it.value, ignoreCase = true) == true }
+    get() = Stage.entries.find { preRelease?.contains(it.value, ignoreCase = true) == true }
