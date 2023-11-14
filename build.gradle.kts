@@ -10,7 +10,7 @@ plugins {
     `java-gradle-plugin`
 }
 
-group = "com.figure.gradle.semver"
+group = "io.github.tcrawford.gradle.semver"
 version = "0.0.6"
 
 dependencies {
@@ -79,10 +79,10 @@ testlogger {
 gradlePlugin {
     plugins {
         create(project.name) {
-            id = "com.figure.gradle.settings.semver"
+            id = "io.github.tcrawford.gradle.settings.semver"
             displayName = "Semver Settings Plugin"
             description = "Semver Settings Plugin"
-            implementationClass = "com.figure.gradle.semver.SemverSettingsPlugin"
+            implementationClass = "io.github.tcrawford.gradle.semver.SemverSettingsPlugin"
         }
     }
 }
