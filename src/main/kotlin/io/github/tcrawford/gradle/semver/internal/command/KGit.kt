@@ -5,11 +5,16 @@ import java.io.File
 
 internal class KGit(
     directory: File? = null,
-    initializeRepo: InitializeRepo? = null
+    initializeRepo: InitializeRepo? = null,
 ) {
     val git: Git by lazy {
         when {
-            directory != null && initializeRepo != null -> init(directory, bare = initializeRepo.bare)
+            directory != null && initializeRepo != null -> init(
+                directory,
+                bare = initializeRepo.bare,
+                initialBranch = initializeRepo.initialBranch
+            )
+
             directory != null -> open(directory)
             else -> open()
         }
@@ -36,5 +41,6 @@ internal class KGit(
 }
 
 internal data class InitializeRepo(
-    val bare: Boolean
+    val bare: Boolean,
+    val initialBranch: String,
 )

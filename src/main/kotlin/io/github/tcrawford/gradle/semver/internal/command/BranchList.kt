@@ -24,6 +24,9 @@ internal class BranchList(
             ?: find("master")
             ?: error("Could not determine main branch. Searched, in order, for: main, master")
 
+    fun exists(branchName: String): Boolean =
+        find(branchName) != null
+
     /**
      * Finds an exact branch by name preferring local branches over remote branches, but will return
      * remote branches if the local branch does not exist.

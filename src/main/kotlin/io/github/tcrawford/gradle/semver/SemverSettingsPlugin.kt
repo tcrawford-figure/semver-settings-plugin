@@ -1,6 +1,7 @@
 package io.github.tcrawford.gradle.semver
 
 import io.github.tcrawford.gradle.semver.internal.calculator.versionFactory
+import io.github.tcrawford.gradle.semver.internal.extensions.lifecycle
 import io.github.tcrawford.gradle.semver.internal.forTesting
 import io.github.tcrawford.gradle.semver.internal.modifier
 import io.github.tcrawford.gradle.semver.internal.overrideVersion
@@ -16,8 +17,8 @@ class SemverSettingsPlugin : Plugin<Settings> {
     override fun apply(settings: Settings) {
         val semverExtension = SemverExtension(settings)
 
-        // Don't inline this. The `convention` lambda doesn't like to serialize the settings object and evaluate
-        // the value later.
+        // Don't inline this. The `convention` lambda doesn't like to serialize the settings
+        // object and evaluate the value later.
         val settingsDir = settings.rootDir
 
         val nextVersion = settings.providers.versionFactory(
@@ -29,7 +30,8 @@ class SemverSettingsPlugin : Plugin<Settings> {
             rootDir = semverExtension.rootProjectDir.convention { settingsDir }
         ).get()
 
-        log.lifecycle("Found next version: $nextVersion")
+        // TODO: Log this at the end of the build
+        log.lifecycle { nextVersion }
 
         settings.gradle.beforeProject { project ->
             project.version = nextVersion

@@ -21,7 +21,7 @@ internal class Branch(
     val branchRef: Ref
         get() = git.repository.findRef(shortName)
 
-    val headRef: Ref
+    val headRef: Ref?
         get() = git.repository.exactRef(Constants.HEAD)
 
     val headCommit: RevCommit

@@ -16,9 +16,15 @@ internal class BranchBasedVersionCalculator(
     override fun calculate(latestVersion: Version, stage: Stage, modifier: Modifier, forTesting: Boolean): String {
         val currentBranch = kGit.branch.currentRef(forTesting)
         val developmentBranch = kGit.branches.developmentBranch
+        val mainBranch = kGit.branches.mainBranch
+
+        val commitCount = if (currentBranch != developmentBranch) {
+            kGit.branches.commitCountBetween(developmentBranch.name, currentBranch.name)
+        } else {
+            kGit.branches.commitCountBetween(mainBranch.name, currentBranch.name)
+        }
 
         val prereleaseLabel = currentBranch.sanitizedWithoutPrefix()
-        val commitCount = kGit.branches.commitCountBetween(developmentBranch.name, currentBranch.name)
         val prereleaseLabelWithCommitCount = "$prereleaseLabel.$commitCount"
 
         return latestVersion.inc(modifier.toInc(), prereleaseLabelWithCommitCount).toString()
