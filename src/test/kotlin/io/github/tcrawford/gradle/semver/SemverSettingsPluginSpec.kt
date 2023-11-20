@@ -3,12 +3,14 @@ package io.github.tcrawford.gradle.semver
 import io.github.tcrawford.gradle.semver.internal.Modifier
 import io.github.tcrawford.gradle.semver.internal.Stage
 import io.github.tcrawford.gradle.semver.reader.fetchVersion
+import io.github.tcrawford.gradle.semver.reader.fetchVersionTag
 import io.github.tcrawford.gradle.semver.testkit.GradleProjectListener
 import io.github.tcrawford.gradle.semver.testkit.repositoryConfig
 import io.github.tcrawford.gradle.semver.util.GradleArgs
 import io.github.tcrawford.gradle.semver.util.GradleArgs.semverForTesting
 import io.github.tcrawford.gradle.semver.util.GradleArgs.semverModifier
 import io.github.tcrawford.gradle.semver.util.GradleArgs.semverStage
+import io.github.tcrawford.gradle.semver.util.GradleArgs.semverTagPrefix
 import io.github.tcrawford.gradle.semver.util.resolveResourceDirectory
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -665,6 +667,58 @@ class SemverSettingsPluginSpec : FunSpec({
 
             // Then
             gradleProjectListener.projectDir.fetchVersion() shouldBe "0.0.1-patch-1.1"
+        }
+    }
+
+    context("should use tag prefix") {
+        val mainBranch = "main"
+
+        test("on main branch with default tag prefix") {
+            // Given
+            val config = repositoryConfig {
+                initialBranch = mainBranch
+                actions {
+                    checkout(mainBranch)
+                    commit(message = "1 commit on $mainBranch", tag = "0.2.5")
+                }
+            }
+
+            // When
+            val runner = gradleProjectListener
+                .initRepository(config)
+                .initGradleRunner()
+                .withArguments(defaultArguments)
+
+            runner.build()
+
+            // Then
+            gradleProjectListener.projectDir.fetchVersion() shouldBe "0.2.6"
+            gradleProjectListener.projectDir.fetchVersionTag() shouldBe "v0.2.6"
+        }
+
+        test("on main branch with provided tag prefix") {
+            // Given
+            val arguments = defaultArguments + semverTagPrefix("Nov Release ")
+
+            val config = repositoryConfig {
+                initialBranch = mainBranch
+                actions {
+                    checkout(mainBranch)
+                    commit(message = "1 commit on $mainBranch", tag = "0.2.5")
+                }
+            }
+
+            // When
+            val runner = gradleProjectListener
+                .initRepository(config)
+                .initGradleRunner()
+                .withArguments(arguments)
+
+            runner.build()
+
+            // Then
+            gradleProjectListener.projectDir.fetchVersion() shouldBe "0.2.6"
+            gradleProjectListener.projectDir.fetchVersionTag() shouldBe "Nov Release 0.2.6"
         }
     }
 })
