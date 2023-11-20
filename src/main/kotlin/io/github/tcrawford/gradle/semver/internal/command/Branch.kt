@@ -12,13 +12,13 @@ internal class Branch(
 ) {
     private val githubHeadRef: String = "GITHUB_HEAD_REF"
 
-    val shortName: String
+    private val shortName: String
         get() = git.repository.branch
 
     val fullName: String
         get() = git.repository.fullBranch
 
-    val branchRef: Ref
+    private val branchRef: Ref
         get() = git.repository.findRef(shortName)
 
     val headRef: Ref?
@@ -34,11 +34,8 @@ internal class Branch(
             git.repository.findRef(System.getenv(githubHeadRef) ?: shortName)
         }
 
-    fun isOnMainBranch(forTesting: Boolean = false): Boolean =
-        currentRef(forTesting).name == branchList.mainBranch.name
-
-    fun isOnDevelopmentBranch(forTesting: Boolean = false): Boolean =
-        currentRef(forTesting).name == branchList.developmentBranch.name
+    fun isOnMainBranch(providedMainBranch: String? = null, forTesting: Boolean = false): Boolean =
+        currentRef(forTesting).name == branchList.findMainBranch(providedMainBranch).name
 
     fun create(branchName: String): Ref =
         git.branchCreate()

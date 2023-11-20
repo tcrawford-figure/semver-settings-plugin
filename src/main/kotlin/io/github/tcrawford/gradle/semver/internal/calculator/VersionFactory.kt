@@ -11,6 +11,7 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 
+// TODO: See if this list can be a data class we own
 @Suppress("LongParameterList")
 internal fun ProviderFactory.versionFactory(
     initialVersion: Property<String>,
@@ -18,7 +19,9 @@ internal fun ProviderFactory.versionFactory(
     modifier: Provider<Modifier>,
     forTesting: Provider<Boolean>,
     overrideVersion: Provider<Version>,
-    rootDir: RegularFileProperty
+    rootDir: RegularFileProperty,
+    mainBranch: Provider<String>,
+    developmentBranch: Provider<String>,
 ): Provider<String> =
     of(VersionFactory::class.java) { spec ->
         spec.parameters {
@@ -28,10 +31,13 @@ internal fun ProviderFactory.versionFactory(
             it.forTesting.set(forTesting)
             it.overrideVersion.set(overrideVersion)
             it.rootDir.set(rootDir)
+            it.mainBranch.set(mainBranch)
+            it.developmentBranch.set(developmentBranch)
         }
     }
 
 internal abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
+    // TODO: See if this can be the data class from above, as a provider
     interface Params : ValueSourceParameters {
         val initialVersion: Property<String>
         val stage: Property<Stage>
@@ -39,6 +45,8 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
         val forTesting: Property<Boolean>
         val overrideVersion: Property<Version>
         val rootDir: RegularFileProperty
+        val mainBranch: Property<String>
+        val developmentBranch: Property<String>
     }
 
     override fun obtain(): String? {
@@ -49,16 +57,26 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
         val stage = parameters.stage.get()
         val modifier = parameters.modifier.get()
         val forTesting = parameters.forTesting.get()
+        val mainBranch = parameters.mainBranch.orNull
+        val developmentBranch = parameters.developmentBranch.orNull
+
+        val context = VersionCalculatorContext(
+            stage = stage,
+            modifier = modifier,
+            forTesting = forTesting,
+            mainBranch = mainBranch,
+            developmentBranch = developmentBranch,
+        )
 
         val version = when {
             overrideVersion != null -> {
                 overrideVersion.toString()
             }
 
-            kgit.branch.isOnMainBranch(parameters.forTesting.get()) -> {
+            kgit.branch.isOnMainBranch(mainBranch, forTesting) -> {
                 val stageBasedVersionCalculator = StageBasedVersionCalculator()
                 val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
-                stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
+                stageBasedVersionCalculator.calculate(latestVersion, context)
             }
 
             // Works for any branch
@@ -67,11 +85,11 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
                 if (stage == Stage.Auto) {
                     val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
                     val latestVersion = kgit.tags.latestNonPreReleaseOrInitial(parameters.initialVersion)
-                    branchBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
+                    branchBasedVersionCalculator.calculate(latestVersion, context)
                 } else {
                     val stageBasedVersionCalculator = StageBasedVersionCalculator()
                     val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
-                    stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
+                    stageBasedVersionCalculator.calculate(latestVersion, context)
                 }
             }
         }

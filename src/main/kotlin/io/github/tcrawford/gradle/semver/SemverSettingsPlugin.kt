@@ -28,7 +28,9 @@ class SemverSettingsPlugin : Plugin<Settings> {
             modifier = settings.modifier,
             forTesting = settings.forTesting,
             overrideVersion = settings.overrideVersion,
-            rootDir = semverExtension.rootProjectDir.convention { settingsDir }
+            rootDir = semverExtension.rootProjectDir.convention { settingsDir },
+            mainBranch = semverExtension.mainBranch,
+            developmentBranch = semverExtension.developmentBranch,
         ).get()
 
         // TODO: Log this at the end of the build

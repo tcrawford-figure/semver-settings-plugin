@@ -9,20 +9,29 @@ import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 
 internal class BranchList(
-    private val git: Git
+    private val git: Git,
 ) {
-    val developmentBranch: Ref
-        get() = find("develop")
-            ?: find("devel")
-            ?: find("dev")
-            ?: find("main")
-            ?: find("master")
-            ?: error("Could not determine default branch. Searched, in order, for: develop, devel, dev, main, master")
+    fun findDevelopmentBranch(providedDevelopmentBranch: String?): Ref =
+        if (!providedDevelopmentBranch.isNullOrBlank()) {
+            find(providedDevelopmentBranch)
+                ?: error("Could not find provided development branch: $providedDevelopmentBranch")
+        } else {
+            find("develop")
+                ?: find("devel")
+                ?: find("dev")
+                ?: find("main")
+                ?: find("master")
+                ?: error("Could not determine default branch. Searched, in order, for: develop, devel, dev, main, master")
+        }
 
-    val mainBranch: Ref
-        get() = find("main")
-            ?: find("master")
-            ?: error("Could not determine main branch. Searched, in order, for: main, master")
+    fun findMainBranch(providedMainBranch: String?): Ref =
+        if (!providedMainBranch.isNullOrBlank()) {
+            find(providedMainBranch) ?: error("Could not find provided main branch: $providedMainBranch")
+        } else {
+            find("main")
+                ?: find("master")
+                ?: error("Could not determine main branch. Searched, in order, for: main, master")
+        }
 
     fun exists(branchName: String): Boolean =
         find(branchName) != null
@@ -31,7 +40,7 @@ internal class BranchList(
      * Finds an exact branch by name preferring local branches over remote branches, but will return
      * remote branches if the local branch does not exist.
      */
-    fun find(branchName: String): Ref? =
+    private fun find(branchName: String): Ref? =
         findAll(branchName).let { matchingBranches ->
             matchingBranches.find { Constants.R_HEADS in it.name }
                 ?: matchingBranches.find { Constants.R_REMOTES in it.name }
@@ -39,8 +48,10 @@ internal class BranchList(
 
     /**
      * Find all branches given the branch name. Can be full or short name.
+     *
+     * Note that this is case-sensitive. If problems happen, consider being case-insensitive.
      */
-    fun findAll(branchName: String): List<Ref> =
+    private fun findAll(branchName: String): List<Ref> =
         git.branchList()
             .setListMode(ListBranchCommand.ListMode.ALL)
             .call()

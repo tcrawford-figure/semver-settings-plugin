@@ -18,4 +18,6 @@ abstract class SemverExtension @Inject constructor(
 
     val rootProjectDir: RegularFileProperty = objects.fileProperty()
     val initialVersion: Property<String> = objects.property<String>().convention("0.0.0")
+    val mainBranch: Property<String> = objects.property()
+    val developmentBranch: Property<String> = objects.property()
 }
