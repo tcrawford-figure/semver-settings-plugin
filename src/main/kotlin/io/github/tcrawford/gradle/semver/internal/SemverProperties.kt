@@ -16,19 +16,11 @@ internal val Settings.gradleProperties: Properties
 
 // TODO: Add error handling for `fromValue` when bad input is provided
 internal val Settings.modifier: Provider<Modifier>
-    get() = semverProperty(SemverProperty.Modifier).map {
-        Modifier.Companion.fromValue(
-            it
-        )
-    }.orElse(Modifier.Auto)
+    get() = semverProperty(SemverProperty.Modifier).map { Modifier.fromValue(it) }.orElse(Modifier.Auto)
 
 // TODO: Add error handling for `fromValue` when bad input is provided
 internal val Settings.stage: Provider<Stage>
-    get() = semverProperty(SemverProperty.Stage).map {
-        Stage.Companion.fromValue(
-            it
-        )
-    }.orElse(Stage.Auto)
+    get() = semverProperty(SemverProperty.Stage).map { Stage.fromValue(it) }.orElse(Stage.Auto)
 
 internal val Settings.tagPrefix: Provider<String>
     get() = semverProperty(SemverProperty.TagPrefix).orElse("v")

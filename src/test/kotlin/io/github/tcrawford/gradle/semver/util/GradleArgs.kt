@@ -11,6 +11,9 @@ import io.github.tcrawford.gradle.semver.internal.Modifier
 import io.github.tcrawford.gradle.semver.internal.SemverProperty
 import io.github.tcrawford.gradle.semver.internal.Stage
 
+/**
+ * Note that the parameters must be provided in the format: `-P<property>=<value>` and not `-P <property>=<value>`.
+ */
 internal object GradleArgs {
     const val Parallel = "--parallel"
     const val BuildCache = "--build-cache"
@@ -18,17 +21,17 @@ internal object GradleArgs {
     const val Stacktrace = "--stacktrace"
 
     fun semverStage(stage: Stage) =
-        "-P ${SemverProperty.Stage.property}=${stage.value}"
+        "-P${SemverProperty.Stage.property}=${stage.value}"
 
     fun semverModifier(modifier: Modifier) =
-        "-P ${SemverProperty.Modifier.property}=${modifier.value}"
+        "-P${SemverProperty.Modifier.property}=${modifier.value}"
 
     fun semverTagPrefix(tagPrefix: String) =
-        "-P ${SemverProperty.TagPrefix.property}=$tagPrefix"
+        "-P${SemverProperty.TagPrefix.property}=$tagPrefix"
 
     fun semverForTesting(forTesting: Boolean) =
-        "-P ${SemverProperty.ForTesting.property}=$forTesting"
+        "-P${SemverProperty.ForTesting.property}=$forTesting"
 
     fun semverOverrideVersion(overrideVersion: String) =
-        "-P ${SemverProperty.OverrideVersion.property}=$overrideVersion"
+        "-P${SemverProperty.OverrideVersion.property}=$overrideVersion"
 }

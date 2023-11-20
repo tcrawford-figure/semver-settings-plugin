@@ -45,7 +45,6 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
         val rootDir = parameters.rootDir.map { it.asFile }
         val kgit = KGit(directory = rootDir.get())
 
-        val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
         val overrideVersion = parameters.overrideVersion.orNull
         val stage = parameters.stage.get()
         val modifier = parameters.modifier.get()
@@ -58,6 +57,7 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
 
             kgit.branch.isOnMainBranch(parameters.forTesting.get()) -> {
                 val stageBasedVersionCalculator = StageBasedVersionCalculator()
+                val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
                 stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
             }
 
@@ -66,9 +66,11 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
                 // Compute based on the branch name, otherwise, use the stage to compute the next version
                 if (stage == Stage.Auto) {
                     val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
+                    val latestVersion = kgit.tags.latestNonPreReleaseOrInitial(parameters.initialVersion)
                     branchBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
                 } else {
                     val stageBasedVersionCalculator = StageBasedVersionCalculator()
+                    val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
                     stageBasedVersionCalculator.calculate(latestVersion, stage, modifier, forTesting)
                 }
             }

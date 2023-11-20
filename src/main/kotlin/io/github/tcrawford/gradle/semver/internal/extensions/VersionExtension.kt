@@ -9,6 +9,13 @@ import io.github.z4kn4fein.semver.nextPatch
 import io.github.z4kn4fein.semver.nextPreRelease
 
 internal fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
+    isInvalidVersionForComputation() -> {
+        error(
+            "Cannot compute next version because the latest computed version likely contains branch " +
+                "information: $this. If you see this error, please file an issue. This should not happen."
+        )
+    }
+
     (providedStage == Stage.Snapshot) -> {
         nextSnapshot(providedModifier.toInc())
     }
@@ -20,7 +27,7 @@ internal fun Version.nextVersion(providedStage: Stage, providedModifier: Modifie
     }
 
     // next stable
-    (providedStage == Stage.Auto && this.isStable) || providedStage == Stage.Stable -> {
+    (providedStage == Stage.Auto && this.isNotPreRelease) || providedStage == Stage.Stable -> {
         nextStable(providedModifier.toInc())
     }
 
@@ -54,3 +61,25 @@ private fun Version.newPreRelease(incrementer: Inc, stage: Stage): Version =
 
 private val Version.stage: Stage?
     get() = Stage.entries.find { preRelease?.contains(it.value, ignoreCase = true) == true }
+
+/**
+ * This is different from being stable or not.
+ *
+ * "stable" means that the major version is greater than 0 AND does not have a pre-release identifier.
+ *
+ * This just means that the version lacks a pre-release identifier.
+ */
+internal val Version.isNotPreRelease: Boolean
+    get() = !isPreRelease
+
+/**
+ * Current version is invalid for computation when:
+ * - A pre-release
+ * - The pre-release label is not a valid stage (aka the version has a branch-based pre-release label)
+ */
+private fun Version.isInvalidVersionForComputation(): Boolean {
+    val stages = Stage.entries.map { it.value.lowercase() }
+    val prereleaseLabel = preRelease?.substringBefore(".")?.lowercase()
+
+    return isPreRelease && prereleaseLabel !in stages
+}

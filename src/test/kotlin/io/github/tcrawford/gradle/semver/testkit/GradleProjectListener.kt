@@ -12,7 +12,7 @@ import kotlin.io.path.createTempDirectory
 class GradleProjectListener(
     private val resourcesDirectory: File,
 ) : TestListener {
-    private lateinit var projectDir: File
+    lateinit var projectDir: File
     private lateinit var remoteRepoDir: File
     private lateinit var buildCacheDir: File
 

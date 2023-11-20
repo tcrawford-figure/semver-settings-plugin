@@ -6,6 +6,7 @@ import io.github.tcrawford.gradle.semver.internal.forTesting
 import io.github.tcrawford.gradle.semver.internal.modifier
 import io.github.tcrawford.gradle.semver.internal.overrideVersion
 import io.github.tcrawford.gradle.semver.internal.stage
+import io.github.tcrawford.gradle.semver.internal.writer.writeVersion
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.logging.Logger
@@ -32,6 +33,7 @@ class SemverSettingsPlugin : Plugin<Settings> {
 
         // TODO: Log this at the end of the build
         log.lifecycle { nextVersion }
+        settings.writeVersion(nextVersion)
 
         settings.gradle.beforeProject { project ->
             project.version = nextVersion

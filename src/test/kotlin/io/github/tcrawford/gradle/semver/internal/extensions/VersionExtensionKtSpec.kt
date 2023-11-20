@@ -4,11 +4,19 @@ import io.github.tcrawford.gradle.semver.internal.Modifier
 import io.github.tcrawford.gradle.semver.internal.Stage
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.toVersion
+import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
 
 class VersionExtensionKtSpec : FunSpec({
+    test("invalid version") {
+        val inputVersion = "1.0.0-my-cool-branch".toVersion()
+        shouldThrowAny {
+            inputVersion.nextVersion(Stage.Auto, Modifier.Auto)
+        }
+    }
+
     context("next version from stable") {
         withData(
             Stage.Dev,
@@ -147,7 +155,7 @@ class VersionExtensionKtSpec : FunSpec({
 
 internal data class TestData(
     val modifier: Modifier,
-    private val expectedVersionString: String
+    private val expectedVersionString: String,
 ) {
     val expectedVersion: Version
         get() = expectedVersionString.toVersion()
