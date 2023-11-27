@@ -5,7 +5,7 @@ import java.io.File
 
 internal class KGit(
     directory: File? = null,
-    initializeRepo: InitializeRepo? = null,
+    initializeRepo: InitializeRepo? = null
 ) {
     val git: Git by lazy {
         when {
@@ -43,5 +43,5 @@ internal class KGit(
 
 internal data class InitializeRepo(
     val bare: Boolean,
-    val initialBranch: String,
+    val initialBranch: String
 )

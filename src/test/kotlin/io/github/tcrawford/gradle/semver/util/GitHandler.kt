@@ -21,7 +21,7 @@ internal class GitHandler(
     localRepoDir: File,
     remoteRepoDir: File,
     initialBranch: String,
-    private var startingTag: Version? = "1.0.0".toVersion(),
+    private var startingTag: Version? = "1.0.0".toVersion()
 ) {
     val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false, initialBranch))
     private val remoteKGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, initialBranch))
@@ -37,7 +37,7 @@ internal class GitHandler(
     }
 
     fun tag(tag: String): GitHandler {
-        localKGit.tag("v${tag}")
+        localKGit.tag("v$tag")
         return this
     }
 

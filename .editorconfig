@@ -6,7 +6,7 @@ end_of_line = lf
 indent_size = 4
 indent_style = space
 insert_final_newline = true
-max_line_length = 120
+max_line_length = 140
 tab_width = 4
 
 [{*.bash,*.sh,*.zsh}]
@@ -14,3 +14,8 @@ indent_size = 2
 
 [{*.yaml,*.yml}]
 indent_size = 2
+
+[*.kt]
+ktlint_standard_filename = disabled
+ktlint_standard_annotation = disabled
+ktlint_standard_discouraged-comment-location = disabled

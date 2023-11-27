@@ -1,5 +1,6 @@
 package io.github.tcrawford.gradle.semver
 
+import io.github.tcrawford.gradle.semver.internal.calculator.VersionFactoryContext
 import io.github.tcrawford.gradle.semver.internal.calculator.versionFactory
 import io.github.tcrawford.gradle.semver.internal.extensions.lifecycle
 import io.github.tcrawford.gradle.semver.internal.forTesting
@@ -23,17 +24,18 @@ class SemverSettingsPlugin : Plugin<Settings> {
         // object and evaluate the value later.
         val settingsDir = settings.rootDir
 
-        val nextVersion = settings.providers.versionFactory(
-            initialVersion = semverExtension.initialVersion,
-            stage = settings.stage,
-            modifier = settings.modifier,
-            forTesting = settings.forTesting,
-            // TODO: Check error handling on this if version is invalid
-            overrideVersion = settings.overrideVersion,
-            rootDir = semverExtension.rootProjectDir.convention { settingsDir },
-            mainBranch = semverExtension.mainBranch,
-            developmentBranch = semverExtension.developmentBranch,
-        ).get()
+        val versionFactoryContext = VersionFactoryContext(
+            initialVersion = semverExtension.initialVersion.get(),
+            stage = settings.stage.get(),
+            modifier = settings.modifier.get(),
+            forTesting = settings.forTesting.get(),
+            overrideVersion = settings.overrideVersion.orNull,
+            rootDir = semverExtension.rootProjectDir.getOrElse { settingsDir }.asFile,
+            mainBranch = semverExtension.mainBranch.orNull,
+            developmentBranch = semverExtension.developmentBranch.orNull
+        )
+
+        val nextVersion = settings.providers.versionFactory(versionFactoryContext).get()
 
         // TODO: Log this at the end of the build
         log.lifecycle { nextVersion }

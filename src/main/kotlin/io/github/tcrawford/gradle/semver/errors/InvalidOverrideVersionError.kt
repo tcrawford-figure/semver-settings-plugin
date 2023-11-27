@@ -1,7 +1,7 @@
 package io.github.tcrawford.gradle.semver.errors
 
 internal class InvalidOverrideVersionError(
-    invalidVersion: String,
+    invalidVersion: String
 ) : Exception(
-    "Invalid override version provided: $invalidVersion",
+    "Invalid override version provided: $invalidVersion"
 )

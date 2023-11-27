@@ -42,7 +42,8 @@ internal enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
-    Auto("auto");
+    Auto("auto")
+    ;
 
     fun toInc(): Inc = when (this) {
         Major -> Inc.MAJOR
@@ -69,7 +70,8 @@ internal enum class Stage(val value: String) {
     GA("ga"),
     Release("release"),
     Stable("stable"),
-    Auto("auto");
+    Auto("auto")
+    ;
 
     companion object {
         fun fromValue(value: String): Stage =

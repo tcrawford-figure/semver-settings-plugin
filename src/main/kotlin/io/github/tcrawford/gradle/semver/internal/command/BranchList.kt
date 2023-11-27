@@ -9,7 +9,7 @@ import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 
 internal class BranchList(
-    private val git: Git,
+    private val git: Git
 ) {
     fun findDevelopmentBranch(providedDevelopmentBranch: String?): Ref =
         if (!providedDevelopmentBranch.isNullOrBlank()) {

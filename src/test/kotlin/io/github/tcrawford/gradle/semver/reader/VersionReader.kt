@@ -13,5 +13,3 @@ private fun File.fetchSemverProperties(): Properties =
     resolve("build/reports/semver/semver.properties").let {
         Properties().apply { load(it.reader()) }
     }
-
-

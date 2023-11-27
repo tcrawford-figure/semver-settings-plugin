@@ -6,11 +6,11 @@ import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.toVersion
 import io.github.z4kn4fein.semver.toVersionOrNull
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Ref
-import org.gradle.api.provider.Property
 
 internal class TagList(
-    private val git: Git,
+    private val git: Git
 ) {
     operator fun invoke(): List<Ref> =
         git.tagList().call()
@@ -19,7 +19,7 @@ internal class TagList(
         invoke().find { it.name == tagName }
 
     private val versionedTags: List<Version>
-        get() = invoke().mapNotNull { it.name.replace("refs/tags/", "").toVersionOrNull(strict = false) }
+        get() = invoke().mapNotNull { it.name.replace(Constants.R_TAGS, "").toVersionOrNull(strict = false) }
 
     private val latest: Version?
         get() {
@@ -34,14 +34,14 @@ internal class TagList(
                 .maxOrNull()
         }
 
-    fun latestOrInitial(initial: Property<String>): Version =
-        latest ?: initial.get().toVersion()
+    fun latestOrInitial(initial: String): Version =
+        latest ?: initial.toVersion()
 
     private val latestNonPreRelease: Version?
         get() = versionedTags
             .filter { version -> version.isNotPreRelease }
             .maxOrNull()
 
-    fun latestNonPreReleaseOrInitial(initial: Property<String>): Version =
-        latestNonPreRelease ?: initial.get().toVersion()
+    fun latestNonPreReleaseOrInitial(initial: String): Version =
+        latestNonPreRelease ?: initial.toVersion()
 }
