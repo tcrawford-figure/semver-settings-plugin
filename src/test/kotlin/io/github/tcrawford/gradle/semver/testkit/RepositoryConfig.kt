@@ -1,5 +1,7 @@
 package io.github.tcrawford.gradle.semver.testkit
 
+import java.io.File
+
 sealed class Action
 
 class CheckoutAction : Action() {
@@ -9,6 +11,11 @@ class CheckoutAction : Action() {
 class CommitAction : Action() {
     var message: String = ""
     var tag: String = ""
+}
+
+class RunScriptAction : Action() {
+    lateinit var script: File
+    lateinit var arguments: List<String>
 }
 
 class RepositoryConfig {
@@ -49,57 +56,23 @@ class Actions {
         commitAction.tag = tag
         actions.add(commitAction)
     }
+
+    fun runScript(config: RunScriptAction.() -> Unit) {
+        val runScriptAction = RunScriptAction()
+        runScriptAction.config()
+        actions.add(runScriptAction)
+    }
+
+    fun runScript(script: File, vararg arguments: String) {
+        val runScriptAction = RunScriptAction()
+        runScriptAction.script = script
+        runScriptAction.arguments = arguments.toList()
+        actions.add(runScriptAction)
+    }
 }
 
 fun repositoryConfig(config: RepositoryConfig.() -> Unit): RepositoryConfig {
     val repositoryConfig = RepositoryConfig()
     repositoryConfig.config()
     return repositoryConfig
-}
-
-fun main() {
-    val config = repositoryConfig {
-        val mainBranch = "main"
-        val developmentBranch = "develop"
-        val featureBranch = "my-awesome-feature"
-        actions {
-            checkout {
-                branch = mainBranch
-            }
-            commit {
-                message = "my message"
-                tag = "1.0.0"
-            }
-            commit {
-                message = "another commit"
-                tag = "1.0.1"
-            }
-            checkout {
-                branch = developmentBranch
-            }
-            commit {
-                message = "another commit"
-            }
-            checkout {
-                branch = featureBranch
-            }
-            commit {
-                message = "feature branch commit"
-            }
-        }
-    }
-
-    // Iterating over actions and reacting to specific types
-    config.actions.forEach { action ->
-        when (action) {
-            is CheckoutAction -> {
-                println("Checkout action for branch: ${action.branch}")
-                // React to checkout action
-            }
-            is CommitAction -> {
-                println("Commit action with message: ${action.message}, tag: ${action.tag}")
-                // React to commit action
-            }
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package io.github.tcrawford.gradle.semver.internal.command
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.lib.Constants
 
 // This is heavily influenced by the gitstatus logic found here:
 // https://github.com/magicmonty/bash-git-prompt/
@@ -15,6 +16,7 @@ internal class State(
         cherryPicking -> GitState.CHERRY_PICKING
         reverting -> GitState.REVERTING
         bisecting -> GitState.BISECTING
+        detachedHead -> GitState.DETACHED_HEAD
         else -> GitState.NOMINAL
     }
 
@@ -32,13 +34,17 @@ internal class State(
 
     private val bisecting: Boolean
         get() = git.repository.directory.resolve("BISECT_LOG").exists()
+
+    private val detachedHead: Boolean
+        get() = git.repository.branch == Constants.HEAD
 }
 
 internal enum class GitState(val description: String) {
     NOMINAL(""),
-    REBASING("rebasing"),
-    MERGING("merging"),
-    CHERRY_PICKING("cherry-picking"),
-    REVERTING("reverting"),
-    BISECTING("bisecting")
+    BISECTING("BISECTING"),
+    CHERRY_PICKING("CHERRY-PICKING"),
+    DETACHED_HEAD("DETACHED-HEAD"),
+    MERGING("MERGING"),
+    REBASING("REBASING"),
+    REVERTING("REVERTING"),
 }

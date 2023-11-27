@@ -4,12 +4,12 @@ import io.github.tcrawford.gradle.semver.reader.fetchVersion
 import io.github.tcrawford.gradle.semver.testkit.GradleProjectListener
 import io.github.tcrawford.gradle.semver.testkit.repositoryConfig
 import io.github.tcrawford.gradle.semver.util.GradleArgs
-import io.github.tcrawford.gradle.semver.util.resolveResourceDirectory
+import io.github.tcrawford.gradle.semver.util.resolveResource
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
-class UseInitialVersion : FunSpec({
-    val gradleProjectListener = GradleProjectListener(resolveResourceDirectory("sample"))
+class UseInitialVersionSpec : FunSpec({
+    val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
 
     val defaultArguments = listOf(
         GradleArgs.Stacktrace,

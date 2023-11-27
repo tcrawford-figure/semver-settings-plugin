@@ -7,9 +7,9 @@ const val SETTINGS_FILE = "settings.gradle.kts"
 
 private fun String.toFile() = File(this)
 
-fun resolveResourceDirectory(resourceDirectoryPath: String): File =
-    Thread.currentThread().contextClassLoader.getResource(resourceDirectoryPath)?.file?.toFile()
-        ?: throw IllegalArgumentException("Directory not found: $resourceDirectoryPath")
+fun resolveResource(resourcePath: String): File =
+    Thread.currentThread().contextClassLoader.getResource(resourcePath)?.file?.toFile()
+        ?: throw IllegalArgumentException("Resource not found: $resourcePath")
 
 fun File.copyResource(resourceFile: File, targetFileName: String) {
     val resourceContent = resourceFile.readText()

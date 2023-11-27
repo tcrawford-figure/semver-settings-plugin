@@ -2,10 +2,6 @@ package io.github.tcrawford.gradle.semver.util
 
 import io.github.tcrawford.gradle.semver.internal.command.InitializeRepo
 import io.github.tcrawford.gradle.semver.internal.command.KGit
-import io.github.z4kn4fein.semver.Inc
-import io.github.z4kn4fein.semver.Version
-import io.github.z4kn4fein.semver.inc
-import io.github.z4kn4fein.semver.toVersion
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 import org.gradle.api.logging.Logger
@@ -20,8 +16,7 @@ private val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 internal class GitHandler(
     localRepoDir: File,
     remoteRepoDir: File,
-    initialBranch: String,
-    private var startingTag: Version? = "1.0.0".toVersion()
+    initialBranch: String
 ) {
     val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false, initialBranch))
     private val remoteKGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, initialBranch))
@@ -54,28 +49,18 @@ internal class GitHandler(
         return this
     }
 
-    fun createCommits(numberOfCommits: Int): GitHandler {
-        repeat(numberOfCommits) { localKGit.commit("Empty commit", allowEmptyCommit = true) }
-        return this
-    }
+    fun runScript(script: File, arguments: List<String>): GitHandler {
+        val processBuilder = ProcessBuilder()
+        processBuilder.command("sh", script.absolutePath, *arguments.toTypedArray())
+        processBuilder.redirectErrorStream(true)
+        val process = processBuilder.start()
+        process.waitFor()
 
-    fun createCommitsWithTags(numberOfCommits: Int, incrementBy: Inc = Inc.MINOR): GitHandler {
-        repeat(numberOfCommits) {
-            startingTag = startingTag?.inc(incrementBy)
-
-            localKGit.commit("Empty commit", allowEmptyCommit = true)
-            localKGit.tag("v$startingTag")
-        }
         return this
     }
 
     fun pushAll(): GitHandler {
         localKGit.push.all()
-        return this
-    }
-
-    fun createBranch(branchName: String): GitHandler {
-        localKGit.checkout(branchName, createBranch = true)
         return this
     }
 
@@ -89,12 +74,7 @@ internal class GitHandler(
         return this
     }
 
-    fun close() {
-        localKGit.close()
-        remoteKGit.close()
-    }
-
-    fun convertEpochToCustomFormat(epochTime: Int): String {
+    private fun convertEpochToCustomFormat(epochTime: Int): String {
         val instant = Instant.ofEpochSecond(epochTime.toLong())
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yy HH:mm:ss").withZone(ZoneId.systemDefault())
         return formatter.format(instant)
