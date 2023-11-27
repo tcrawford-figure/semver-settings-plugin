@@ -42,8 +42,9 @@ internal class Branch(
             .setName(branchName)
             .call()
 
-    fun delete(vararg branchNames: String) =
+    fun delete(vararg branchNames: String): List<String> =
         git.branchDelete()
             .setBranchNames(*branchNames)
+            .setForce(true)
             .call()
 }

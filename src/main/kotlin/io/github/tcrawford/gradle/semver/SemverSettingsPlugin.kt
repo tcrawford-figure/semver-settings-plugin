@@ -28,6 +28,7 @@ class SemverSettingsPlugin : Plugin<Settings> {
             stage = settings.stage,
             modifier = settings.modifier,
             forTesting = settings.forTesting,
+            // TODO: Check error handling on this if version is invalid
             overrideVersion = settings.overrideVersion,
             rootDir = semverExtension.rootProjectDir.convention { settingsDir },
             mainBranch = semverExtension.mainBranch,

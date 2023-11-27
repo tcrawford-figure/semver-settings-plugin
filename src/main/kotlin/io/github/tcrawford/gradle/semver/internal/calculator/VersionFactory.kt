@@ -1,9 +1,11 @@
 package io.github.tcrawford.gradle.semver.internal.calculator
 
+import io.github.tcrawford.gradle.semver.errors.InvalidOverrideVersionError
 import io.github.tcrawford.gradle.semver.internal.Modifier
 import io.github.tcrawford.gradle.semver.internal.Stage
+import io.github.tcrawford.gradle.semver.internal.command.GitState
 import io.github.tcrawford.gradle.semver.internal.command.KGit
-import io.github.z4kn4fein.semver.Version
+import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -18,7 +20,7 @@ internal fun ProviderFactory.versionFactory(
     stage: Provider<Stage>,
     modifier: Provider<Modifier>,
     forTesting: Provider<Boolean>,
-    overrideVersion: Provider<Version>,
+    overrideVersion: Provider<String>,
     rootDir: RegularFileProperty,
     mainBranch: Provider<String>,
     developmentBranch: Provider<String>,
@@ -43,53 +45,58 @@ internal abstract class VersionFactory : ValueSource<String, VersionFactory.Para
         val stage: Property<Stage>
         val modifier: Property<Modifier>
         val forTesting: Property<Boolean>
-        val overrideVersion: Property<Version>
+        val overrideVersion: Property<String>
         val rootDir: RegularFileProperty
         val mainBranch: Property<String>
         val developmentBranch: Property<String>
     }
 
-    override fun obtain(): String? {
+    private fun Params.toVersionCalculatorContext(gitState: GitState) =
+        VersionCalculatorContext(
+            stage = stage.get(),
+            modifier = modifier.get(),
+            forTesting = forTesting.get(),
+            gitState = gitState,
+            mainBranch = mainBranch.orNull,
+            developmentBranch = developmentBranch.orNull,
+        )
+
+    override fun obtain(): String {
         val rootDir = parameters.rootDir.map { it.asFile }
         val kgit = KGit(directory = rootDir.get())
 
-        val overrideVersion = parameters.overrideVersion.orNull
-        val stage = parameters.stage.get()
-        val modifier = parameters.modifier.get()
-        val forTesting = parameters.forTesting.get()
-        val mainBranch = parameters.mainBranch.orNull
-        val developmentBranch = parameters.developmentBranch.orNull
+        val context = parameters.toVersionCalculatorContext(kgit.state())
 
-        val context = VersionCalculatorContext(
-            stage = stage,
-            modifier = modifier,
-            forTesting = forTesting,
-            mainBranch = mainBranch,
-            developmentBranch = developmentBranch,
-        )
+        val overrideVersion = parameters.overrideVersion.orNull
+        val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
+        val latestNonPreReleaseVersion = kgit.tags.latestNonPreReleaseOrInitial(parameters.initialVersion)
 
         val version = when {
-            overrideVersion != null -> {
-                overrideVersion.toString()
+            context.gitState != GitState.NOMINAL -> {
+                val gitStateVersionCalculator = GitStateVersionCalculator()
+                gitStateVersionCalculator.calculate(latestNonPreReleaseVersion, context)
             }
 
-            kgit.branch.isOnMainBranch(mainBranch, forTesting) -> {
-                val stageBasedVersionCalculator = StageBasedVersionCalculator()
-                val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
-                stageBasedVersionCalculator.calculate(latestVersion, context)
+            overrideVersion != null -> {
+                runCatching { overrideVersion.toVersion() }.getOrElse {
+                    throw InvalidOverrideVersionError(overrideVersion)
+                }.toString()
+            }
+
+            kgit.branch.isOnMainBranch(context.mainBranch, context.forTesting) -> {
+                val stageVersionCalculator = StageVersionCalculator()
+                stageVersionCalculator.calculate(latestVersion, context)
             }
 
             // Works for any branch
             else -> {
                 // Compute based on the branch name, otherwise, use the stage to compute the next version
-                if (stage == Stage.Auto) {
-                    val branchBasedVersionCalculator = BranchBasedVersionCalculator(kgit)
-                    val latestVersion = kgit.tags.latestNonPreReleaseOrInitial(parameters.initialVersion)
-                    branchBasedVersionCalculator.calculate(latestVersion, context)
+                if (context.stage == Stage.Auto) {
+                    val branchVersionCalculator = BranchVersionCalculator(kgit)
+                    branchVersionCalculator.calculate(latestNonPreReleaseVersion, context)
                 } else {
-                    val stageBasedVersionCalculator = StageBasedVersionCalculator()
-                    val latestVersion = kgit.tags.latestOrInitial(parameters.initialVersion)
-                    stageBasedVersionCalculator.calculate(latestVersion, context)
+                    val stageVersionCalculator = StageVersionCalculator()
+                    stageVersionCalculator.calculate(latestVersion, context)
                 }
             }
         }

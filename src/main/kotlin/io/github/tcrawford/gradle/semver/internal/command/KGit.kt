@@ -34,6 +34,7 @@ internal class KGit(
     val log = Log(git)
     val push = Push(git)
     val remote = Remote(git)
+    val state = State(git)
     val tag = Tag(git)
     val tags = TagList(git)
 

@@ -1,8 +1,6 @@
 package io.github.tcrawford.gradle.semver.internal
 
 import io.github.z4kn4fein.semver.Inc
-import io.github.z4kn4fein.semver.Version
-import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.initialization.Settings
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -25,8 +23,8 @@ internal val Settings.stage: Provider<Stage>
 internal val Settings.tagPrefix: Provider<String>
     get() = semverProperty(SemverProperty.TagPrefix).orElse("v")
 
-internal val Settings.overrideVersion: Provider<Version>
-    get() = semverProperty(SemverProperty.OverrideVersion).map { it.toVersion() }
+internal val Settings.overrideVersion: Provider<String>
+    get() = semverProperty(SemverProperty.OverrideVersion)
 
 internal val Settings.forTesting: Provider<Boolean>
     get() = semverProperty(SemverProperty.ForTesting).map { it.toBoolean() }.orElse(false)

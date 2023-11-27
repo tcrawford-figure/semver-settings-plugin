@@ -17,13 +17,13 @@ import java.time.format.DateTimeFormatter
 
 private val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 
-class GitHandler(
+internal class GitHandler(
     localRepoDir: File,
     remoteRepoDir: File,
     initialBranch: String,
     private var startingTag: Version? = "1.0.0".toVersion(),
 ) {
-    private val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false, initialBranch))
+    val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false, initialBranch))
     private val remoteKGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, initialBranch))
 
     init {

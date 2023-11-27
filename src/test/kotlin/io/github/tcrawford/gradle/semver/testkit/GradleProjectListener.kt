@@ -5,6 +5,7 @@ import io.github.tcrawford.gradle.semver.util.setupProjectDirectory
 import io.kotest.core.listeners.TestListener
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
+import org.eclipse.jgit.lib.Constants
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
 import kotlin.io.path.createTempDirectory
@@ -27,8 +28,6 @@ class GradleProjectListener(
     }
 
     override suspend fun afterAny(testCase: TestCase, result: TestResult) {
-        // Clean up the JGit repositories
-        gitHandler.close()
         // Clean up the temporary directories
         projectDir.deleteRecursively()
         remoteRepoDir.deleteRecursively()
@@ -41,7 +40,7 @@ class GradleProjectListener(
             .withPluginClasspath()
             .withProjectDir(projectDir)
 
-    fun initRepository(config: RepositoryConfig): GradleProjectListener {
+    fun initRepository(config: RepositoryConfig, printLocalGitObjects: Boolean = true): GradleProjectListener {
         gitHandler = GitHandler(projectDir, remoteRepoDir, config.initialBranch).apply {
             config.actions.forEach { action ->
                 when (action) {
@@ -62,8 +61,20 @@ class GradleProjectListener(
             }
 
             pushAll()
-            logLocalGitObjects()
+            if (printLocalGitObjects) {
+                logLocalGitObjects()
+            }
         }
         return this
+    }
+
+    fun removeLocalBranch(branch: String) {
+        gitHandler.localKGit.branch.delete("${Constants.R_HEADS}$branch")
+        gitHandler.logLocalGitObjects()
+    }
+
+    fun removeRemoteBranch(branch: String) {
+        gitHandler.localKGit.branch.delete("${Constants.R_REMOTES}${Constants.DEFAULT_REMOTE_NAME}/$branch")
+        gitHandler.logLocalGitObjects()
     }
 }
