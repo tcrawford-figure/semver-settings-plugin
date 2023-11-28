@@ -36,7 +36,7 @@ internal class State(
         get() = git.repository.directory.resolve("BISECT_LOG").exists()
 
     private val detachedHead: Boolean
-        get() = git.repository.branch == Constants.HEAD
+        get() = git.repository.exactRef(Constants.HEAD).target.objectId.name == git.repository.branch
 }
 
 internal enum class GitState(val description: String) {
@@ -46,5 +46,5 @@ internal enum class GitState(val description: String) {
     DETACHED_HEAD("DETACHED-HEAD"),
     MERGING("MERGING"),
     REBASING("REBASING"),
-    REVERTING("REVERTING"),
+    REVERTING("REVERTING")
 }

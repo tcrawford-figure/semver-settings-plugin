@@ -34,9 +34,7 @@ class CalculateNextVersionInNonNominalStateSpec : FunSpec({
             TestData("create_merging_state.sh", "0.2.6-${GitState.MERGING.description}"),
             TestData("create_rebasing_state.sh", "0.2.6-${GitState.REBASING.description}"),
             TestData("create_reverting_state.sh", "0.2.6-${GitState.REVERTING.description}"),
-
-            // TODO: Fix detached head script. HEAD is not found which is resulting in a "corrupt" repo state.
-            TestData("create_detached_head_state.sh", "0.2.6-${GitState.DETACHED_HEAD.description}"),
+            TestData("create_detached_head_state.sh", "0.2.6-${GitState.DETACHED_HEAD.description}")
         ) {
             // Given
             val config = repositoryConfig {
@@ -69,5 +67,5 @@ class CalculateNextVersionInNonNominalStateSpec : FunSpec({
 
 private data class TestData(
     val scriptFileName: String,
-    val expectedVersion: String,
+    val expectedVersion: String
 )
