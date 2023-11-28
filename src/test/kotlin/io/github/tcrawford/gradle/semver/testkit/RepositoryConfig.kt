@@ -25,49 +25,49 @@ class RepositoryConfig {
     fun actions(config: Actions.() -> Unit) {
         val actionObject = Actions()
         actionObject.config()
-        actions.addAll(actionObject.actions)
+        actions.addAll(actionObject.actionsToRun)
     }
 }
 
 class Actions {
-    val actions = mutableListOf<Action>()
+    val actionsToRun = mutableListOf<Action>()
 
     fun checkout(config: CheckoutAction.() -> Unit) {
         val checkoutAction = CheckoutAction()
         checkoutAction.config()
-        actions.add(checkoutAction)
+        actionsToRun.add(checkoutAction)
     }
 
     fun checkout(branch: String) {
         val checkoutAction = CheckoutAction()
         checkoutAction.branch = branch
-        actions.add(checkoutAction)
+        actionsToRun.add(checkoutAction)
     }
 
     fun commit(config: CommitAction.() -> Unit) {
         val commitAction = CommitAction()
         commitAction.config()
-        actions.add(commitAction)
+        actionsToRun.add(commitAction)
     }
 
     fun commit(message: String = "Empty Commit", tag: String = "") {
         val commitAction = CommitAction()
         commitAction.message = message
         commitAction.tag = tag
-        actions.add(commitAction)
+        actionsToRun.add(commitAction)
     }
 
     fun runScript(config: RunScriptAction.() -> Unit) {
         val runScriptAction = RunScriptAction()
         runScriptAction.config()
-        actions.add(runScriptAction)
+        actionsToRun.add(runScriptAction)
     }
 
     fun runScript(script: File, vararg arguments: String) {
         val runScriptAction = RunScriptAction()
         runScriptAction.script = script
         runScriptAction.arguments = arguments.toList()
-        actions.add(runScriptAction)
+        actionsToRun.add(runScriptAction)
     }
 }
 

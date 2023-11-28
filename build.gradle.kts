@@ -18,7 +18,6 @@ dependencies {
 
     implementation(libs.jgit)
     implementation(libs.kotlin.semver)
-    implementation(libs.kotlin.result)
 
     testImplementation(gradleTestKit())
     testImplementation(libs.kotest.runner)
@@ -55,6 +54,12 @@ tasks {
         group = "verification"
         description = "Format all code using configured formatters. Runs 'ktlintFormat'"
         dependsOn("ktlintFormat")
+    }
+
+    register("lint") {
+        group = "verification"
+        description = "Check all code using configured linters. Runs 'ktlintCheck'"
+        dependsOn("ktlintCheck")
     }
 }
 

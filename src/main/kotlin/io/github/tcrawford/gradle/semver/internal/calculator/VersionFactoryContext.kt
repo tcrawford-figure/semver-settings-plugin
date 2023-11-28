@@ -14,4 +14,8 @@ internal data class VersionFactoryContext(
     val rootDir: File,
     val mainBranch: String?,
     val developmentBranch: String?
-) : Serializable
+) : Serializable {
+    companion object {
+        private const val serialVersionUID: Long = 1L
+    }
+}

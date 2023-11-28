@@ -1,3 +1,5 @@
 style:
+  MaxLineLength: # defer to ktlint
+    active: false
   ForbiddenComment:
     active: false
