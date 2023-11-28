@@ -1,6 +1,7 @@
 package io.github.tcrawford.gradle.semver.integration
 
 import io.github.tcrawford.gradle.semver.internal.Modifier
+import io.github.tcrawford.gradle.semver.internal.SemverProperty
 import io.github.tcrawford.gradle.semver.reader.fetchVersion
 import io.github.tcrawford.gradle.semver.testkit.GradleProjectListener
 import io.github.tcrawford.gradle.semver.testkit.repositoryConfig
@@ -9,25 +10,57 @@ import io.github.tcrawford.gradle.semver.util.GradleArgs.semverModifier
 import io.github.tcrawford.gradle.semver.util.resolveResource
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 
 class CalculateNextVersionWithModifierSpec : FunSpec({
     val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
 
     val defaultArguments = listOf(
-        GradleArgs.Stacktrace,
-        GradleArgs.Parallel,
-        GradleArgs.BuildCache,
-        GradleArgs.ConfigurationCache,
+        GradleArgs.STACKTRACE,
+        GradleArgs.PARALLEL,
+        GradleArgs.BUILD_CACHE,
+        GradleArgs.CONFIGURATION_CACHE,
         GradleArgs.semverForTesting(true)
     )
 
     listener(gradleProjectListener)
 
-    context("should calculate next version with modifier input") {
-        val mainBranch = "master"
-        val developmentBranch = "devel"
-        val featureBranch = "cool-feature"
+    val mainBranch = "master"
+    val developmentBranch = "devel"
+    val featureBranch = "cool-feature"
 
+    context("should not calculate next version") {
+        test("when modifier is invalid") {
+            // Given
+            val arguments = defaultArguments + "-P${SemverProperty.Modifier.property}=invalid"
+
+            val config = repositoryConfig {
+                initialBranch = mainBranch
+                actions {
+                    checkout(mainBranch)
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
+                    checkout(developmentBranch)
+                    commit(message = "1 commit on $developmentBranch")
+
+                    checkout(mainBranch)
+                }
+            }
+
+            // When
+            val runner = gradleProjectListener
+                .initRepository(config)
+                .initGradleRunner()
+                .withArguments(arguments)
+
+            val result = runner.run()
+
+            // Then
+            result.output shouldContain "BUILD FAILED"
+        }
+    }
+
+    context("should calculate next version with modifier input") {
         test("on main branch - next major version") {
             // Given
             val arguments = defaultArguments + semverModifier(Modifier.Major)

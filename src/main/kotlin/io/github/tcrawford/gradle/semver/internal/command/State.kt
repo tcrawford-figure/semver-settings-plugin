@@ -5,8 +5,8 @@ import org.eclipse.jgit.lib.Constants
 
 // This is heavily influenced by the gitstatus logic found here:
 // https://github.com/magicmonty/bash-git-prompt/
-// TODO: Future consideration: Support rebasing step in the version. So something like `1.2.3-rebasing.2-12`
-//  would mean step 2 out of 12 of rebasing.
+// TODO: Future consideration: Support rebasing step in the version. So something like:
+//  - `1.2.3-rebasing.2-12` - would mean step 2 out of 12 of rebasing.
 internal class State(
     private val git: Git
 ) {

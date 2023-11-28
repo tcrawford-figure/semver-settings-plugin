@@ -14,20 +14,47 @@ class UseOverrideVersionSpec : FunSpec({
     val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
 
     val defaultArguments = listOf(
-        GradleArgs.Stacktrace,
-        GradleArgs.Parallel,
-        GradleArgs.BuildCache,
-        GradleArgs.ConfigurationCache,
+        GradleArgs.STACKTRACE,
+        GradleArgs.PARALLEL,
+        GradleArgs.BUILD_CACHE,
+        GradleArgs.CONFIGURATION_CACHE,
         GradleArgs.semverForTesting(true)
     )
 
     listener(gradleProjectListener)
 
-    context("should use override version") {
-        val mainBranch = "main"
-        val developmentBranch = "develop"
-        val featureBranch = "patch-1"
+    val mainBranch = "main"
+    val developmentBranch = "develop"
+    val featureBranch = "patch-1"
 
+    context("should not use override version") {
+        test("when override version is invalid") {
+            // Given
+            val givenVersion = "im-not-a-version"
+            val arguments = defaultArguments + semverOverrideVersion(givenVersion)
+
+            val config = repositoryConfig {
+                initialBranch = mainBranch
+                actions {
+                    checkout(mainBranch)
+                    commit(message = "1 commit on $mainBranch")
+                }
+            }
+
+            // When
+            val runner = gradleProjectListener
+                .initRepository(config)
+                .initGradleRunner()
+                .withArguments(arguments)
+
+            val result = runner.run()
+
+            // Then
+            result.output shouldContain "BUILD FAILED"
+        }
+    }
+
+    context("should use override version") {
         test("on main branch") {
             // Given
             val givenVersion = "9.9.9"
@@ -108,31 +135,6 @@ class UseOverrideVersionSpec : FunSpec({
 
             // Then
             gradleProjectListener.projectDir.fetchVersion() shouldBe givenVersion
-        }
-
-        test("is invalid version") {
-            // Given
-            val givenVersion = "im-not-a-version"
-            val arguments = defaultArguments + semverOverrideVersion(givenVersion)
-
-            val config = repositoryConfig {
-                initialBranch = mainBranch
-                actions {
-                    checkout(mainBranch)
-                    commit(message = "1 commit on $mainBranch")
-                }
-            }
-
-            // When
-            val runner = gradleProjectListener
-                .initRepository(config)
-                .initGradleRunner()
-                .withArguments(arguments)
-
-            val result = runner.run()
-
-            // Then
-            result.output shouldContain "BUILD FAILED"
         }
     }
 })

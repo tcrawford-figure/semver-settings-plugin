@@ -12,10 +12,11 @@ internal fun Version.nextVersion(providedStage: Stage, providedModifier: Modifie
     isInvalidVersionForComputation() -> {
         error(
             "Cannot compute next version because the latest computed version likely contains branch " +
-                "information: $this. If you see this error, please file an issue. This should not happen."
+                "information: $this. If you see this error, please file an issue. This is a bug."
         )
     }
 
+    // next snapshot
     (providedStage == Stage.Snapshot) -> {
         nextSnapshot(providedModifier.toInc())
     }

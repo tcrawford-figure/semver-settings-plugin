@@ -12,11 +12,9 @@ internal val Settings.gradlePropertiesFile: File
 internal val Settings.gradleProperties: Properties
     get() = Properties().apply { load(gradlePropertiesFile.inputStream()) }
 
-// TODO: Add error handling for `fromValue` when bad input is provided
 internal val Settings.modifier: Provider<Modifier>
     get() = semverProperty(SemverProperty.Modifier).map { Modifier.fromValue(it) }.orElse(Modifier.Auto)
 
-// TODO: Add error handling for `fromValue` when bad input is provided
 internal val Settings.stage: Provider<Stage>
     get() = semverProperty(SemverProperty.Stage).map { Stage.fromValue(it) }.orElse(Stage.Auto)
 
@@ -42,8 +40,7 @@ internal enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
-    Auto("auto")
-    ;
+    Auto("auto");
 
     fun toInc(): Inc = when (this) {
         Major -> Inc.MAJOR
@@ -55,7 +52,7 @@ internal enum class Modifier(val value: String) {
     companion object {
         fun fromValue(value: String): Modifier =
             entries.find { it.value.lowercase() == value.lowercase() }
-                ?: error("Invalid modifier provided: $value")
+                ?: error("Invalid modifier provided: $value. Valid values are: ${entries.joinToString { it.value }}")
     }
 }
 
@@ -76,7 +73,7 @@ internal enum class Stage(val value: String) {
     companion object {
         fun fromValue(value: String): Stage =
             entries.find { it.value.lowercase() == value.lowercase() }
-                ?: error("Invalid stage provided: $value")
+                ?: error("Invalid stage provided: $value. Valid values are: ${entries.joinToString { it.value.lowercase() }}")
     }
 }
 

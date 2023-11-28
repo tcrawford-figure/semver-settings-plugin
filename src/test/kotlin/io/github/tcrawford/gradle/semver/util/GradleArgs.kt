@@ -12,13 +12,13 @@ import io.github.tcrawford.gradle.semver.internal.SemverProperty
 import io.github.tcrawford.gradle.semver.internal.Stage
 
 /**
- * Note that the parameters must be provided in the format: `-P<property>=<value>` and not `-P <property>=<value>`.
+ * The parameters must be provided in the format: `-P<property>=<value>` and not `-P <property>=<value>`.
  */
 internal object GradleArgs {
-    const val Parallel = "--parallel"
-    const val BuildCache = "--build-cache"
-    const val ConfigurationCache = "--configuration-cache"
-    const val Stacktrace = "--stacktrace"
+    const val PARALLEL = "--parallel"
+    const val BUILD_CACHE = "--build-cache"
+    const val CONFIGURATION_CACHE = "--configuration-cache"
+    const val STACKTRACE = "--stacktrace"
 
     fun semverStage(stage: Stage) =
         "-P${SemverProperty.Stage.property}=${stage.value}"

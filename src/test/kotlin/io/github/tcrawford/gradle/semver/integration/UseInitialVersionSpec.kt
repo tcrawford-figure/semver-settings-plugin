@@ -12,10 +12,10 @@ class UseInitialVersionSpec : FunSpec({
     val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
 
     val defaultArguments = listOf(
-        GradleArgs.Stacktrace,
-        GradleArgs.Parallel,
-        GradleArgs.BuildCache,
-        GradleArgs.ConfigurationCache,
+        GradleArgs.STACKTRACE,
+        GradleArgs.PARALLEL,
+        GradleArgs.BUILD_CACHE,
+        GradleArgs.CONFIGURATION_CACHE,
         GradleArgs.semverForTesting(true)
     )
 
@@ -28,7 +28,7 @@ class UseInitialVersionSpec : FunSpec({
 
         test("on main branch") {
             // Given
-            // Note that the default initial value should be "0.0.0"
+            // The default initial value is "0.0.0" which is supplied by the plugin
 
             val config = repositoryConfig {
                 initialBranch = mainBranch
@@ -52,7 +52,7 @@ class UseInitialVersionSpec : FunSpec({
 
         test("on development branch") {
             // Given
-            // Note that the default initial value should be "0.0.0"
+            // The default initial value is "0.0.0" which is supplied by the plugin
 
             val config = repositoryConfig {
                 initialBranch = mainBranch
@@ -79,7 +79,7 @@ class UseInitialVersionSpec : FunSpec({
 
         test("on feature branch") {
             // Given
-            // Note that the default initial value should be "0.0.0"
+            // The default initial value is "0.0.0" which is supplied by the plugin
 
             val config = repositoryConfig {
                 initialBranch = mainBranch

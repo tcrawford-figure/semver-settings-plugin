@@ -49,7 +49,7 @@ internal class BranchList(
     /**
      * Find all branches given the branch name. Can be full or short name.
      *
-     * Note that this is case-sensitive. If problems happen, consider being case-insensitive.
+     * NOTE: this is case-sensitive. If problems happen, consider being case-insensitive.
      */
     private fun findAll(branchName: String): List<Ref> =
         git.branchList()

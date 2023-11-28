@@ -14,10 +14,10 @@ class CalculateNextVersionInNonNominalStateSpec : FunSpec({
     val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
 
     val defaultArguments = listOf(
-        GradleArgs.Stacktrace,
-        GradleArgs.Parallel,
-        GradleArgs.BuildCache,
-        GradleArgs.ConfigurationCache,
+        GradleArgs.STACKTRACE,
+        GradleArgs.PARALLEL,
+        GradleArgs.BUILD_CACHE,
+        GradleArgs.CONFIGURATION_CACHE,
         GradleArgs.semverForTesting(true)
     )
 
