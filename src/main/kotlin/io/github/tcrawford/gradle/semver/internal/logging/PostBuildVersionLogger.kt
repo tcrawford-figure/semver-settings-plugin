@@ -1,7 +1,6 @@
-package io.github.tcrawford.gradle.semver.internal
+package io.github.tcrawford.gradle.semver.internal.logging
 
 import io.github.tcrawford.gradle.semver.internal.extensions.flowScope
-import io.github.tcrawford.gradle.semver.internal.extensions.lifecycle
 import org.gradle.api.flow.FlowAction
 import org.gradle.api.flow.FlowParameters
 import org.gradle.api.initialization.Settings

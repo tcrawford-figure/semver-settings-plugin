@@ -1,4 +1,4 @@
-package io.github.tcrawford.gradle.semver.internal.extensions
+package io.github.tcrawford.gradle.semver.internal.logging
 
 import org.gradle.api.logging.Logger
 

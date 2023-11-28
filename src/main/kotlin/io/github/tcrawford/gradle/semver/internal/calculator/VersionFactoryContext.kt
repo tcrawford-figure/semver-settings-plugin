@@ -1,7 +1,7 @@
 package io.github.tcrawford.gradle.semver.internal.calculator
 
-import io.github.tcrawford.gradle.semver.internal.Modifier
-import io.github.tcrawford.gradle.semver.internal.Stage
+import io.github.tcrawford.gradle.semver.internal.properties.Modifier
+import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import java.io.File
 import java.io.Serializable
 

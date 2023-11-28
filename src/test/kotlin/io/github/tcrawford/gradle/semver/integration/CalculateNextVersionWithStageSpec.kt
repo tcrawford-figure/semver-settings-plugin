@@ -1,7 +1,7 @@
 package io.github.tcrawford.gradle.semver.integration
 
-import io.github.tcrawford.gradle.semver.internal.SemverProperty
-import io.github.tcrawford.gradle.semver.internal.Stage
+import io.github.tcrawford.gradle.semver.internal.properties.SemverProperty
+import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import io.github.tcrawford.gradle.semver.reader.fetchVersion
 import io.github.tcrawford.gradle.semver.testkit.GradleProjectListener
 import io.github.tcrawford.gradle.semver.testkit.repositoryConfig

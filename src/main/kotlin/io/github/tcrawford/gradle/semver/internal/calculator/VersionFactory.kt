@@ -1,9 +1,9 @@
 package io.github.tcrawford.gradle.semver.internal.calculator
 
 import io.github.tcrawford.gradle.semver.errors.InvalidOverrideVersionError
-import io.github.tcrawford.gradle.semver.internal.Stage
 import io.github.tcrawford.gradle.semver.internal.command.GitState
 import io.github.tcrawford.gradle.semver.internal.command.KGit
+import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import io.github.z4kn4fein.semver.toVersion
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider

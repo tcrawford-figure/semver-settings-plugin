@@ -84,7 +84,7 @@ testlogger {
 gradlePlugin {
     plugins {
         create(project.name) {
-            id = "io.github.tcrawford.gradle.settings.semver"
+            id = "io.github.tcrawford.gradle.semver"
             displayName = "Semver Settings Plugin"
             description = "Semver Settings Plugin"
             implementationClass = "io.github.tcrawford.gradle.semver.SemverSettingsPlugin"

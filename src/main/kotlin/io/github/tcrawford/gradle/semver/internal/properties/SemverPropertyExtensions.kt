@@ -1,6 +1,5 @@
-package io.github.tcrawford.gradle.semver.internal
+package io.github.tcrawford.gradle.semver.internal.properties
 
-import io.github.z4kn4fein.semver.Inc
 import org.gradle.api.initialization.Settings
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -26,56 +25,6 @@ internal val Settings.overrideVersion: Provider<String>
 
 internal val Settings.forTesting: Provider<Boolean>
     get() = semverProperty(SemverProperty.ForTesting).map { it.toBoolean() }.orElse(false)
-
-internal enum class SemverProperty(val property: String) {
-    Stage("semver.stage"),
-    Modifier("semver.modifier"),
-    TagPrefix("semver.tagPrefix"),
-    OverrideVersion("semver.overrideVersion"),
-
-    ForTesting("semver.forTesting")
-}
-
-internal enum class Modifier(val value: String) {
-    Major("major"),
-    Minor("minor"),
-    Patch("patch"),
-    Auto("auto");
-
-    fun toInc(): Inc = when (this) {
-        Major -> Inc.MAJOR
-        Minor -> Inc.MINOR
-        Patch -> Inc.PATCH
-        Auto -> Inc.PATCH
-    }
-
-    companion object {
-        fun fromValue(value: String): Modifier =
-            entries.find { it.value.lowercase() == value.lowercase() }
-                ?: error("Invalid modifier provided: $value. Valid values are: ${entries.joinToString { it.value }}")
-    }
-}
-
-// In order from lowest to highest priority
-internal enum class Stage(val value: String) {
-    Dev("dev"),
-    Alpha("alpha"),
-    Beta("beta"),
-    RC("rc"),
-    Snapshot("SNAPSHOT"),
-    Final("final"),
-    GA("ga"),
-    Release("release"),
-    Stable("stable"),
-    Auto("auto")
-    ;
-
-    companion object {
-        fun fromValue(value: String): Stage =
-            entries.find { it.value.lowercase() == value.lowercase() }
-                ?: error("Invalid stage provided: $value. Valid values are: ${entries.joinToString { it.value.lowercase() }}")
-    }
-}
 
 private fun Settings.semverProperty(semverProperty: SemverProperty): Provider<String> =
     when {

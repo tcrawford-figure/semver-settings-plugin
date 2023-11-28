@@ -1,7 +1,7 @@
 package io.github.tcrawford.gradle.semver.internal.extensions
 
-import io.github.tcrawford.gradle.semver.internal.Modifier
-import io.github.tcrawford.gradle.semver.internal.Stage
+import io.github.tcrawford.gradle.semver.internal.properties.Modifier
+import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import io.github.z4kn4fein.semver.Inc
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.inc

@@ -3,17 +3,28 @@ package io.github.tcrawford.gradle.semver
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.initialization.Settings
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.property
 import javax.inject.Inject
 
-abstract class SemverExtension @Inject constructor(
+/**
+ * Configuration for the Semver Settings Plugin that enables:
+ * - Manually setting the rootProjectDir
+ * - An initial version
+ * - The main branch, if not `main` or `master`
+ * - The development branch if not `develop`, `devel`, or `dev`
+ *
+ */
+open class SemverExtension @Inject constructor(
     objects: ObjectFactory
 ) {
     companion object {
+        const val NAME = "semver"
+
         operator fun invoke(settings: Settings) =
-            settings.extensions.create<SemverExtension>("semver")
+            settings.extensions.create<SemverExtension>(NAME)
     }
 
     val rootProjectDir: RegularFileProperty = objects.fileProperty()
@@ -21,3 +32,6 @@ abstract class SemverExtension @Inject constructor(
     val mainBranch: Property<String> = objects.property()
     val developmentBranch: Property<String> = objects.property()
 }
+
+fun Settings.semver(configure: SemverExtension.() -> Unit): Unit =
+    (this as ExtensionAware).extensions.configure(SemverExtension.NAME, configure)

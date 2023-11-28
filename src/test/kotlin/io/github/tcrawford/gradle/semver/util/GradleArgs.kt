@@ -7,9 +7,9 @@
 
 package io.github.tcrawford.gradle.semver.util
 
-import io.github.tcrawford.gradle.semver.internal.Modifier
-import io.github.tcrawford.gradle.semver.internal.SemverProperty
-import io.github.tcrawford.gradle.semver.internal.Stage
+import io.github.tcrawford.gradle.semver.internal.properties.Modifier
+import io.github.tcrawford.gradle.semver.internal.properties.SemverProperty
+import io.github.tcrawford.gradle.semver.internal.properties.Stage
 
 /**
  * The parameters must be provided in the format: `-P<property>=<value>` and not `-P <property>=<value>`.

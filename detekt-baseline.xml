@@ -3,6 +3,6 @@
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
     <ID>NestedBlockDepth:GradleProjectListener.kt$GradleProjectListener$fun initRepository(config: RepositoryConfig, printLocalGitObjects: Boolean = true): GradleProjectListener</ID>
-    <ID>TooManyFunctions:LogExtensions.kt$io.github.tcrawford.gradle.semver.internal.extensions.LogExtensions.kt</ID>
+    <ID>TooManyFunctions:LogExtensions.kt$io.github.tcrawford.gradle.semver.internal.logging.LogExtensions.kt</ID>
   </CurrentIssues>
 </SmellBaseline>
