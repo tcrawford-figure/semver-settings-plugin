@@ -77,18 +77,18 @@ To alter the next version stage, use the Gradle property: `-Psemver.stage=<stage
 
 The following are possible values:
 
-| Stage      | Pre-release Label         | Example Tag        | Description                                             |
-|------------|---------------------------|--------------------|---------------------------------------------------------|
-| `dev`      | dev                       | `v1.0.0-dev.1`     | Development stage                                       |
-| `alpha`    | alpha                     | `v1.0.0-alpha.1`   | Alpha stage                                             |
-| `beta`     | beta                      | `v1.0.0-beta.1`    | Beta stage                                              |
-| `rc`       | rc                        | `v1.0.0-rc.1`      | Release Candidate stage                                 |
-| `snapshot` | SNAPSHOT                  | `v1.0.0-SNAPSHOT`  | Snapshot stage                                          |
-| `final`    | final                     | `v1.0.0-final.1`   | Final stage                                             |
-| `ga`       | ga                        | `v1.0.0-ga.1`      | General Availability stage                              |
-| `release`  | release                   | `v1.0.0-release.1` | Release stage                                           |
-| `stable`   | (none)                    | `v1.0.0`           | Stable stage                                            |
-| `auto`     | (depends on previous tag) | -                  | Automatically determine the stage based on previous tag |
+| Stage      | Pre-release Label         | Example Tag        | Description                |
+|------------|---------------------------|--------------------|----------------------------|
+| `dev`      | dev                       | `v1.0.0-dev.1`     | Development stage          |
+| `alpha`    | alpha                     | `v1.0.0-alpha.1`   | Alpha stage                |
+| `beta`     | beta                      | `v1.0.0-beta.1`    | Beta stage                 |
+| `rc`       | rc                        | `v1.0.0-rc.1`      | Release Candidate stage    |
+| `snapshot` | SNAPSHOT                  | `v1.0.0-SNAPSHOT`  | Snapshot stage             |
+| `final`    | final                     | `v1.0.0-final.1`   | Final stage                |
+| `ga`       | ga                        | `v1.0.0-ga.1`      | General Availability stage |
+| `release`  | release                   | `v1.0.0-release.1` | Release stage              |
+| `stable`   | (none)                    | `v1.0.0`           | Stable stage               |
+| `auto`     | (depends on previous tag) | -                  | Based on previous tag      |
 
 ### Examples
 
