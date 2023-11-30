@@ -78,6 +78,33 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-develop.1"
         }
 
+        test("on development branch with latest development tag") {
+            // Given
+            val config = repositoryConfig {
+                initialBranch = mainBranch
+                actions {
+                    checkout(mainBranch)
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
+                    checkout(developmentBranch)
+                    commit(message = "1 commit on $developmentBranch", tag = "1.0.1-develop.1")
+                    commit(message = "2 commit on $developmentBranch")
+                    commit(message = "3 commit on $developmentBranch")
+                }
+            }
+
+            // When
+            val runner = gradleProjectListener
+                .initRepository(config)
+                .initGradleRunner()
+                .withArguments(defaultArguments)
+
+            runner.build()
+
+            // Then
+            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-develop.3"
+        }
+
         test("on feature branch off development branch") {
             // Given
             val config = repositoryConfig {
