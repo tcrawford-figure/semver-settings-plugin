@@ -10,7 +10,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 class UseTagPrefixSpec : FunSpec({
-    val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
+    val gradleProjectListener = GradleProjectListener(resolveResource("settings-sample"))
 
     val defaultArguments = listOf(
         GradleArgs.STACKTRACE,

@@ -9,6 +9,3 @@ internal fun File.getOrCreate(): File {
     }
     return this
 }
-
-internal fun File.isEmpty(): Boolean =
-    length() == 0L

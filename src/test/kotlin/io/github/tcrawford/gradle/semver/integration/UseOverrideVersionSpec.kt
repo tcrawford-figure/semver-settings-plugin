@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 
 class UseOverrideVersionSpec : FunSpec({
-    val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
+    val gradleProjectListener = GradleProjectListener(resolveResource("settings-sample"))
 
     val defaultArguments = listOf(
         GradleArgs.STACKTRACE,

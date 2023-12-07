@@ -1,5 +1,6 @@
 package io.github.tcrawford.gradle.semver.testkit
 
+import io.github.tcrawford.gradle.semver.reader.fetchVersion
 import io.github.tcrawford.gradle.semver.util.GitHandler
 import io.github.tcrawford.gradle.semver.util.setupProjectDirectory
 import io.kotest.core.listeners.TestListener
@@ -33,6 +34,9 @@ class GradleProjectListener(
         remoteRepoDir.deleteRecursively()
         buildCacheDir.deleteRecursively()
     }
+
+    val computedVersion: String
+        get() = projectDir.fetchVersion()
 
     fun initGradleRunner(): GradleRunner =
         GradleRunner.create()

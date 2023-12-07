@@ -7,11 +7,11 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.test.logger)
-    `java-gradle-plugin`
+    alias(libs.plugins.publish.plugin)
 }
 
 group = "io.github.tcrawford.gradle.semver"
-version = "0.0.6"
+version = "0.0.7"
 
 dependencies {
     implementation(gradleKotlinDsl())
@@ -85,9 +85,9 @@ gradlePlugin {
     plugins {
         create(project.name) {
             id = "io.github.tcrawford.gradle.semver"
-            displayName = "Semver Settings Plugin"
-            description = "Semver Settings Plugin"
-            implementationClass = "io.github.tcrawford.gradle.semver.SemverSettingsPlugin"
+            displayName = "Git Aware Versioning Plugin"
+            description = "Git Aware Versioning Plugin"
+            implementationClass = "io.github.tcrawford.gradle.semver.GitAwareVersioningPlugin"
         }
     }
 }
