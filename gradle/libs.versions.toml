@@ -6,6 +6,7 @@ jgit = "6.7.0.202309050840-r"
 kotest = "5.8.0"
 kotlin-semver = "1.4.2"
 
+binary-compatibility-validator = "0.13.2"
 dependency-analysis = "1.27.0"
 detekt = "1.23.4"
 ktlint = "11.6.1"
@@ -23,6 +24,7 @@ kotlin-semver = { module = "io.github.z4kn4fein:semver", version.ref = "kotlin-s
 
 [plugins]
 
+binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
