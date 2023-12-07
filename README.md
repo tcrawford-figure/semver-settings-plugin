@@ -1,6 +1,7 @@
 # Semver Plugin for Gradle Settings
 
-This Semantic Versioning Gradle settings plugin provides a simple approach to adding semantic versioning to your gradle project using git
+This Semantic Versioning Gradle settings plugin provides a simple approach to
+adding semantic versioning to your gradle project using git
 history regardless of git strategies.
 
 At a glance, this plugin provides the following features:
@@ -26,21 +27,31 @@ import io.github.tcrawford.gradle.semver.semver
 
 // This is purely for example purposes
 semver {
-    rootProjectDir.set(settingsDir.parent)  // Default: `settings.settingsDir`
-    initialVersion.set("1.0.0")             // Default: `0.0.0` (first build will generate `0.0.1`) 
-    mainBranch.set("trunk")                 // No "default", but the plugin will search for `main`, `master` in that order
-    developmentBranch.set("development")    // No "default", but the plugin will search for `develop`, `devel`, `dev` in that order
+    // Default: `settings.settingsDir`
+    rootProjectDir.set(settingsDir.parent)
+
+    // Default: `0.0.0` (first build will generate `0.0.1`)
+    initialVersion.set("1.0.0")
+
+    // No "default", but the plugin will search for `main`, `master` in that order
+    mainBranch.set("trunk")
+
+    // No "default", but the plugin will search for:
+    // `develop`, `devel`, `dev` in that order
+    developmentBranch.set("development")
 }
 ```
 
 ## Usage
 
-This plugin defines four Gradle parameter properties that the plugin uses to determine the next version based on the latest tag:
-`semver.stage`, `semver.modifier`, `semver.overrideVersion`, and `semver.tagPrefix`.
+This plugin defines four Gradle parameter properties that the plugin uses to
+determine the next version based on the latest tag: `semver.stage`,
+ `semver.modifier`, `semver.overrideVersion`, and `semver.tagPrefix`.
 
 - `semver.stage` - indicates the stage to be used for calculation
 - `semver.modifier` - indicates the modifier to be used for calculation
-- `semver.overrideVersion` - indicates the exact version to be used for the build. Must adhere to semantic versioning specification.
+- `semver.overrideVersion` - indicates the exact version to be used for the
+  build. Must adhere to semantic versioning specification.
 - `semver.tagPrefix` - indicates the tag prefix to be used for calculation
 
 | Parameter                | Valid Values                                                                                                            | Default Value | Optional |
@@ -70,7 +81,8 @@ The following are simple examples of building with plugin parameters:
 
 ## Stages
 
-To alter the next version stage, use the Gradle property: `-Psemver.stage=<stage>`.
+To alter the next version stage, use the Gradle
+property: `-Psemver.stage=<stage>`.
 
 > [!NOTE]
 > If no stage is provided, it will default to `auto`.
@@ -93,7 +105,8 @@ The following are possible values:
 ### Examples
 
 > [!TIP]
-> Since no modifier is provided in these examples, the default modifier of `auto` used.
+> Since no modifier is provided in these examples, the default modifier
+> of `auto` used.
 
 Latest tags: `v1.0.0-rc.1`
 
@@ -127,7 +140,8 @@ Latest tag: `v1.0.0`
 
 ## Modifiers
 
-To alter the next version incrementation, use the Gradle property: `-Psemver.modifier=<modifier>`.
+To alter the next version incrementation, use the Gradle
+property: `-Psemver.modifier=<modifier>`.
 
 > [!NOTE]
 > If no modifier is provided, it will default to `auto`.
@@ -144,7 +158,8 @@ The following are the possible values:
 ### Examples
 
 > [!TIP]
-> Since no stage is provided in these examples, the default stage of `auto` used.
+> Since no stage is provided in these examples, the default stage of `auto`
+> used.
 
 Latest tag: `v1.0.0-rc.1`
 
@@ -170,7 +185,8 @@ Latest tags (sorted by latest first):
 - `v1.0.0`
 
 > [!IMPORTANT]
-> The latest tag is `v1.0.1-my-feature.1`, however, this is a special pre-release type that does not affect the calculation of the
+> The latest tag is `v1.0.1-my-feature.1`, however, this is a special
+> pre-release type that does not affect the calculation of the
 > next version given a modifier.
 
 | Command                             | Next Version |
@@ -304,10 +320,9 @@ Latest tag: `v1.0.0`
 
 ## Branch-based Version Calculation
 
-Branch-based version calculation is what sets this plugin apart from other plugins.
-It provides a way to automatically generate unique versions based on the current branch.
-This can be good for local testing and integration testing with other libraries or services for a period of time prior to creating a
-stable release.
+Branch-based version calculation provides a way to automatically generate unique versions based on the current branch.
+This can be good for local testing and integration testing with other libraries
+or services for a period of time prior to creating a stable release.
 
 > [!IMPORTANT]
 > Every commit gets a new version!
@@ -316,22 +331,21 @@ stable release.
 
 Branching from the main branch
 
-| Latest Tag | Current Branch                       | Branched From | Current commits past main branch                | Next build version                         |
-|------------|--------------------------------------|---------------|-------------------------------------------------|--------------------------------------------|
-| `v1.0.0`   | `tcrawford/sc-123456/my-new-feature` | `main`        | 4                                               | 1.0.1-tcrawford-sc-123456-my-new-feature.4 |
-| `v1.0.0`   | `my-feature`                         | `main`        | 12                                              | 1.0.1-my-feature.12                        |
-| `v1.0.0`   | `my-sub-feature`                     | `my-feature`  | 16 (12 from `my-feature` 4 on `my-sub-feature`) | 1.0.1-my-sub-feature.16                    |
-| `v1.0.0`   | `main`                               | -             | 7 (7 past origin `main`)                        | 1.0.1                                      |
+| Latest Tag | Current Branch         | Branched From | Commits past main | Next version                 |
+|------------|------------------------|---------------|-------------------|------------------------------|
+| `v1.0.0`   | `me/sc-123/my-feature` | `main`        | 4                 | 1.0.1-me-sc-123-my-feature.4 |
+| `v1.0.0`   | `my-feature`           | `main`        | 12                | 1.0.1-my-feature.12          |
+| `v1.0.0`   | `my-sub-feature`       | `my-feature`  | 16                | 1.0.1-my-sub-feature.16      |
+| `v1.0.0`   | `main`                 | -             | 7                 | 1.0.1                        |
 
 Branching from the development branch
 
-| Latest Tag         | Current Branch                       | Branched From | Current commits past main branch                | Next build version                         |
-|--------------------|--------------------------------------|---------------|-------------------------------------------------|--------------------------------------------|
-| `v1.0.0`           | `tcrawford/sc-123456/my-new-feature` | `develop`     | 4                                               | 1.0.1-tcrawford-sc-123456-my-new-feature.4 |
-| `v1.0.0`           | `my-feature`                         | `develop`     | 12                                              | 1.0.1-my-feature.12                        |
-| `v1.0.0`           | `my-sub-feature`                     | `my-feature`  | 16 (12 from `my-feature` 4 on `my-sub-feature`) | 1.0.1-my-sub-feature.16                    |
-| `v1.0.0-develop.1` | `develop`                            | `main`        | 7 (7 past origin `develop`)                     | 1.0.1-develop.8                            |
-
+| Latest Tag         | Current Branch         | Branched From | Commits past develop | Next version                 |
+|--------------------|------------------------|---------------|----------------------|------------------------------|
+| `v1.0.0`           | `me/sc-123/my-feature` | `develop`     | 4                    | 1.0.1-me-sc-123-my-feature.4 |
+| `v1.0.0`           | `my-feature`           | `develop`     | 12                   | 1.0.1-my-feature.12          |
+| `v1.0.0`           | `my-sub-feature`       | `my-feature`  | 16                   | 1.0.1-my-sub-feature.16      |
+| `v1.0.0-develop.1` | `develop`              | -             | 7                    | 1.0.1-develop.8              |
 
 ### Forcing a new version
 
@@ -349,16 +363,21 @@ Support the following scenarios:
 
 - Add suggestions if no git directory can be found
 - Build or dirty mode (possibly lower priority):
-    - `+build.#` - build mode, for local development. `#` starts at 1 and incremented on each build. Guarantees
+    - `+build.#` - build mode, for local development. `#` starts at 1 and
+      incremented on each build. Guarantees
       uniqueness without needing to make a commit.
-    - `+DIRTY` - dirty mode, where changes have been made, but no commit made yet. Applies to both modes above
-- Somehow support tests in GHA that are currently not possible. More documentation can be found in current plugin.
+    - `+DIRTY` - dirty mode, where changes have been made, but no commit made
+      yet. Applies to both modes above
+- Somehow support tests in GHA that are currently not possible. More
+  documentation can be found in current plugin.
 - Support `release/*` branches for stable releases
-    - Consider making them smart so that release/v2.x supports the v2 line and release/v3.x supports the v3 line, etc.
+    - Consider making them smart so that release/v2.x supports the v2 line and
+      release/v3.x supports the v3 line, etc.
 
 ## Documentation Needs
 
-- Branching strategies supported and references to how they're canonically defined
+- Branching strategies supported and references to how they're canonically
+  defined
 
 ## Branching Workflows to Support
 
@@ -383,7 +402,8 @@ Resources:
 
 ### Other Workflows to consider later
 
-- OneFlow: https://www.endoflineblog.com/oneflow-a-git-branching-model-and-workflow
+-
+OneFlow: https://www.endoflineblog.com/oneflow-a-git-branching-model-and-workflow
 
 ## Inspiration
 

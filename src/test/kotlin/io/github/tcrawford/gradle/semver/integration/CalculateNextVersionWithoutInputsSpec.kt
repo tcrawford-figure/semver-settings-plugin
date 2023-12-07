@@ -1,6 +1,5 @@
 package io.github.tcrawford.gradle.semver.integration
 
-import io.github.tcrawford.gradle.semver.reader.fetchVersion
 import io.github.tcrawford.gradle.semver.testkit.GradleProjectListener
 import io.github.tcrawford.gradle.semver.testkit.repositoryConfig
 import io.github.tcrawford.gradle.semver.util.GradleArgs
@@ -9,7 +8,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
 class CalculateNextVersionWithoutInputsSpec : FunSpec({
-    val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
+    val gradleSettingsProjectListener = GradleProjectListener(resolveResource("settings-sample"))
 
     val defaultArguments = listOf(
         GradleArgs.STACKTRACE,
@@ -19,7 +18,20 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
         GradleArgs.semverForTesting(true)
     )
 
-    listener(gradleProjectListener)
+    listener(gradleSettingsProjectListener)
+
+    // fun runAndValidate(config: RepositoryConfig, arguments: List<String>, validator: GradleProjectListener.() -> Unit) {
+    //     testListeners.forEach {
+    //         val runner = gradleSettingsProjectListener
+    //             .initRepository(config)
+    //             .initGradleRunner()
+    //             .withArguments(arguments)
+    //
+    //         runner.build()
+    //
+    //         it.validator()
+    //     }
+    // }
 
     context("should calculate next version without inputs") {
         val mainBranch = "main"
@@ -42,7 +54,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -50,7 +62,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1"
         }
 
         test("on development branch") {
@@ -67,7 +79,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -75,7 +87,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-develop.1"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1-develop.1"
         }
 
         test("on development branch with latest development tag") {
@@ -94,7 +106,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -102,7 +114,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-develop.3"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1-develop.3"
         }
 
         test("on feature branch off development branch") {
@@ -123,7 +135,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -131,7 +143,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-myname-sc-123456-my-awesome-feature.2"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1-myname-sc-123456-my-awesome-feature.2"
         }
 
         test("on feature branch off main branch") {
@@ -149,7 +161,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -157,7 +169,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-myname-sc-123456-my-awesome-feature.2"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1-myname-sc-123456-my-awesome-feature.2"
         }
 
         test("for develop branch after committing to feature branch and switching back to develop") {
@@ -179,7 +191,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -187,7 +199,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.1-develop.1"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.1-develop.1"
         }
 
         test("next branch version where last tag is prerelease") {
@@ -205,7 +217,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            val runner = gradleProjectListener
+            val runner = gradleSettingsProjectListener
                 .initRepository(config)
                 .initGradleRunner()
                 .withArguments(defaultArguments)
@@ -213,7 +225,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             runner.build()
 
             // Then
-            gradleProjectListener.projectDir.fetchVersion() shouldBe "1.0.3-myname-sc-123456-my-awesome-feature.1"
+            gradleSettingsProjectListener.computedVersion shouldBe "1.0.3-myname-sc-123456-my-awesome-feature.1"
         }
     }
 })

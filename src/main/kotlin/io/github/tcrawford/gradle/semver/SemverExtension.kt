@@ -1,9 +1,11 @@
 package io.github.tcrawford.gradle.semver
 
+import io.github.tcrawford.gradle.semver.internal.extensions.extensions
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.initialization.Settings
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.ExtensionAware
+import org.gradle.api.plugins.PluginAware
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.property
@@ -23,8 +25,8 @@ open class SemverExtension @Inject constructor(
     companion object {
         const val NAME = "semver"
 
-        operator fun invoke(settings: Settings) =
-            settings.extensions.create<SemverExtension>(NAME)
+        operator fun invoke(pluginAware: PluginAware) =
+            pluginAware.extensions.create<SemverExtension>(NAME)
     }
 
     val rootProjectDir: RegularFileProperty = objects.fileProperty()

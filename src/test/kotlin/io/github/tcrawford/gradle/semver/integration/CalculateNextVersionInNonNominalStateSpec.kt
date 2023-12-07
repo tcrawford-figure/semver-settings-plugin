@@ -11,7 +11,7 @@ import io.kotest.datatest.withData
 import io.kotest.matchers.shouldBe
 
 class CalculateNextVersionInNonNominalStateSpec : FunSpec({
-    val gradleProjectListener = GradleProjectListener(resolveResource("sample"))
+    val gradleProjectListener = GradleProjectListener(resolveResource("settings-sample"))
 
     val defaultArguments = listOf(
         GradleArgs.STACKTRACE,
