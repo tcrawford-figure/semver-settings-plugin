@@ -1,4 +1,4 @@
-rootProject.name = "semver-settings-plugin"
+rootProject.name = "git-aware-versioning-plugin"
 
 pluginManagement {
     repositories {
@@ -14,6 +14,4 @@ dependencyResolutionManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
-}
+plugins { id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0" }
