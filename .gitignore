@@ -3,15 +3,12 @@
 *.ipr
 out/
 
-!gradle-wrapper.jar
-!gradle-wrapper.properties
 **/.gradle/**
 **/build/**
 
 *.class
 *.ctxt
 *.ear
-*.jar
 *.log
 *.nar
 *.rar
