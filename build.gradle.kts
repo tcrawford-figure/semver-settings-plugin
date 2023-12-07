@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.publish.plugin)
+    alias(libs.plugins.binary.compatibility.validator)
 }
 
 group = "io.github.tcrawford.gradle.semver"
@@ -79,6 +80,13 @@ testlogger {
     slowThreshold = 1000
     showSummary = true
     showStandardStreams = false
+}
+
+apiValidation {
+    ignoredPackages += listOf(
+        // Internal package is not part of the public API
+        "io.github.tcrawford.gradle.semver.internal"
+    )
 }
 
 gradlePlugin {
