@@ -1,4 +1,4 @@
-rootProject.name = "semver-settings-plugin"
+rootProject.name = "git-aware-versioning-plugin"
 
 pluginManagement {
     repositories {
