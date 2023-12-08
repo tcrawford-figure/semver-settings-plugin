@@ -15,5 +15,14 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+    `gradle-enterprise`
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = "https://gradle.com/terms-of-service"
+        termsOfServiceAgree = "yes"
+        publishOnFailure()
+        publishAlwaysIf(System.getenv("CI") == "true")
+    }
 }
