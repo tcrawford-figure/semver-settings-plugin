@@ -3,7 +3,8 @@ name: Gradle Build
 on:
   pull_request:
     paths-ignore:
-      - "**.md"
+      - '**.md'
+  workflow_dispatch:
 
 concurrency:
   group: gradle-build-${{ github.ref }}
@@ -26,14 +27,14 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: "zulu"
+          distribution: 'zulu'
           java-version: 17
 
       - name: Build
         uses: gradle/gradle-build-action@v2
         with:
-          cache-read-only: ${{ github.ref != "refs/heads/main" }}
-          arguments:  check -s
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+          arguments: check -s
           gradle-home-cache-cleanup: true
           gradle-home-cache-includes: |
             caches
