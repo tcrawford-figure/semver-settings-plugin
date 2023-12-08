@@ -1,0 +1,49 @@
+name: Gradle Build
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+
+concurrency:
+  group: gradle-build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: 17
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ github.ref != "refs/heads/main" }}
+          arguments:  check -s
+          gradle-home-cache-cleanup: true
+          gradle-home-cache-includes: |
+            caches
+            notifications
+            jdks
+            wrapper
+
+      - name: Comment on PR with build scan
+        uses: mshick/add-pr-comment@v2
+        if: failure()
+        with:
+          repo-token: ${{ secrets.githubToken }}
+          message: Build failed ${{ steps.gradle.outputs.build-scan-url }}
