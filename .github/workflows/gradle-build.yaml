@@ -41,10 +41,3 @@ jobs:
             notifications
             jdks
             wrapper
-
-      - name: Comment on PR with build scan
-        uses: mshick/add-pr-comment@v2
-        if: failure()
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message: Build failed ${{ steps.gradle.outputs.build-scan-url }}
