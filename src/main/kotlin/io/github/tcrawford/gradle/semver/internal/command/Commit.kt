@@ -3,7 +3,7 @@ package io.github.tcrawford.gradle.semver.internal.command
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.revwalk.RevCommit
 
-internal class Commit(
+class Commit(
     private val git: Git
 ) {
     operator fun invoke(

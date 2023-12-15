@@ -8,7 +8,7 @@ import io.github.z4kn4fein.semver.inc
 import io.github.z4kn4fein.semver.nextPatch
 import io.github.z4kn4fein.semver.nextPreRelease
 
-internal fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
+fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
     isInvalidVersionForComputation() -> {
         error(
             "Cannot compute next version because the latest computed version likely contains branch " +
@@ -70,7 +70,7 @@ private val Version.stage: Stage?
  *
  * This just means that the version lacks a pre-release identifier.
  */
-internal val Version.isNotPreRelease: Boolean
+val Version.isNotPreRelease: Boolean
     get() = !isPreRelease
 
 /**

@@ -5,7 +5,7 @@ import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import java.io.File
 import java.io.Serializable
 
-internal data class VersionFactoryContext(
+data class VersionFactoryContext(
     val initialVersion: String,
     val stage: Stage,
     val modifier: Modifier,

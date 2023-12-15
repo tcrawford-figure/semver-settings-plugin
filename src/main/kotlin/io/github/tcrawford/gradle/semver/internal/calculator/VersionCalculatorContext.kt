@@ -4,7 +4,7 @@ import io.github.tcrawford.gradle.semver.internal.command.GitState
 import io.github.tcrawford.gradle.semver.internal.properties.Modifier
 import io.github.tcrawford.gradle.semver.internal.properties.Stage
 
-internal data class VersionCalculatorContext(
+data class VersionCalculatorContext(
     val stage: Stage,
     val modifier: Modifier,
     val forTesting: Boolean,

@@ -6,7 +6,7 @@ import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Ref
 import org.eclipse.jgit.revwalk.RevCommit
 
-internal class Branch(
+class Branch(
     private val git: Git,
     private val branchList: BranchList
 ) {

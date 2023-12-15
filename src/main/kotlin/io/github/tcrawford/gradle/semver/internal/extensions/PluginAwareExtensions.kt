@@ -24,6 +24,13 @@ val PluginAware.rootDir: File
         else -> error("Not a project or settings")
     }
 
+val PluginAware.projectDir: File
+    get() = when (this) {
+        is Settings -> settingsDir
+        is Project -> projectDir
+        else -> error("Not a project or settings")
+    }
+
 val PluginAware.gradle: Gradle
     get() = when (this) {
         is Settings -> gradle
@@ -38,7 +45,7 @@ val PluginAware.extensions: ExtensionContainer
         else -> error("Not a project or settings")
     }
 
-internal val PluginAware.flowScope: FlowScope
+val PluginAware.flowScope: FlowScope
     get() = when (this) {
         is Project -> serviceOf<FlowScope>()
         is Settings -> serviceOf<FlowScope>()

@@ -8,7 +8,7 @@ import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.ObjectId
 import org.eclipse.jgit.lib.Ref
 
-internal class BranchList(
+class BranchList(
     private val git: Git
 ) {
     fun findDevelopmentBranch(providedDevelopmentBranch: String?): Ref =

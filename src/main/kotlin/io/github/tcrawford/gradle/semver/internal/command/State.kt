@@ -7,7 +7,7 @@ import org.eclipse.jgit.lib.Constants
 // https://github.com/magicmonty/bash-git-prompt/
 // TODO: Future consideration: Support rebasing step in the version. So something like:
 //  - `1.2.3-rebasing.2-12` - would mean step 2 out of 12 of rebasing.
-internal class State(
+class State(
     private val git: Git
 ) {
     operator fun invoke(): GitState = when {
@@ -39,7 +39,8 @@ internal class State(
         get() = git.repository.exactRef(Constants.HEAD).target.objectId.name == git.repository.branch
 }
 
-internal enum class GitState(val description: String) {
+// TODO: Add state for uninitialized repo and gently nag on every build
+enum class GitState(val description: String) {
     NOMINAL(""),
     BISECTING("BISECTING"),
     CHERRY_PICKING("CHERRY-PICKING"),

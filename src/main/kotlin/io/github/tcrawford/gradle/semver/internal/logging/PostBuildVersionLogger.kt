@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.always
 
 private val log = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 
-internal fun PluginAware.registerPostBuildVersionLogMessage(message: String) {
+fun PluginAware.registerPostBuildVersionLogMessage(message: String) {
     flowScope.always(PostBuildVersionLogger::class) { action ->
         action.parameters.message.set(message)
     }

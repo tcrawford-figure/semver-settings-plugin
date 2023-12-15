@@ -3,7 +3,7 @@ package io.github.tcrawford.gradle.semver.internal.command
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ConfigConstants
 
-internal class Config(
+class Config(
     private val git: Git
 ) {
     fun author(name: String, email: String) {

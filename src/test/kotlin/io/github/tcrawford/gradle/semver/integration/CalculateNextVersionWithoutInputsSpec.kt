@@ -20,19 +20,6 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
     listener(gradleSettingsProjectListener)
 
-    // fun runAndValidate(config: RepositoryConfig, arguments: List<String>, validator: GradleProjectListener.() -> Unit) {
-    //     testListeners.forEach {
-    //         val runner = gradleSettingsProjectListener
-    //             .initRepository(config)
-    //             .initGradleRunner()
-    //             .withArguments(arguments)
-    //
-    //         runner.build()
-    //
-    //         it.validator()
-    //     }
-    // }
-
     context("should calculate next version without inputs") {
         val mainBranch = "main"
         val developmentBranch = "develop"

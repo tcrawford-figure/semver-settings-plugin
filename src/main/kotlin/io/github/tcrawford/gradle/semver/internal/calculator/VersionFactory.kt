@@ -11,7 +11,7 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 
-internal fun ProviderFactory.versionFactory(
+fun ProviderFactory.versionFactory(
     context: VersionFactoryContext
 ): Provider<String> =
     of(VersionFactory::class.java) { spec ->
@@ -20,7 +20,7 @@ internal fun ProviderFactory.versionFactory(
         }
     }
 
-internal abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
+abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
     interface Params : ValueSourceParameters {
         val versionFactoryContext: Property<VersionFactoryContext>
     }

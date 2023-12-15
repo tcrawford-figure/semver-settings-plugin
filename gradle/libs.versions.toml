@@ -9,24 +9,27 @@ kotlin-semver = "1.4.2"
 binary-compatibility-validator = "0.13.2"
 dependency-analysis = "1.27.0"
 detekt = "1.23.4"
+gradle-testkit = "0.7"
 ktlint = "11.6.1"
-test-logger = "4.0.0"
 publish-plugin = "1.2.1"
+test-logger = "4.0.0"
+testkit-support = "0.12"
 
 [libraries]
 
 jgit = { module = "org.eclipse.jgit:org.eclipse.jgit", version.ref = "jgit" }
+kotlin-semver = { module = "io.github.z4kn4fein:semver", version.ref = "kotlin-semver" }
 
 kotest-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
-
-kotlin-semver = { module = "io.github.z4kn4fein:semver", version.ref = "kotlin-semver" }
+testkit-support = { module = "com.autonomousapps:testkit", version.ref = "testkit-support" }
 
 [plugins]
 
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+gradle-testkit = { id = "com.autonomousapps.testkit", version.ref = "gradle-testkit" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 publish-plugin = { id = "com.gradle.plugin-publish", version.ref = "publish-plugin" }

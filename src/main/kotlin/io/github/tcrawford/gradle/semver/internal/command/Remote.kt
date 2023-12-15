@@ -6,7 +6,7 @@ import org.eclipse.jgit.transport.RemoteConfig
 import org.eclipse.jgit.transport.URIish
 import java.net.URL
 
-internal class Remote(
+class Remote(
     private val git: Git
 ) {
     fun add(

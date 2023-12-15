@@ -3,16 +3,33 @@ import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.publish.plugin)
+
     alias(libs.plugins.ktlint)
     alias(libs.plugins.detekt)
     alias(libs.plugins.dependency.analysis)
-    alias(libs.plugins.test.logger)
-    alias(libs.plugins.publish.plugin)
     alias(libs.plugins.binary.compatibility.validator)
+
+    alias(libs.plugins.test.logger)
+    alias(libs.plugins.gradle.testkit)
+    idea
 }
 
 group = "io.github.tcrawford.gradle.semver"
 version = "0.0.7"
+
+val testImplementation: Configuration by configurations.getting
+
+val functionalTestImplementation: Configuration by configurations.getting {
+    extendsFrom(testImplementation)
+}
+
+sourceSets {
+    named("functionalTest") {
+        compileClasspath += sourceSets.main.get().compileClasspath + sourceSets.main.get().output
+        runtimeClasspath += output + compileClasspath
+    }
+}
 
 dependencies {
     implementation(gradleKotlinDsl())
@@ -26,7 +43,7 @@ dependencies {
 }
 
 tasks {
-    test {
+    withType<Test>().configureEach {
         useJUnitPlatform()
         testLogging {
             setExceptionFormat("full")
@@ -64,6 +81,13 @@ tasks {
     }
 }
 
+idea {
+    module {
+        // Marks the functionTest as a test source set
+        testSources.from(sourceSets.functionalTest.get().allSource.srcDirs)
+    }
+}
+
 kotlin {
     jvmToolchain(11)
 }
@@ -87,6 +111,10 @@ apiValidation {
         // Internal package is not part of the public API
         "io.github.tcrawford.gradle.semver.internal"
     )
+}
+
+gradleTestKitSupport {
+    withSupportLibrary("0.13")
 }
 
 gradlePlugin {
