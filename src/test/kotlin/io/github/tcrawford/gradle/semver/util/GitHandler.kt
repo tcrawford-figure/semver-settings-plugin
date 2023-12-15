@@ -16,7 +16,7 @@ private val log: Logger = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 internal class GitHandler(
     localRepoDir: File,
     remoteRepoDir: File,
-    initialBranch: String
+    initialBranch: String,
 ) {
     val localKGit = KGit(localRepoDir, initializeRepo = InitializeRepo(bare = false, initialBranch))
     private val remoteKGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, initialBranch))

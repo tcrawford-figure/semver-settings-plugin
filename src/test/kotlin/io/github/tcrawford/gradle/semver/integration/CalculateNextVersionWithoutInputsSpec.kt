@@ -15,23 +15,10 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
         GradleArgs.PARALLEL,
         GradleArgs.BUILD_CACHE,
         GradleArgs.CONFIGURATION_CACHE,
-        GradleArgs.semverForTesting(true)
+        GradleArgs.semverForTesting(true),
     )
 
     listener(gradleSettingsProjectListener)
-
-    // fun runAndValidate(config: RepositoryConfig, arguments: List<String>, validator: GradleProjectListener.() -> Unit) {
-    //     testListeners.forEach {
-    //         val runner = gradleSettingsProjectListener
-    //             .initRepository(config)
-    //             .initGradleRunner()
-    //             .withArguments(arguments)
-    //
-    //         runner.build()
-    //
-    //         it.validator()
-    //     }
-    // }
 
     context("should calculate next version without inputs") {
         val mainBranch = "main"

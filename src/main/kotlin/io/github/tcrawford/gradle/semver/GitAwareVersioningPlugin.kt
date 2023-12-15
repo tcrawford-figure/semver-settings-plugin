@@ -28,7 +28,7 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
             overrideVersion = target.overrideVersion.orNull,
             rootDir = semverExtension.rootProjectDir.getOrElse { target.rootDir }.asFile,
             mainBranch = semverExtension.mainBranch.orNull,
-            developmentBranch = semverExtension.developmentBranch.orNull
+            developmentBranch = semverExtension.developmentBranch.orNull,
         )
 
         val nextVersion = target.providers.versionFactory(versionFactoryContext).get()

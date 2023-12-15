@@ -1,7 +1,7 @@
 package io.github.tcrawford.gradle.semver.internal.properties
 
 // In order from lowest to highest priority
-internal enum class Stage(val value: String) {
+enum class Stage(val value: String) {
     Dev("dev"),
     Alpha("alpha"),
     Beta("beta"),
@@ -11,7 +11,7 @@ internal enum class Stage(val value: String) {
     GA("ga"),
     Release("release"),
     Stable("stable"),
-    Auto("auto")
+    Auto("auto"),
     ;
 
     companion object {

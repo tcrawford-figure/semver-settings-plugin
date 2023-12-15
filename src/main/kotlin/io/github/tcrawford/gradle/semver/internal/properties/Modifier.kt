@@ -2,11 +2,12 @@ package io.github.tcrawford.gradle.semver.internal.properties
 
 import io.github.z4kn4fein.semver.Inc
 
-internal enum class Modifier(val value: String) {
+enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
-    Auto("auto");
+    Auto("auto"),
+    ;
 
     fun toInc(): Inc = when (this) {
         Major -> Inc.MAJOR

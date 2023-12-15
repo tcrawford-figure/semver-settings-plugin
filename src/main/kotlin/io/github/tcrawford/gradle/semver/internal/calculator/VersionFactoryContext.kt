@@ -5,7 +5,7 @@ import io.github.tcrawford.gradle.semver.internal.properties.Stage
 import java.io.File
 import java.io.Serializable
 
-internal data class VersionFactoryContext(
+data class VersionFactoryContext(
     val initialVersion: String,
     val stage: Stage,
     val modifier: Modifier,
@@ -13,7 +13,7 @@ internal data class VersionFactoryContext(
     val overrideVersion: String?,
     val rootDir: File,
     val mainBranch: String?,
-    val developmentBranch: String?
+    val developmentBranch: String?,
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

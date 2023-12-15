@@ -20,7 +20,7 @@ import javax.inject.Inject
  *
  */
 open class SemverExtension @Inject constructor(
-    objects: ObjectFactory
+    objects: ObjectFactory,
 ) {
     companion object {
         const val NAME = "semver"

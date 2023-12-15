@@ -2,6 +2,7 @@ rootProject.name = "git-aware-versioning-plugin"
 
 pluginManagement {
     repositories {
+        mavenLocal()
         mavenCentral()
         gradlePluginPortal()
     }

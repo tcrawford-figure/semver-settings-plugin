@@ -1,5 +1,6 @@
 package io.github.tcrawford.gradle.semver.reader
 
+import io.github.tcrawford.gradle.semver.Constants
 import java.io.File
 import java.util.Properties
 
@@ -10,6 +11,6 @@ internal fun File.fetchVersionTag(): String =
     fetchSemverProperties().getProperty("versionTag")
 
 private fun File.fetchSemverProperties(): Properties =
-    resolve("build/reports/semver/semver.properties").let {
+    resolve(Constants.SEMVER_PROPERTY_PATH).let {
         Properties().apply { load(it.reader()) }
     }

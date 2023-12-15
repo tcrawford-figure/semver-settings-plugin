@@ -17,7 +17,7 @@ class MissingLocalBranchSpec : FunSpec({
         GradleArgs.PARALLEL,
         GradleArgs.BUILD_CACHE,
         GradleArgs.CONFIGURATION_CACHE,
-        semverForTesting(true)
+        semverForTesting(true),
     )
 
     listener(gradleProjectListener)
