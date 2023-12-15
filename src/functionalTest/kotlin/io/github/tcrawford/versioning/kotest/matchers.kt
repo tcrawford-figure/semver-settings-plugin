@@ -1,4 +1,4 @@
-package io.github.tcrawford.versioning.utils
+package io.github.tcrawford.versioning.kotest
 
 import io.kotest.matchers.shouldBe
 

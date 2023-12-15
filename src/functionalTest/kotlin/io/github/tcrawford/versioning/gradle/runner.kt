@@ -1,4 +1,4 @@
-package io.github.tcrawford.versioning.utils
+package io.github.tcrawford.versioning.gradle
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner

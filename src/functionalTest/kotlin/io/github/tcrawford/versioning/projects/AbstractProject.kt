@@ -7,20 +7,19 @@ import io.github.tcrawford.versioning.git.GitInstance
 import io.github.tcrawford.versioning.git.GitInstanceWriter
 import io.github.tcrawford.versioning.internal.command.InitializeRepo
 import io.github.tcrawford.versioning.internal.command.KGit
-import io.github.tcrawford.versioning.utils.registerForCleanup
 import java.io.File
 import java.util.Properties
 import kotlin.io.path.createTempDirectory
 
-abstract class AbstractProject : AbstractGradleProject() {
+abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
     abstract val gradleProject: GradleProject
     abstract val projectName: String
 
     private val remoteRepoDir: File =
-        createTempDirectory("remote-repo").toFile().registerForCleanup()
+        createTempDirectory("remote-repo").toFile()
 
     val buildCacheDir: File =
-        createTempDirectory("build-cache").toFile().registerForCleanup()
+        createTempDirectory("build-cache").toFile()
 
     val version: String
         get() = fetchSemverProperties().getProperty("version")
@@ -50,6 +49,11 @@ abstract class AbstractProject : AbstractGradleProject() {
 
     fun cleanGitDir() {
         gradleProject.rootDir.resolve(".git").deleteRecursively()
+    }
+
+    override fun close() {
+        remoteRepoDir.deleteRecursively()
+        buildCacheDir.deleteRecursively()
     }
 
     protected open fun fetchSemverProperties(): Properties =
