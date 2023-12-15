@@ -10,6 +10,6 @@ fun PluginAware.writeVersionToPropertiesFile(version: String, tagPrefix: String)
         """
         |version=$version
         |versionTag=$tagPrefix$version
-        """.trimMargin()
+        """.trimMargin(),
     )
 }

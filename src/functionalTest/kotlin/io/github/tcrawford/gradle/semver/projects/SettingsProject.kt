@@ -7,7 +7,7 @@ import io.github.tcrawford.gradle.semver.plugins.GradlePlugins
 import kotlin.io.path.createTempDirectory
 
 class SettingsProject(
-    override val projectName: String
+    override val projectName: String,
 ) : AbstractProject() {
     override val gradleProject: GradleProject
         get() = build()
@@ -25,7 +25,7 @@ class SettingsProject(
                         directory = "${buildCacheDir.absolutePath}"
                       }
                     }
-                """.trimIndent()
+                """.trimIndent(),
             )
             withBuildScript {
                 plugins(GradlePlugins.kotlinNoApply)

@@ -13,7 +13,7 @@ data class VersionFactoryContext(
     val overrideVersion: String?,
     val rootDir: File,
     val mainBranch: String?,
-    val developmentBranch: String?
+    val developmentBranch: String?,
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

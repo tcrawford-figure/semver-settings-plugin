@@ -21,8 +21,7 @@ data class GitInstance(
         fun build() = GitInstance(
             debugging = debugging,
             initialBranch = initialBranch,
-            actions = actions
+            actions = actions,
         )
     }
 }
-

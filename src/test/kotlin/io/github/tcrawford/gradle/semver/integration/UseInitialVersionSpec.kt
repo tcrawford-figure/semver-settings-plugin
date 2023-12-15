@@ -16,7 +16,7 @@ class UseInitialVersionSpec : FunSpec({
         GradleArgs.PARALLEL,
         GradleArgs.BUILD_CACHE,
         GradleArgs.CONFIGURATION_CACHE,
-        GradleArgs.semverForTesting(true)
+        GradleArgs.semverForTesting(true),
     )
 
     listener(gradleProjectListener)

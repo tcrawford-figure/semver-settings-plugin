@@ -12,11 +12,17 @@ private const val LOG_DEBUG_PREFIX = "[semver-settings-plugin] DEBUG "
 private fun String.colored(c: String) = "$c$this\u001B[0m"
 
 fun String.darkgray() = this.colored("\u001B[30m")
+
 fun String.red() = this.colored("\u001B[31m")
+
 fun String.green() = this.colored("\u001B[32m")
+
 fun String.yellow() = this.colored("\u001B[33m")
+
 fun String.purple() = this.colored("\u001B[35m")
+
 fun String.lightgray() = this.colored("\u001B[37m")
+
 fun String.bold() = this.colored("\u001B[1m")
 
 fun Logger.error(message: () -> String) =

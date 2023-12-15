@@ -7,7 +7,7 @@ object Init {
     operator fun invoke(
         directory: File,
         bare: Boolean = false,
-        initialBranch: String = "main"
+        initialBranch: String = "main",
     ): Git = Git.init()
         .setDirectory(directory)
         .setBare(bare)

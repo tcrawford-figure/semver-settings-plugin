@@ -10,7 +10,7 @@ import org.eclipse.jgit.lib.Constants
 import org.eclipse.jgit.lib.Ref
 
 class TagList(
-    private val git: Git
+    private val git: Git,
 ) {
     operator fun invoke(): List<Ref> =
         git.tagList().call()

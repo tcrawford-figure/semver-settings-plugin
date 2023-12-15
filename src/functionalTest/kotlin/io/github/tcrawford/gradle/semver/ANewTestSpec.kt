@@ -39,8 +39,6 @@ class ANewTestSpec : FunSpec({
         projects.build(GradleVersion.current())
 
         // Then
-        projects.versions shouldOnlyContain "1.0.1-${featureBranch}.1"
+        projects.versions shouldOnlyContain "1.0.1-$featureBranch.1"
     }
 })
-
-

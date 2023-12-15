@@ -37,7 +37,7 @@ abstract class AbstractProject : AbstractGradleProject() {
 
         val gitInstanceWriter = GitInstanceWriter(
             localGit = localGit,
-            gitActionsConfig = gitInstance.actions
+            gitActionsConfig = gitInstance.actions,
         )
 
         gitInstanceWriter.write(gitInstance.debugging)

@@ -31,7 +31,7 @@ class SubprojectProject(
                             directory = "${buildCacheDir.absolutePath}"
                         }
                     }
-                """.trimIndent()
+                """.trimIndent(),
             )
         }.withSubproject(subprojectName) {
             withBuildScript {

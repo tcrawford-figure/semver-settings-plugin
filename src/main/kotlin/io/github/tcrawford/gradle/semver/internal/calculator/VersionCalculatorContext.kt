@@ -10,5 +10,5 @@ data class VersionCalculatorContext(
     val forTesting: Boolean,
     val gitState: GitState,
     val mainBranch: String? = null,
-    val developmentBranch: String? = null
+    val developmentBranch: String? = null,
 )

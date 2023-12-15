@@ -6,5 +6,5 @@ enum class SemverProperty(val property: String) {
     TagPrefix("semver.tagPrefix"),
     OverrideVersion("semver.overrideVersion"),
 
-    ForTesting("semver.forTesting")
+    ForTesting("semver.forTesting"),
 }

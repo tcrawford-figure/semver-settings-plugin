@@ -4,7 +4,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Ref
 
 class Checkout(
-    private val git: Git
+    private val git: Git,
 ) {
     operator fun invoke(branchName: String, createBranch: Boolean = false): Ref =
         git.checkout()

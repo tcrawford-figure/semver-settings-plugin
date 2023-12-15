@@ -8,21 +8,21 @@ import java.io.File
 fun build(
     gradleVersion: GradleVersion,
     projectDir: File,
-    vararg args: String
+    vararg args: String,
 ): BuildResult =
     runner(gradleVersion, projectDir, *args).build()
 
 fun buildAndFail(
     gradleVersion: GradleVersion,
     projectDir: File,
-    vararg args: String
+    vararg args: String,
 ): BuildResult =
     runner(gradleVersion, projectDir, *args).buildAndFail()
 
 fun runWithoutExpectations(
     gradleVersion: GradleVersion,
     projectDir: File,
-    vararg args: String
+    vararg args: String,
 ): BuildResult =
     runner(gradleVersion, projectDir, *args).run()
 
@@ -37,11 +37,11 @@ fun runner(
         "--build-cache",
         "--configuration-cache",
         "--stacktrace",
+        "-Psemver.forTesting=true",
     ).toList()
 
     forwardOutput()
     withGradleVersion(gradleVersion.version)
     withProjectDir(projectDir)
     withArguments(arguments)
-
 }

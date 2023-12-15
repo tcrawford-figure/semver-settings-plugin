@@ -9,7 +9,7 @@ object Open {
         FileRepositoryBuilder()
             .readEnvironment()
             .findGitDir()
-            .build()
+            .build(),
     )
 
     operator fun invoke(rootDir: File): Git =

@@ -6,7 +6,8 @@ enum class Modifier(val value: String) {
     Major("major"),
     Minor("minor"),
     Patch("patch"),
-    Auto("auto");
+    Auto("auto"),
+    ;
 
     fun toInc(): Inc = when (this) {
         Major -> Inc.MAJOR

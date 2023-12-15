@@ -11,7 +11,7 @@ enum class Stage(val value: String) {
     GA("ga"),
     Release("release"),
     Stable("stable"),
-    Auto("auto")
+    Auto("auto"),
     ;
 
     companion object {

@@ -7,7 +7,7 @@ import io.github.tcrawford.gradle.semver.utils.registerForCleanup
 import kotlin.io.path.createTempDirectory
 
 class RegularProject(
-    override val projectName: String
+    override val projectName: String,
 ) : AbstractProject() {
     override val gradleProject: GradleProject
         get() = build()
@@ -17,7 +17,7 @@ class RegularProject(
             withBuildScript {
                 plugins(
                     GradlePlugins.gitAwareVersioningPlugin,
-                    GradlePlugins.kotlinNoApply
+                    GradlePlugins.kotlinNoApply,
                 )
             }
 
@@ -30,7 +30,7 @@ class RegularProject(
                             directory = "${buildCacheDir.absolutePath}"
                         }
                     }
-                """.trimIndent()
+                """.trimIndent(),
             )
         }.write()
 }

@@ -4,7 +4,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.ConfigConstants
 
 class Config(
-    private val git: Git
+    private val git: Git,
 ) {
     fun author(name: String, email: String) {
         val config = git.repository.config
@@ -13,13 +13,13 @@ class Config(
             ConfigConstants.CONFIG_USER_SECTION,
             null,
             ConfigConstants.CONFIG_KEY_NAME,
-            name
+            name,
         )
         config.setString(
             ConfigConstants.CONFIG_USER_SECTION,
             null,
             ConfigConstants.CONFIG_KEY_EMAIL,
-            email
+            email,
         )
 
         config.save()

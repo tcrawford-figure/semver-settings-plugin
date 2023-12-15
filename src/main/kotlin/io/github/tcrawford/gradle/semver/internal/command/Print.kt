@@ -8,6 +8,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private val log = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
+private const val SHORTENED_COMMIT_LENGTH = 7
 
 class Print(
     private val kgit: KGit,
@@ -32,7 +33,10 @@ class Print(
         val logLevel = if (debug) LogLevel.LIFECYCLE else LogLevel.INFO
         log.log(logLevel, "Commits:")
         kgit.log().forEach { commit ->
-            log.log(logLevel, "  ${commit.name.take(8)} ${convertEpochToCustomFormat(commit.commitTime)} ${commit.shortMessage}")
+            log.log(
+                logLevel,
+                "  ${commit.name.take(SHORTENED_COMMIT_LENGTH)} ${convertEpochToCustomFormat(commit.commitTime)} ${commit.shortMessage}",
+            )
         }
     }
 

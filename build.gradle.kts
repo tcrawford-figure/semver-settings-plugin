@@ -109,7 +109,7 @@ testlogger {
 apiValidation {
     ignoredPackages += listOf(
         // Internal package is not part of the public API
-        "io.github.tcrawford.gradle.semver.internal"
+        "io.github.tcrawford.gradle.semver.internal",
     )
 }
 

@@ -4,7 +4,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.Ref
 
 class Tag(
-    private val git: Git
+    private val git: Git,
 ) {
     operator fun invoke(tagName: String): Ref? =
         git.tag()

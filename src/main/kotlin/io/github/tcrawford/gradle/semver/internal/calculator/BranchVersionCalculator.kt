@@ -9,7 +9,7 @@ import io.github.z4kn4fein.semver.inc
  * Should calculate the next version based on the current branch name
  */
 class BranchVersionCalculator(
-    private val kGit: KGit
+    private val kGit: KGit,
 ) : VersionCalculator {
     override fun calculate(latestVersion: Version, context: VersionCalculatorContext): String = with(context) {
         val currentBranch = kGit.branch.currentRef(forTesting)

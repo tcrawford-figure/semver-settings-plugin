@@ -12,7 +12,7 @@ import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 
 fun ProviderFactory.versionFactory(
-    context: VersionFactoryContext
+    context: VersionFactoryContext,
 ): Provider<String> =
     of(VersionFactory::class.java) { spec ->
         spec.parameters {
@@ -33,7 +33,7 @@ abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
                 forTesting = forTesting,
                 gitState = gitState,
                 mainBranch = mainBranch,
-                developmentBranch = developmentBranch
+                developmentBranch = developmentBranch,
             )
         }
 
