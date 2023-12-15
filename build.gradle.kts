@@ -15,7 +15,7 @@ plugins {
     idea
 }
 
-group = "io.github.tcrawford.gradle.semver"
+group = "io.github.tcrawford.gradle"
 version = "0.0.7"
 
 val testImplementation: Configuration by configurations.getting
@@ -109,7 +109,7 @@ testlogger {
 apiValidation {
     ignoredPackages += listOf(
         // Internal package is not part of the public API
-        "io.github.tcrawford.gradle.semver.internal",
+        "io.github.tcrawford.versioning.internal",
     )
 }
 
@@ -119,11 +119,11 @@ gradleTestKitSupport {
 
 gradlePlugin {
     plugins {
-        create(project.name) {
-            id = "io.github.tcrawford.gradle.semver"
+        register("versioning") {
+            id = "io.github.tcrawford.versioning"
             displayName = "Git Aware Versioning Plugin"
             description = "Git Aware Versioning Plugin"
-            implementationClass = "io.github.tcrawford.gradle.semver.GitAwareVersioningPlugin"
+            implementationClass = "io.github.tcrawford.versioning.GitAwareVersioningPlugin"
         }
     }
 }

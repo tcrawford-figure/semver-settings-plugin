@@ -1,3 +1,3 @@
 plugins {
-    id("io.github.tcrawford.gradle.semver")
+    id("io.github.tcrawford.versioning")
 }
