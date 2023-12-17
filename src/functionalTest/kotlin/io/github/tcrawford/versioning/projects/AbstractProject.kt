@@ -28,7 +28,7 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
         get() = fetchSemverProperties().getProperty("versionTag")
 
     fun install(block: GitInstance.Builder.() -> Unit) {
-        val builder = GitInstance.Builder()
+        val builder = GitInstance.Builder(this)
         builder.block()
         install(builder.build())
     }

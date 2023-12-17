@@ -1,24 +1,22 @@
 package io.github.tcrawford.versioning
 
-import io.github.tcrawford.versioning.kotest.CleanupGitDirExtension
+import io.github.tcrawford.versioning.kotest.GradleProjectsContainer
 import io.github.tcrawford.versioning.kotest.shouldOnlyContain
-import io.github.tcrawford.versioning.projects.GradleProjects.Companion.gradleProjects
 import io.github.tcrawford.versioning.projects.RegularProject
 import io.github.tcrawford.versioning.projects.SettingsProject
 import io.github.tcrawford.versioning.projects.SubprojectProject
+import io.kotest.core.extensions.install
 import io.kotest.core.spec.style.FunSpec
 import org.gradle.util.GradleVersion
 
 class ANewTestSpec : FunSpec({
-    val projects = autoClose(
-        gradleProjects(
+    val projects = install(GradleProjectsContainer) {
+        projects += listOf(
             RegularProject(projectName = "regular-project"),
             SettingsProject(projectName = "settings-project"),
             SubprojectProject(projectName = "subproject-project"),
-        ),
-    )
-
-    extensions(CleanupGitDirExtension(projects))
+        )
+    }
 
     val mainBranch = "main"
     val featureBranch = "feature-branch"

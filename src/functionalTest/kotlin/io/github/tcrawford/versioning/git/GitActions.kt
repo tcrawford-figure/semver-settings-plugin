@@ -1,7 +1,8 @@
 package io.github.tcrawford.versioning.git
 
 import io.github.tcrawford.versioning.internal.command.KGit
-import java.io.File
+import io.github.tcrawford.versioning.projects.AbstractProject
+import io.github.tcrawford.versioning.util.resolveResource
 
 sealed interface Action {
     fun execute(git: KGit)
@@ -37,29 +38,37 @@ data class CommitAction(
 }
 
 data class RunScriptAction(
-    val script: File,
+    val script: Script,
+    val project: AbstractProject,
     val arguments: List<String>,
 ) : Action {
     override fun execute(git: KGit) {
+        val scriptFile = resolveResource("scripts/${script.scriptFileName}")
+        val projectPath = project.gradleProject.rootDir.absolutePath
+
         val processBuilder = ProcessBuilder()
-        processBuilder.command("bash", script.absolutePath, *arguments.toTypedArray())
+        processBuilder.command("bash", scriptFile.absolutePath, projectPath, *arguments.toTypedArray())
         processBuilder.redirectErrorStream(true)
         val process = processBuilder.start()
         process.waitFor()
     }
 }
 
-class GitActionsConfig {
+class GitActionsConfig(
+    private val project: AbstractProject,
+) {
     val actions = mutableListOf<Action>()
 
     fun actions(config: Actions.() -> Unit) {
-        val actionObject = Actions()
+        val actionObject = Actions(project)
         actionObject.config()
         actions.addAll(actionObject.actionsToRun)
     }
 }
 
-class Actions {
+class Actions(
+    private val project: AbstractProject,
+) {
     internal val actionsToRun = mutableListOf<Action>()
 
     fun checkout(branch: String) {
@@ -72,8 +81,19 @@ class Actions {
         actionsToRun.add(commitAction)
     }
 
-    fun runScript(script: File, vararg arguments: String) {
-        val runScriptAction = RunScriptAction(script, arguments.toList())
+    fun runScript(script: Script, vararg arguments: String) {
+        val runScriptAction = RunScriptAction(script, project, arguments.toList())
         actionsToRun.add(runScriptAction)
     }
+}
+
+enum class Script(
+    val scriptFileName: String,
+) {
+    CREATE_BISECTING_STATE("create_bisecting_state.sh"),
+    CREATE_CHERRY_PICKING_STATE("create_cherry_picking_state.sh"),
+    CREATE_DETACHED_HEAD_STATE("create_detached_head_state.sh"),
+    CREATE_MERGING_STATE("create_merging_state.sh"),
+    CREATE_REBASING_STATE("create_rebasing_state.sh"),
+    CREATE_REVERTING_STATE("create_reverting_state.sh"),
 }
