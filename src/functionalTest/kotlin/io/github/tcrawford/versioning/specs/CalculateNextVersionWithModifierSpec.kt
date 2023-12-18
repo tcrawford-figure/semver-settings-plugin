@@ -41,11 +41,11 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
                 }
             }
 
-            // When
+            // When / Then
             val results = projects.runWithoutExpectations(GradleVersion.current(), "-P${SemverProperty.Modifier.property}=invalid")
 
             // Then
-            results.values.map { it.output } shouldOnlyContain "BUILD FAILED"
+            results.values.map { it.output } shouldOnlyContain "Invalid modifier provided"
         }
     }
 
