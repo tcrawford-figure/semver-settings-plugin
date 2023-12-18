@@ -3,10 +3,13 @@ package io.github.tcrawford.versioning.git
 import io.github.tcrawford.versioning.internal.command.KGit
 import io.github.tcrawford.versioning.projects.AbstractProject
 import io.github.tcrawford.versioning.util.resolveResource
+import org.eclipse.jgit.lib.Constants
 
 sealed interface Action {
     fun execute(git: KGit)
 }
+
+sealed interface RemovalAction : Action
 
 data class CheckoutAction(
     val branch: String,
@@ -54,6 +57,22 @@ data class RunScriptAction(
     }
 }
 
+data class RemoveLocalBranchAction(
+    val branch: String,
+) : RemovalAction {
+    override fun execute(git: KGit) {
+        git.branch.delete("${Constants.R_HEADS}$branch")
+    }
+}
+
+data class RemoveRemoteBranchAction(
+    val branch: String,
+) : RemovalAction {
+    override fun execute(git: KGit) {
+        git.branch.delete("${Constants.R_REMOTES}${Constants.DEFAULT_REMOTE_NAME}/$branch")
+    }
+}
+
 class GitActionsConfig(
     private val project: AbstractProject,
 ) {
@@ -84,6 +103,16 @@ class Actions(
     fun runScript(script: Script, vararg arguments: String) {
         val runScriptAction = RunScriptAction(script, project, arguments.toList())
         actionsToRun.add(runScriptAction)
+    }
+
+    fun removeLocalBranch(branch: String) {
+        val removeLocalBranchAction = RemoveLocalBranchAction(branch)
+        actionsToRun.add(removeLocalBranchAction)
+    }
+
+    fun removeRemoteBranch(branch: String) {
+        val removeRemoteBranchAction = RemoveRemoteBranchAction(branch)
+        actionsToRun.add(removeRemoteBranchAction)
     }
 }
 

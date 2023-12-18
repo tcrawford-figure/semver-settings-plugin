@@ -1,15 +1,19 @@
 package io.github.tcrawford.versioning.specs
 
+import io.github.tcrawford.versioning.internal.properties.Modifier
+import io.github.tcrawford.versioning.internal.properties.SemverProperty
 import io.github.tcrawford.versioning.kotest.GradleProjectsExtension
+import io.github.tcrawford.versioning.kotest.shouldOnlyContain
 import io.github.tcrawford.versioning.kotest.shouldOnlyHave
 import io.github.tcrawford.versioning.projects.RegularProject
 import io.github.tcrawford.versioning.projects.SettingsProject
 import io.github.tcrawford.versioning.projects.SubprojectProject
+import io.github.tcrawford.versioning.util.GradleArgs.semverModifier
 import io.kotest.core.extensions.install
 import io.kotest.core.spec.style.FunSpec
 import org.gradle.util.GradleVersion
 
-class CalculateNextVersionWithoutInputsSpec : FunSpec({
+class CalculateNextVersionWithModifierSpec : FunSpec({
     val projects = install(
         GradleProjectsExtension(
             RegularProject(projectName = "regular-project"),
@@ -18,92 +22,98 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
         ),
     )
 
-    context("should calculate next version without inputs") {
-        val mainBranch = "main"
-        val developmentBranch = "develop"
-        val featureBranch = "myname/sc-123456/my-awesome-feature"
+    val mainBranch = "master"
+    val developmentBranch = "devel"
+    val featureBranch = "cool-feature"
 
-        test("on main branch") {
+    context("should not calculate next version") {
+        test("when modifier is invalid") {
             // Given
             projects.install {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
                     checkout(developmentBranch)
                     commit(message = "1 commit on $developmentBranch")
+
+                    checkout(featureBranch)
+                }
+            }
+
+            // When
+            val results = projects.runWithoutExpectations(GradleVersion.current(), "-P${SemverProperty.Modifier.property}=invalid")
+
+            // Then
+            results.values.map { it.output } shouldOnlyContain "BUILD FAILED"
+        }
+    }
+
+    context("should calculate next version with modifier input") {
+        test("on main branch - next major version") {
+            // Given
+            projects.install {
+                initialBranch = mainBranch
+                actions = actions {
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
+                    checkout(developmentBranch)
+                    commit(message = "1 commit on $developmentBranch")
+
                     checkout(mainBranch)
                 }
             }
 
             // When
-            projects.build(GradleVersion.current())
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Major))
+
+            // Then
+            projects.versions shouldOnlyHave "2.0.0"
+        }
+
+        test("on main branch - next minor version") {
+            // Given
+            projects.install {
+                initialBranch = mainBranch
+                actions = actions {
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
+                    checkout(developmentBranch)
+                    commit(message = "1 commit on $developmentBranch")
+
+                    checkout(mainBranch)
+                }
+            }
+
+            // When
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Minor))
+
+            // Then
+            projects.versions shouldOnlyHave "1.1.0"
+        }
+
+        test("on main branch - next patch version") {
+            // Given
+            projects.install {
+                initialBranch = mainBranch
+                actions = actions {
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
+
+                    checkout(developmentBranch)
+                    commit(message = "1 commit on $developmentBranch")
+
+                    checkout(mainBranch)
+                }
+            }
+
+            // When
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Patch))
 
             // Then
             projects.versions shouldOnlyHave "1.0.1"
         }
 
-        test("on development branch") {
-            // Given
-            projects.install {
-                initialBranch = mainBranch
-                actions = actions {
-                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
-                    checkout(developmentBranch)
-                    commit(message = "1 commit on $developmentBranch")
-                }
-            }
-
-            // When
-            projects.build(GradleVersion.current())
-
-            // Then
-            projects.versions shouldOnlyHave "1.0.1-develop.1"
-        }
-
-        test("on development branch with latest development tag") {
-            // Given
-            projects.install {
-                initialBranch = mainBranch
-                actions = actions {
-                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
-                    checkout(developmentBranch)
-                    commit(message = "1 commit on $developmentBranch", tag = "1.0.1-develop.1")
-                    commit(message = "2 commit on $developmentBranch")
-                    commit(message = "3 commit on $developmentBranch")
-                }
-            }
-
-            // When
-            projects.build(GradleVersion.current())
-
-            // Then
-            projects.versions shouldOnlyHave "1.0.1-develop.3"
-        }
-
-        test("on feature branch off development branch") {
-            // Given
-            projects.install {
-                initialBranch = mainBranch
-                actions = actions {
-                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
-
-                    checkout(developmentBranch)
-                    commit(message = "1 commit on $developmentBranch")
-
-                    checkout(featureBranch)
-                    commit(message = "1 commit on $featureBranch")
-                    commit(message = "2 commit on $featureBranch")
-                }
-            }
-
-            // When
-            projects.build(GradleVersion.current())
-
-            // Then
-            projects.versions shouldOnlyHave "1.0.1-myname-sc-123456-my-awesome-feature.2"
-        }
-
-        test("on feature branch off main branch") {
+        test("on feature branch - next major version") {
             // Given
             projects.install {
                 initialBranch = mainBranch
@@ -112,48 +122,41 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
                     checkout(featureBranch)
                     commit(message = "1 commit on $featureBranch")
-                    commit(message = "2 commit on $featureBranch")
                 }
             }
 
             // When
-            projects.build(GradleVersion.current())
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Major))
 
             // Then
-            projects.versions shouldOnlyHave "1.0.1-myname-sc-123456-my-awesome-feature.2"
+            projects.versions shouldOnlyHave "2.0.0-cool-feature.1"
         }
 
-        test("for develop branch after committing to feature branch and switching back to develop") {
+        test("on feature branch - next minor version") {
             // Given
             projects.install {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
 
-                    checkout(developmentBranch)
-                    commit(message = "1 commit on $developmentBranch")
-
                     checkout(featureBranch)
                     commit(message = "1 commit on $featureBranch")
-
-                    checkout(developmentBranch)
                 }
             }
 
             // When
-            projects.build(GradleVersion.current())
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Minor))
 
             // Then
-            projects.versions shouldOnlyHave "1.0.1-develop.1"
+            projects.versions shouldOnlyHave "1.1.0-cool-feature.1"
         }
 
-        test("next branch version where last tag is prerelease") {
+        test("on feature branch - next patch version") {
             // Given
             projects.install {
                 initialBranch = mainBranch
                 actions = actions {
-                    commit(message = "1 commit on $mainBranch", tag = "1.0.2")
-                    commit(message = "1 commit on $mainBranch", tag = "1.0.3-alpha.1")
+                    commit(message = "1 commit on $mainBranch", tag = "1.0.0")
 
                     checkout(featureBranch)
                     commit(message = "1 commit on $featureBranch")
@@ -161,10 +164,10 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
             }
 
             // When
-            projects.build(GradleVersion.current())
+            projects.build(GradleVersion.current(), semverModifier(Modifier.Patch))
 
             // Then
-            projects.versions shouldOnlyHave "1.0.3-myname-sc-123456-my-awesome-feature.1"
+            projects.versions shouldOnlyHave "1.0.1-cool-feature.1"
         }
     }
 })

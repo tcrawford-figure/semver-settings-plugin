@@ -15,8 +15,7 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
     abstract val gradleProject: GradleProject
     abstract val projectName: String
 
-    private val remoteRepoDir: File =
-        createTempDirectory("remote-repo").toFile()
+    private lateinit var remoteRepoDir: File
 
     val buildCacheDir: File =
         createTempDirectory("build-cache").toFile()
@@ -34,10 +33,14 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
     }
 
     fun install(gitInstance: GitInstance) {
+        remoteRepoDir = createTempDirectory("remote-repo").toFile()
+
         val localGit = KGit(gradleProject.rootDir, initializeRepo = InitializeRepo(bare = false, gitInstance.initialBranch))
         val remoteGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, gitInstance.initialBranch))
 
         localGit.remote.add(remoteGit.git)
+
+        localGit.commit("Initial commit", allowEmptyCommit = true)
 
         val gitInstanceWriter = GitInstanceWriter(
             localGit = localGit,
@@ -47,12 +50,13 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
         gitInstanceWriter.write(gitInstance.debugging)
     }
 
-    fun cleanGitDir() {
+    fun cleanAfterAny() {
+        // The remote repo must be recreated for each test
+        remoteRepoDir.deleteRecursively()
         gradleProject.rootDir.resolve(".git").deleteRecursively()
     }
 
     override fun close() {
-        remoteRepoDir.deleteRecursively()
         buildCacheDir.deleteRecursively()
     }
 

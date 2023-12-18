@@ -9,6 +9,6 @@ class CleanupGitDirExtension(
     private val projects: GradleProjects,
 ) : AfterEachListener {
     override suspend fun afterEach(testCase: TestCase, result: TestResult) {
-        projects.cleanGitDir()
+        projects.cleanAfterAny()
     }
 }

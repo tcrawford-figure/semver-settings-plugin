@@ -1,7 +1,7 @@
 package io.github.tcrawford.versioning
 
-import io.github.tcrawford.versioning.kotest.GradleProjectsContainer
-import io.github.tcrawford.versioning.kotest.shouldOnlyContain
+import io.github.tcrawford.versioning.kotest.GradleProjectsExtension
+import io.github.tcrawford.versioning.kotest.shouldOnlyHave
 import io.github.tcrawford.versioning.projects.RegularProject
 import io.github.tcrawford.versioning.projects.SettingsProject
 import io.github.tcrawford.versioning.projects.SubprojectProject
@@ -10,13 +10,13 @@ import io.kotest.core.spec.style.FunSpec
 import org.gradle.util.GradleVersion
 
 class ANewTestSpec : FunSpec({
-    val projects = install(GradleProjectsContainer) {
-        projects += listOf(
+    val projects = install(
+        GradleProjectsExtension(
             RegularProject(projectName = "regular-project"),
             SettingsProject(projectName = "settings-project"),
             SubprojectProject(projectName = "subproject-project"),
-        )
-    }
+        ),
+    )
 
     val mainBranch = "main"
     val featureBranch = "feature-branch"
@@ -37,6 +37,6 @@ class ANewTestSpec : FunSpec({
         projects.build(GradleVersion.current())
 
         // Then
-        projects.versions shouldOnlyContain "1.0.1-$featureBranch.1"
+        projects.versions shouldOnlyHave "1.0.1-$featureBranch.1"
     }
 })

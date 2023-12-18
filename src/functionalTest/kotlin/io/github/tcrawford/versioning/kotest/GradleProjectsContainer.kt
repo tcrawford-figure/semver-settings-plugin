@@ -9,24 +9,20 @@ import io.kotest.core.spec.Spec
 import io.kotest.core.test.TestCase
 import io.kotest.core.test.TestResult
 
-class GradleProjectsConfig {
-    val projects: MutableList<AbstractProject> = mutableListOf()
-}
-
-object GradleProjectsContainer : MountableExtension<GradleProjectsConfig, GradleProjects>, AfterSpecListener, AfterTestListener {
+class GradleProjectsExtension(
+    private vararg val abstractProjects: AbstractProject,
+) : MountableExtension<Unit, GradleProjects>, AfterSpecListener, AfterTestListener {
     private lateinit var projects: GradleProjects
 
-    override fun mount(configure: GradleProjectsConfig.() -> Unit): GradleProjects {
-        val config = GradleProjectsConfig()
-        config.configure()
-        return GradleProjects.gradleProjects(*config.projects.toTypedArray()).also { this.projects = it }
-    }
-
-    override suspend fun afterAny(testCase: TestCase, result: TestResult) {
-        projects.cleanGitDir()
+    override fun mount(configure: Unit.() -> Unit): GradleProjects {
+        return GradleProjects.gradleProjects(projects = abstractProjects).also { projects = it }
     }
 
     override suspend fun afterSpec(spec: Spec) {
         projects.close()
+    }
+
+    override suspend fun afterAny(testCase: TestCase, result: TestResult) {
+        projects.cleanAfterAny()
     }
 }

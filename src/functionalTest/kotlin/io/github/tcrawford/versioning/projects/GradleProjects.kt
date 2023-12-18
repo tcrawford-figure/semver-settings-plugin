@@ -2,6 +2,7 @@ package io.github.tcrawford.versioning.projects
 
 import io.github.tcrawford.versioning.git.GitInstance
 import io.github.tcrawford.versioning.gradle.build
+import io.github.tcrawford.versioning.gradle.runWithoutExpectations
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.util.GradleVersion
 
@@ -27,13 +28,18 @@ class GradleProjects(
         projects.values.forEach { it.install(block) }
     }
 
-    fun cleanGitDir() {
-        projects.values.forEach { it.cleanGitDir() }
+    fun cleanAfterAny() {
+        projects.values.forEach { it.cleanAfterAny() }
     }
 
     fun build(gradleVersion: GradleVersion, vararg args: String): Map<AbstractProject, BuildResult> =
         projects.values.associateWith { project ->
             build(gradleVersion, project.gradleProject.rootDir, *args)
+        }
+
+    fun runWithoutExpectations(gradleVersion: GradleVersion, vararg args: String): Map<AbstractProject, BuildResult> =
+        projects.values.associateWith { project ->
+            runWithoutExpectations(gradleVersion, project.gradleProject.rootDir, *args)
         }
 
     override fun close() {
