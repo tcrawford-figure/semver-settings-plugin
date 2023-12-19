@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Step 0: Assume the git directory is initialized and switch to the directory
 repositoryDir=$1
@@ -24,7 +24,7 @@ git commit -m "Feature branch commit"
 git checkout "$main_branch"
 
 # Step 6: Modify the same line in the file in the main branch
-awk '{if (NR==1) print "Main branch change"; else print $0}' file.txt > file.txt.tmp && mv file.txt.tmp file.txt
+sed -i '' '1s/.*/Main branch change/' file.txt
 git add file.txt
 git commit -m "Main branch commit"
 

@@ -52,6 +52,9 @@ data class RunScriptAction(
         val processBuilder = ProcessBuilder()
         processBuilder.command("bash", scriptFile.absolutePath, projectPath, *arguments.toTypedArray())
         processBuilder.redirectErrorStream(true)
+
+        println("Running: ${processBuilder.command()}")
+
         val process = processBuilder.start()
         process.waitFor()
     }
