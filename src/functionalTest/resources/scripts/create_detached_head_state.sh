@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Step 0: Assume the git directory is initialized and switch to the directory
 repositoryDir=$1
