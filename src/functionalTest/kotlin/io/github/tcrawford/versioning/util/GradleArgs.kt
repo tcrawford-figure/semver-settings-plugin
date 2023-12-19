@@ -1,10 +1,3 @@
-/**
- * Copyright (c) 2023 Figure Technologies and its affiliates.
- *
- * This source code is licensed under the Apache 2.0 license found in the
- * LICENSE.md file in the root directory of this source tree.
- */
-
 package io.github.tcrawford.versioning.util
 
 import io.github.tcrawford.versioning.internal.properties.Modifier
@@ -15,11 +8,6 @@ import io.github.tcrawford.versioning.internal.properties.Stage
  * The parameters must be provided in the format: `-P<property>=<value>` and not `-P <property>=<value>`.
  */
 internal object GradleArgs {
-    const val PARALLEL = "--parallel"
-    const val BUILD_CACHE = "--build-cache"
-    const val CONFIGURATION_CACHE = "--configuration-cache"
-    const val STACKTRACE = "--stacktrace"
-
     fun semverStage(stage: Stage) =
         "-P${SemverProperty.Stage.property}=${stage.value}"
 

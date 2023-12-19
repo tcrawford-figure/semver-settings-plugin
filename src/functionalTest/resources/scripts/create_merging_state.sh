@@ -24,9 +24,9 @@ git commit -m "Feature branch commit"
 git checkout "$main_branch"
 
 # Step 6: Modify the same line in the file in the main branch
-awk '{if (NR==1) print "Main branch change"; else print $0}' file.txt > file.txt.tmp && mv file.txt.tmp file.txt
+echo "Main branch change" > file.txt
 git add file.txt
 git commit -m "Main branch commit"
 
 # Step 7: Attempt to rebase the feature branch onto the main branch
-git rebase "$feature_branch"
+git merge "$feature_branch"

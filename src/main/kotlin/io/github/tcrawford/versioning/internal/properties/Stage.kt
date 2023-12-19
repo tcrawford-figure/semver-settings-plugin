@@ -5,7 +5,7 @@ enum class Stage(val value: String) {
     Dev("dev"),
     Alpha("alpha"),
     Beta("beta"),
-    RC("rc"),
+    ReleaseCandidate("rc"),
     Snapshot("SNAPSHOT"),
     Final("final"),
     GA("ga"),
