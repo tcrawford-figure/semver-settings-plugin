@@ -24,7 +24,7 @@ git commit -m "Feature branch commit"
 git checkout "$main_branch"
 
 # Step 6: Modify the same line in the file in the main branch
-sed -i '' '1s/.*/Main branch change/' file.txt
+echo "Main branch change" > file.txt
 git add file.txt
 git commit -m "Main branch commit"
 

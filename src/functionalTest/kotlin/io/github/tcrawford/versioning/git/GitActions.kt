@@ -4,6 +4,12 @@ import io.github.tcrawford.versioning.internal.command.KGit
 import io.github.tcrawford.versioning.projects.AbstractProject
 import io.github.tcrawford.versioning.util.resolveResource
 import org.eclipse.jgit.lib.Constants
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+private val log = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 
 sealed interface Action {
     fun execute(git: KGit)
@@ -52,10 +58,15 @@ data class RunScriptAction(
         val processBuilder = ProcessBuilder()
         processBuilder.command("bash", scriptFile.absolutePath, projectPath, *arguments.toTypedArray())
         processBuilder.redirectErrorStream(true)
-
-        println("Running: ${processBuilder.command()}")
-
         val process = processBuilder.start()
+
+        log.lifecycle("\nScript output:\n")
+        val reader = BufferedReader(InputStreamReader(process.inputStream))
+        reader.useLines { lines ->
+            lines.forEach { log.lifecycle(it) }
+        }
+        log.lifecycle("\nEnd script output\n")
+
         process.waitFor()
     }
 }
