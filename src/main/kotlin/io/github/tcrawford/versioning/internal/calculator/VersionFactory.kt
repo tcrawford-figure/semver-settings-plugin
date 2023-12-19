@@ -3,13 +3,19 @@ package io.github.tcrawford.versioning.internal.calculator
 import io.github.tcrawford.versioning.internal.command.GitState
 import io.github.tcrawford.versioning.internal.command.KGit
 import io.github.tcrawford.versioning.internal.errors.InvalidOverrideVersionError
+import io.github.tcrawford.versioning.internal.logging.warn
 import io.github.tcrawford.versioning.internal.properties.Stage
+import io.github.z4kn4fein.semver.nextPatch
 import io.github.z4kn4fein.semver.toVersion
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
+
+private val log = Logging.getLogger(Logger.ROOT_LOGGER_NAME)
 
 fun ProviderFactory.versionFactory(
     context: VersionFactoryContext,
@@ -39,6 +45,13 @@ abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
 
     override fun obtain(): String {
         val factoryContext = parameters.versionFactoryContext.get()
+
+        if (!factoryContext.rootDir.resolve(".git").exists()) {
+            log.warn { "Git has not been initialized in this repository. Please initialize it with 'git init'." }
+            val nextVersion = factoryContext.initialVersion.toVersion().nextPatch().toString()
+            return "$nextVersion-UNINITIALIZED-REPO"
+        }
+
         val kgit = KGit(directory = factoryContext.rootDir)
 
         val context = parameters.toVersionCalculatorContext(kgit.state())

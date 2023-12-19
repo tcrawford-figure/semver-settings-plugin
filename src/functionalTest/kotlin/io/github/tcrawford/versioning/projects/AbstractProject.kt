@@ -55,7 +55,9 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
 
     fun cleanAfterAny() {
         // The remote repo must be recreated for each test
-        remoteRepoDir.deleteRecursively()
+        if (this::remoteRepoDir.isInitialized) {
+            remoteRepoDir.deleteRecursively()
+        }
         gradleProject.rootDir.resolve(".git").deleteRecursively()
     }
 

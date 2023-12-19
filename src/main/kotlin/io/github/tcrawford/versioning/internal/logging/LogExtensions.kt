@@ -2,12 +2,12 @@ package io.github.tcrawford.versioning.internal.logging
 
 import org.gradle.api.logging.Logger
 
-private const val LOG_ERROR_PREFIX = "[semver-settings-plugin] ERROR "
-private const val LOG_QUIET_PREFIX = "[semver-settings-plugin] QUIET "
-private const val LOG_WARN_PREFIX = "[semver-settings-plugin] WARN "
+private const val LOG_ERROR_PREFIX = "ERROR "
+private const val LOG_QUIET_PREFIX = "QUIET "
+private const val LOG_WARN_PREFIX = "WARN "
 private const val LOG_LIFECYCLE_PREFIX = "> Version: "
-private const val LOG_INFO_PREFIX = "[semver-settings-plugin] INFO "
-private const val LOG_DEBUG_PREFIX = "[semver-settings-plugin] DEBUG "
+private const val LOG_INFO_PREFIX = "INFO "
+private const val LOG_DEBUG_PREFIX = "DEBUG "
 
 private fun String.colored(c: String) = "$c$this\u001B[0m"
 
