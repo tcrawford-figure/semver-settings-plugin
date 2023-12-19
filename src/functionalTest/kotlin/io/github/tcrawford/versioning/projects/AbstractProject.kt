@@ -38,7 +38,9 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
         val localGit = KGit(gradleProject.rootDir, initializeRepo = InitializeRepo(bare = false, gitInstance.initialBranch))
         val remoteGit = KGit(remoteRepoDir, initializeRepo = InitializeRepo(bare = true, gitInstance.initialBranch))
 
+        // GHA needs this since no author is configured in the runner
         localGit.config.author("Al Gorithm", "al.gori@thm.com")
+
         localGit.remote.add(remoteGit.git)
 
         localGit.commit("Initial commit", allowEmptyCommit = true)
