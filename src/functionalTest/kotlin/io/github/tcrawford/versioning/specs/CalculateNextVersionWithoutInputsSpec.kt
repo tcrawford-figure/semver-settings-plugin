@@ -18,11 +18,11 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
         ),
     )
 
-    context("should calculate next version without inputs") {
-        val mainBranch = "main"
-        val developmentBranch = "develop"
-        val featureBranch = "myname/sc-123456/my-awesome-feature"
+    val mainBranch = "main"
+    val developmentBranch = "develop"
+    val featureBranch = "myname/sc-123456/my-awesome-feature"
 
+    context("should calculate next version without inputs") {
         test("on main branch") {
             // Given
             projects.install {

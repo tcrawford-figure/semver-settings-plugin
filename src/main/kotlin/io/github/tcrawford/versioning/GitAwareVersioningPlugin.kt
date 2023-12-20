@@ -5,6 +5,7 @@ import io.github.tcrawford.versioning.internal.calculator.versionFactory
 import io.github.tcrawford.versioning.internal.extensions.providers
 import io.github.tcrawford.versioning.internal.extensions.rootDir
 import io.github.tcrawford.versioning.internal.logging.registerPostBuildVersionLogMessage
+import io.github.tcrawford.versioning.internal.properties.forMajorVersion
 import io.github.tcrawford.versioning.internal.properties.forTesting
 import io.github.tcrawford.versioning.internal.properties.modifier
 import io.github.tcrawford.versioning.internal.properties.overrideVersion
@@ -26,6 +27,7 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
             modifier = target.modifier.get(),
             forTesting = target.forTesting.get(),
             overrideVersion = target.overrideVersion.orNull,
+            forMajorVersion = target.forMajorVersion.orNull,
             rootDir = semverExtension.rootProjectDir.getOrElse { target.rootDir }.asFile,
             mainBranch = semverExtension.mainBranch.orNull,
             developmentBranch = semverExtension.developmentBranch.orNull,

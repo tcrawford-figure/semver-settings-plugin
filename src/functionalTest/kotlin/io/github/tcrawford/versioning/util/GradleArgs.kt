@@ -22,4 +22,7 @@ internal object GradleArgs {
 
     fun semverOverrideVersion(overrideVersion: String) =
         "-P${SemverProperty.OverrideVersion.property}=$overrideVersion"
+
+    fun semverForMajorVersion(forMajorVersion: Int) =
+        "-P${SemverProperty.ForMajorVersion.property}=$forMajorVersion"
 }
