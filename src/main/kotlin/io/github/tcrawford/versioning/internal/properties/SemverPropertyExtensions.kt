@@ -17,6 +17,15 @@ val PluginAware.tagPrefix: Provider<String>
 val PluginAware.overrideVersion: Provider<String>
     get() = semverProperty(SemverProperty.OverrideVersion)
 
+val PluginAware.forMajorVersion: Provider<Int>
+    get() = semverProperty(SemverProperty.ForMajorVersion).map {
+        runCatching {
+            it.toInt()
+        }.getOrElse {
+            error("semver.forMajorVersion must be representative of a valid major version line (0, 1, 2, etc.)")
+        }
+    }
+
 val PluginAware.forTesting: Provider<Boolean>
     get() = semverProperty(SemverProperty.ForTesting).map { it.toBoolean() }.orElse(false)
 

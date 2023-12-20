@@ -18,24 +18,30 @@ class TagList(
     fun find(tagName: String): Ref? =
         invoke().find { it.name == tagName }
 
-    private val versionedTags: List<Version>
+    val versionedTags: List<Version>
         get() = invoke().mapNotNull { it.name.replace(Constants.R_TAGS, "").toVersionOrNull(strict = false) }
 
-    private val latest: Version?
-        get() {
-            val stages = Stage.entries.map { stage -> stage.value.lowercase() }
+    private fun latest(forMajorVersion: Int?): Version? {
+        val stages = Stage.entries.map { stage -> stage.value.lowercase() }
 
-            return versionedTags
-                // Get only stable and staged pre-releases
-                .filter { version ->
-                    val prereleaseLabel = version.preRelease?.substringBefore(".")?.lowercase()
-                    version.isNotPreRelease || prereleaseLabel in stages
+        return versionedTags
+            // Get only stable and staged pre-releases
+            .filter { version ->
+                val prereleaseLabel = version.preRelease?.substringBefore(".")?.lowercase()
+                version.isNotPreRelease || prereleaseLabel in stages
+            }
+            .let { versions ->
+                if (forMajorVersion != null) {
+                    versions.filter { version -> version.major == forMajorVersion }
+                } else {
+                    versions
                 }
-                .maxOrNull()
-        }
+            }
+            .maxOrNull()
+    }
 
-    fun latestOrInitial(initial: String): Version =
-        latest ?: initial.toVersion()
+    fun latestOrInitial(initial: String, forMajorVersion: Int?): Version =
+        latest(forMajorVersion) ?: initial.toVersion()
 
     private val latestNonPreRelease: Version?
         get() = versionedTags

@@ -11,6 +11,7 @@ data class VersionFactoryContext(
     val modifier: Modifier,
     val forTesting: Boolean,
     val overrideVersion: String?,
+    val forMajorVersion: Int?,
     val rootDir: File,
     val mainBranch: String?,
     val developmentBranch: String?,
