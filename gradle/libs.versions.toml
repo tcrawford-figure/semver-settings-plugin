@@ -8,7 +8,7 @@ kotlin-semver = "1.4.2"
 
 binary-compatibility-validator = "0.14.0"
 dependency-analysis = "1.30.0"
-detekt = "1.23.5"
+detekt = "1.23.6"
 gradle-testkit = "0.10"
 ktlint = "12.1.0"
 publish-plugin = "1.2.1"
