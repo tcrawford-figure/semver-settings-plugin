@@ -7,7 +7,7 @@ kotest = "5.9.0"
 kotlin-semver = "2.0.0"
 
 binary-compatibility-validator = "0.14.0"
-dependency-analysis = "1.31.0"
+dependency-analysis = "1.32.0"
 detekt = "1.23.6"
 gradle-testkit = "0.10"
 ktlint = "12.1.1"
