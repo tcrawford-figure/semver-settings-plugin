@@ -6,7 +6,7 @@ jgit = "6.10.0.202406032230-r"
 kotest = "5.9.1"
 kotlin-semver = "2.0.0"
 
-binary-compatibility-validator = "0.16.2"
+binary-compatibility-validator = "0.16.3"
 dependency-analysis = "1.33.0"
 detekt = "1.23.6"
 gradle-testkit = "0.10"
