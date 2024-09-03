@@ -11,7 +11,7 @@ dependency-analysis = "1.33.0"
 detekt = "1.23.6"
 gradle-testkit = "0.10"
 ktlint = "12.1.1"
-publish-plugin = "1.2.1"
+publish-plugin = "1.2.2"
 test-logger = "4.0.0"
 testkit-support = "0.12"
 
