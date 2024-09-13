@@ -24,9 +24,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v3
-
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -34,13 +31,15 @@ jobs:
           java-version: 17
 
       - name: Build
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
         with:
-          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
-          arguments: check -s
-          gradle-home-cache-cleanup: true
+          cache-read-only: ${{ github.ref_name != 'main' }}
+          cache-cleanup: true
           gradle-home-cache-includes: |
             caches
             notifications
             jdks
             wrapper
+
+      - name: Gradle Check
+        run: ./gradlew check -s
