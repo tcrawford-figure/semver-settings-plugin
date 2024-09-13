@@ -16,15 +16,15 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    `gradle-enterprise`
+    id("com.gradle.develocity") version "3.17.6"
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-gradleEnterprise {
+develocity {
     buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
-        publishOnFailure()
-        publishAlwaysIf(System.getenv("CI") == "true")
+        termsOfUseUrl = "https://gradle.com/terms-of-service"
+        termsOfUseAgree = "yes"
+        val isCi = providers.environmentVariable("GITHUB_ACTIONS")
+        publishing.onlyIf { isCi.isPresent || it.buildResult.failures.isNotEmpty() }
     }
 }
