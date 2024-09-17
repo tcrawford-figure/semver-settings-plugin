@@ -24,7 +24,7 @@ class MissingLocalBranchSpec : FunSpec({
 
     test("on development branch, missing local main branch") {
         // Given
-        projects.install {
+        projects.git {
             initialBranch = mainBranch
             actions = actions {
                 commit(message = "1 commit on $mainBranch", tag = "0.2.5")
@@ -45,7 +45,7 @@ class MissingLocalBranchSpec : FunSpec({
 
     test("on feature branch, missing local development branch") {
         // Given
-        projects.install {
+        projects.git {
             initialBranch = mainBranch
             debugging = true
             actions = actions {

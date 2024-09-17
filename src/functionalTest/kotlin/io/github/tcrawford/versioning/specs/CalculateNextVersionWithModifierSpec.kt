@@ -29,7 +29,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
     context("should not calculate next version") {
         test("when modifier is invalid") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -52,7 +52,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
     context("should calculate next version with modifier input") {
         test("on main branch - next major version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -73,7 +73,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
 
         test("on main branch - next minor version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -94,7 +94,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
 
         test("on main branch - next patch version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -115,7 +115,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
 
         test("on feature branch - next major version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -134,7 +134,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
 
         test("on feature branch - next minor version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -153,7 +153,7 @@ class CalculateNextVersionWithModifierSpec : FunSpec({
 
         test("on feature branch - next patch version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")

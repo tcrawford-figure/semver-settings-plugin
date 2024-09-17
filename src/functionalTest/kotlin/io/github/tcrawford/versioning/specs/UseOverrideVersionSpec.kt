@@ -29,7 +29,7 @@ class UseOverrideVersionSpec : FunSpec({
             // Given
             val givenVersion = "im-not-a-version"
 
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch")
@@ -49,7 +49,7 @@ class UseOverrideVersionSpec : FunSpec({
             // Given
             val givenVersion = "9.9.9"
 
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch")
@@ -67,7 +67,7 @@ class UseOverrideVersionSpec : FunSpec({
             // Given
             val givenVersion = "9.9.9-beta.1"
 
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch")
@@ -88,7 +88,7 @@ class UseOverrideVersionSpec : FunSpec({
             // Given
             val givenVersion = "9.9.9-alpha.1"
 
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch")

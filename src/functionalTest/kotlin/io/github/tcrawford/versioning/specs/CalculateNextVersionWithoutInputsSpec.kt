@@ -25,7 +25,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
     context("should calculate next version without inputs") {
         test("on main branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -44,7 +44,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("on development branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -62,7 +62,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("on development branch with latest development tag") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -82,7 +82,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("on feature branch off development branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -105,7 +105,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("on feature branch off main branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -125,7 +125,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("for develop branch after committing to feature branch and switching back to develop") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -149,7 +149,7 @@ class CalculateNextVersionWithoutInputsSpec : FunSpec({
 
         test("next branch version where last tag is prerelease") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2")

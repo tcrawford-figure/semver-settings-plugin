@@ -24,7 +24,7 @@ class UseTagPrefixSpec : FunSpec({
     context("should use tag prefix") {
         test("on main branch with default tag prefix") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "0.2.5")
@@ -41,7 +41,7 @@ class UseTagPrefixSpec : FunSpec({
 
         test("on feature branch with provided tag prefix") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "0.2.5")
