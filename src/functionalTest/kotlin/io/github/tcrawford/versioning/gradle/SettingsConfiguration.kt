@@ -25,7 +25,7 @@ class SettingsConfiguration(
 
         fun build(): SettingsConfiguration =
             SettingsConfiguration(
-                buildCache = buildCache
+                buildCache = buildCache,
             )
     }
 }

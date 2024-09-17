@@ -25,7 +25,7 @@ class BuildCacheLocal(
 
         fun build(): BuildCacheLocal =
             BuildCacheLocal(
-                directory = directory
+                directory = directory,
             )
     }
 }

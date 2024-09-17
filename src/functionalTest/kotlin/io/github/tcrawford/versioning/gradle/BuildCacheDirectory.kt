@@ -15,9 +15,9 @@ fun directory(
 }
 
 class BuildCacheDirectory(
-    val directory: File? = null
+    val directory: File? = null,
 ) : Element.Line {
-    override fun render(scribe: Scribe): String = scribe.line{ s ->
+    override fun render(scribe: Scribe): String = scribe.line { s ->
         directory?.let {
             s.append("directory = file(\"")
             s.append(it.absolutePath)
@@ -30,7 +30,7 @@ class BuildCacheDirectory(
 
         fun build(): BuildCacheDirectory =
             BuildCacheDirectory(
-                directory = directory
+                directory = directory,
             )
     }
 }

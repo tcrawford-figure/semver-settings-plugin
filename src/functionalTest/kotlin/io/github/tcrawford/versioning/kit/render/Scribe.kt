@@ -5,11 +5,9 @@ import com.autonomousapps.kit.GradleProject
 public class Scribe @JvmOverloads constructor(
     /** Which Gradle DSL to use for rendering. */
     public val dslKind: GradleProject.DslKind = GradleProject.DslKind.KOTLIN,
-
     /** Indent level when entering a block. */
     public val indent: Int = 2,
 ) : AutoCloseable {
-
     private val buffer = StringBuilder()
 
     /** Starting indent for any block. */

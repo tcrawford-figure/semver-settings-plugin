@@ -13,7 +13,7 @@ fun buildCache(
 
 class BuildCache(
     private val local: BuildCacheLocal? = null,
-): Element.Block {
+) : Element.Block {
     override val name: String = "buildCache"
 
     override fun render(scribe: Scribe): String = scribe.block(this) { s ->
@@ -25,7 +25,7 @@ class BuildCache(
 
         fun build(): BuildCache =
             BuildCache(
-                local = local
+                local = local,
             )
     }
 }

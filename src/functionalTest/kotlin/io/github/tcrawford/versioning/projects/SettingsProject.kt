@@ -28,7 +28,7 @@ class SettingsProject(
 
             settingsScript = SettingsScript(
                 plugins = Plugins(GradlePlugins.gitAwareVersioningPlugin),
-                additions = settings.render(scribe)
+                additions = settings.render(scribe),
             )
 
             withBuildScript {
