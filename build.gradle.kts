@@ -3,7 +3,6 @@ import io.gitlab.arturbosch.detekt.Detekt
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.allopen)
     alias(libs.plugins.publish.plugin)
 
     alias(libs.plugins.ktlint)
