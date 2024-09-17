@@ -24,7 +24,7 @@ class MissingRemoteBranchSpec : FunSpec({
 
     test("on main, missing remote main branch") {
         // Given
-        projects.install {
+        projects.git {
             initialBranch = mainBranch
             actions = actions {
                 commit(message = "1 commit on $mainBranch", tag = "0.2.5")
@@ -42,7 +42,7 @@ class MissingRemoteBranchSpec : FunSpec({
 
     test("on develop, missing remote main branch") {
         // Given
-        projects.install {
+        projects.git {
             initialBranch = mainBranch
             actions = actions {
                 commit(message = "1 commit on $mainBranch", tag = "0.2.5")
@@ -63,7 +63,7 @@ class MissingRemoteBranchSpec : FunSpec({
 
     test("on feature branch, missing remote main branch") {
         // Given
-        projects.install {
+        projects.git {
             initialBranch = mainBranch
             actions = actions {
                 commit(message = "1 commit on $mainBranch", tag = "0.2.5")

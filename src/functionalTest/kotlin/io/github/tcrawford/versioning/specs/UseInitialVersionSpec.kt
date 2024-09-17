@@ -26,7 +26,7 @@ class UseInitialVersionSpec : FunSpec({
         test("on main branch") {
             // Given
             // The default initial value is "0.0.0" which is supplied by the plugin
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit("1 commit on $mainBranch")
@@ -43,7 +43,7 @@ class UseInitialVersionSpec : FunSpec({
         test("on development branch") {
             // Given
             // The default initial value is "0.0.0" which is supplied by the plugin
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit("1 commit on $mainBranch")
@@ -63,7 +63,7 @@ class UseInitialVersionSpec : FunSpec({
         test("on feature branch") {
             // Given
             // The default initial value is "0.0.0" which is supplied by the plugin
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit("1 commit on $mainBranch")

@@ -28,7 +28,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
     context("should not calculate next version") {
         test("when stage is invalid") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -51,7 +51,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
     context("should calculate next version with stage input") {
         test("on feature branch - new alpha version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.0")
@@ -70,7 +70,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
 
         test("on feature branch - next alpha version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2-alpha.1")
@@ -89,7 +89,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
 
         test("on feature branch - new rc version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2-alpha.3")
@@ -108,7 +108,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
 
         test("on develop branch - new release version") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2-rc.5")
@@ -127,7 +127,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
 
         test("on develop branch - new final version where last tag is from a branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2")
@@ -147,7 +147,7 @@ class CalculateNextVersionWithStageSpec : FunSpec({
 
         test("on main branch - next stable version where last tag is from a branch") {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "1.0.2")

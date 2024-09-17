@@ -7,6 +7,7 @@ import io.github.tcrawford.versioning.git.GitInstance
 import io.github.tcrawford.versioning.git.GitInstanceWriter
 import io.github.tcrawford.versioning.internal.command.InitializeRepo
 import io.github.tcrawford.versioning.internal.command.KGit
+import io.github.tcrawford.versioning.kit.render.Scribe
 import java.io.File
 import java.util.Properties
 import kotlin.io.path.createTempDirectory
@@ -17,6 +18,13 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
 
     private lateinit var remoteRepoDir: File
 
+    val dslKind: GradleProject.DslKind = GradleProject.DslKind.KOTLIN
+
+    val scribe = Scribe(
+        dslKind = dslKind,
+        indent = 2,
+    )
+
     val buildCacheDir: File =
         createTempDirectory("build-cache").toFile()
 
@@ -26,13 +34,13 @@ abstract class AbstractProject : AbstractGradleProject(), AutoCloseable {
     val versionTag: String
         get() = fetchSemverProperties().getProperty("versionTag")
 
-    fun install(block: GitInstance.Builder.() -> Unit) {
+    fun git(block: GitInstance.Builder.() -> Unit) {
         val builder = GitInstance.Builder(this)
         builder.block()
-        install(builder.build())
+        git(builder.build())
     }
 
-    fun install(gitInstance: GitInstance) {
+    fun git(gitInstance: GitInstance) {
         remoteRepoDir = createTempDirectory("remote-repo").toFile()
 
         val localGit = KGit(gradleProject.rootDir, initializeRepo = InitializeRepo(bare = false, gitInstance.initialBranch))

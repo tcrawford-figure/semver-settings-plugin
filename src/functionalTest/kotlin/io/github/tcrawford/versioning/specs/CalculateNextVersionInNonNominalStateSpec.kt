@@ -35,7 +35,7 @@ class CalculateNextVersionInNonNominalStateSpec : FunSpec({
             TestData(Script.CREATE_DETACHED_HEAD_STATE, "0.2.6-${GitState.DETACHED_HEAD.description}"),
         ) {
             // Given
-            projects.install {
+            projects.git {
                 initialBranch = mainBranch
                 actions = actions {
                     commit(message = "1 commit on $mainBranch", tag = "0.2.5")

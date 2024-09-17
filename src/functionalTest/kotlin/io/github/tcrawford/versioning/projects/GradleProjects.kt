@@ -21,12 +21,12 @@ class GradleProjects(
     val versionTags: List<String>
         get() = projects.values.map { it.versionTag }
 
-    fun install(gitInstance: GitInstance) {
-        projects.values.forEach { it.install(gitInstance) }
+    fun git(gitInstance: GitInstance) {
+        projects.values.forEach { it.git(gitInstance) }
     }
 
-    fun install(block: GitInstance.Builder.() -> Unit) {
-        projects.values.forEach { it.install(block) }
+    fun git(block: GitInstance.Builder.() -> Unit) {
+        projects.values.forEach { it.git(block) }
     }
 
     fun cleanAfterAny() {

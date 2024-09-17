@@ -3,11 +3,16 @@ package io.github.tcrawford.versioning.projects
 import com.autonomousapps.kit.GradleProject
 import com.autonomousapps.kit.gradle.SettingsScript
 import io.github.tcrawford.versioning.Constants
+import io.github.tcrawford.versioning.gradle.buildCache
+import io.github.tcrawford.versioning.gradle.local
+import io.github.tcrawford.versioning.gradle.settingsGradle
+import io.github.tcrawford.versioning.gradle.toDirectory
 import io.github.tcrawford.versioning.plugins.GradlePlugins
 import java.util.Properties
 
 class SubprojectProject(
     override val projectName: String,
+    // private val semver: SemverConfiguration = semver {  }
 ) : AbstractProject() {
     override val gradleProject: GradleProject
         get() = build()
@@ -15,23 +20,26 @@ class SubprojectProject(
     private val subprojectName = "subproj"
 
     private fun build(): GradleProject =
-        newGradleProjectBuilder().withRootProject {
+        newGradleProjectBuilder(dslKind).withRootProject {
             withBuildScript {
                 plugins(GradlePlugins.kotlinNoApply)
             }
 
-            settingsScript = SettingsScript(
-                additions = """
-                    buildCache {
-                        local {
-                            directory = "${buildCacheDir.absolutePath}"
-                        }
+            val settings = settingsGradle {
+                buildCache = buildCache {
+                    local = local {
+                        directory = buildCacheDir.toDirectory()
                     }
-                """.trimIndent(),
+                }
+            }
+
+            settingsScript = SettingsScript(
+                additions = settings.render(scribe),
             )
         }.withSubproject(subprojectName) {
             withBuildScript {
                 plugins(GradlePlugins.gitAwareVersioningPlugin, GradlePlugins.kotlinNoApply)
+                // additions = semver.render(scribe)
             }
         }.write()
 

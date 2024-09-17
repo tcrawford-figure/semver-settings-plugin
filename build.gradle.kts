@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "io.github.tcrawford.gradle"
-version = "0.0.7"
+version = "0.0.8"
 
 val testImplementation: Configuration by configurations.getting
 
@@ -40,6 +40,8 @@ dependencies {
     testImplementation(gradleTestKit())
     testImplementation(libs.kotest.runner)
     testImplementation(libs.kotest.datatest)
+
+    functionalTestImplementation(libs.testkit.support)
 }
 
 tasks {
@@ -111,10 +113,6 @@ apiValidation {
         // Internal package is not part of the public API
         "io.github.tcrawford.versioning.internal",
     )
-}
-
-gradleTestKitSupport {
-    withSupportLibrary("0.13")
 }
 
 gradlePlugin {
