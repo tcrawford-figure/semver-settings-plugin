@@ -31,7 +31,6 @@ dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.r
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 gradle-testkit = { id = "com.autonomousapps.testkit", version.ref = "gradle-testkit" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 publish-plugin = { id = "com.gradle.plugin-publish", version.ref = "publish-plugin" }
 test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
