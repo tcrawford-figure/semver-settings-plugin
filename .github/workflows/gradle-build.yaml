@@ -34,7 +34,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-read-only: ${{ github.ref_name != 'main' }}
-          cache-cleanup: true
+          cache-cleanup: on-success
           gradle-home-cache-includes: |
             caches
             notifications
@@ -42,4 +42,4 @@ jobs:
             wrapper
 
       - name: Gradle Check
-        run: ./gradlew check -s
+        run: ./gradlew check -s --parallel --build-cache
