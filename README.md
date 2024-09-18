@@ -16,14 +16,15 @@ At a glance, this plugin provides the following features:
 ```kotlin
 // root project settings.gradle.kts
 plugins {
-    id("io.github.tcrawford.gradle.semver") version "<current_version>"
+    id("io.github.tcrawford.versioning") version "<current_version>"
 }
 ```
 
 ## Configuration
 
 ```kotlin
-import io.github.tcrawford.gradle.semver.semver
+// For older versions of gradle, you may need to import the configuration method
+import io.github.tcrawford.versioning.semver
 
 // This is purely for example purposes
 semver {
@@ -361,15 +362,12 @@ git commit --allow-empty -m "Empty commit"
 
 Support the following scenarios:
 
-- Add suggestions if no git directory can be found
 - Build or dirty mode (possibly lower priority):
     - `+build.#` - build mode, for local development. `#` starts at 1 and
       incremented on each build. Guarantees
       uniqueness without needing to make a commit.
     - `+DIRTY` - dirty mode, where changes have been made, but no commit made
       yet. Applies to both modes above
-- Somehow support tests in GHA that are currently not possible. More
-  documentation can be found in current plugin.
 - Support `release/*` branches for stable releases
     - Consider making them smart so that release/v2.x supports the v2 line and
       release/v3.x supports the v3 line, etc.

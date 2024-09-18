@@ -2,9 +2,9 @@ package io.github.tcrawford.versioning.internal.logging
 
 import org.gradle.api.logging.Logger
 
-private const val LOG_ERROR_PREFIX = "ERROR "
+private const val LOG_ERROR_PREFIX = "> ERROR "
 private const val LOG_QUIET_PREFIX = "QUIET "
-private const val LOG_WARN_PREFIX = "WARN "
+private const val LOG_WARN_PREFIX = "> WARN "
 private const val LOG_LIFECYCLE_PREFIX = "> Version: "
 private const val LOG_INFO_PREFIX = "INFO "
 private const val LOG_DEBUG_PREFIX = "DEBUG "
