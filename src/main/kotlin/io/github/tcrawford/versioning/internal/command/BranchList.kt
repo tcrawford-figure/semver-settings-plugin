@@ -11,27 +11,27 @@ import org.eclipse.jgit.lib.Ref
 class BranchList(
     private val git: Git,
 ) {
-    fun findDevelopmentBranch(providedDevelopmentBranch: String?): Ref =
-        if (!providedDevelopmentBranch.isNullOrBlank()) {
-            find(providedDevelopmentBranch)
-                ?: error("Could not find provided development branch: $providedDevelopmentBranch")
-        } else {
-            find("develop")
-                ?: find("devel")
-                ?: find("dev")
-                ?: find("main")
-                ?: find("master")
-                ?: error("Could not determine default branch. Searched, in order, for: develop, devel, dev, main, master")
-        }
+    fun findDevelopmentBranch(providedDevelopmentBranch: String?, providedMainBranch: String?): Ref =
+        find(providedDevelopmentBranch)
+            ?: find("develop")
+            ?: find("devel")
+            ?: find("dev")
+            ?: find(providedMainBranch) // Need to fall back in cases where the main branch is not main or master
+            ?: find("main")
+            ?: find("master")
+            ?: error(
+                buildString {
+                    append("Could not determine default branch. ")
+                    append("Searched, in order, for: ")
+                    append("$providedDevelopmentBranch, develop, devel, dev, $providedMainBranch, main, master")
+                },
+            )
 
     fun findMainBranch(providedMainBranch: String?): Ref =
-        if (!providedMainBranch.isNullOrBlank()) {
-            find(providedMainBranch) ?: error("Could not find provided main branch: $providedMainBranch")
-        } else {
-            find("main")
-                ?: find("master")
-                ?: error("Could not determine main branch. Searched, in order, for: main, master")
-        }
+        find(providedMainBranch)
+            ?: find("main")
+            ?: find("master")
+            ?: error("Could not determine main branch. Searched, in order, for: $providedMainBranch, main, master")
 
     fun exists(branchName: String): Boolean =
         find(branchName) != null
@@ -40,22 +40,24 @@ class BranchList(
      * Finds an exact branch by name preferring local branches over remote branches, but will return
      * remote branches if the local branch does not exist.
      */
-    private fun find(branchName: String): Ref? =
-        findAll(branchName).let { matchingBranches ->
-            matchingBranches.find { Constants.R_HEADS in it.name }
-                ?: matchingBranches.find { Constants.R_REMOTES in it.name }
-        }
+    private fun find(branchName: String?): Ref? =
+        branchName
+            ?.takeIf { it.isNotBlank() }
+            ?.let { nonBlankBranchName ->
+                findAll(nonBlankBranchName).let { matchingBranches ->
+                    matchingBranches.find { Constants.R_HEADS in it.name }
+                        ?: matchingBranches.find { Constants.R_REMOTES in it.name }
+                }
+            }
 
     /**
      * Find all branches given the branch name. Can be full or short name.
-     *
-     * NOTE: this is case-sensitive. If problems happen, consider being case-insensitive.
      */
     private fun findAll(branchName: String): List<Ref> =
         git.branchList()
             .setListMode(ListBranchCommand.ListMode.ALL)
             .call()
-            .filter { branchName in it.name }
+            .filter { branchName.lowercase() in it.name.lowercase() }
 
     fun commitCountBetween(baseBranchName: String, targetBranchName: String): Int {
         // Try to resolve the remote branch first, then fall back to the local branch
