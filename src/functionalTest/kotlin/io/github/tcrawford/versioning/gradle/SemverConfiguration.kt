@@ -21,10 +21,18 @@ class SemverConfiguration(
     override val name: String = "semver"
 
     override fun render(scribe: Scribe): String = scribe.block(this) { s ->
-        rootProjectDir?.let { s.append("rootProjectDir = $rootProjectDir") }
-        initialVersion?.let { s.append("initialVersion = $initialVersion") }
-        mainBranch?.let { s.append("mainBranch = $mainBranch") }
-        developmentBranch?.let { s.append("developmentBranch = $developmentBranch") }
+        rootProjectDir?.let {
+            s.line { s.append("rootProjectDir = \"$rootProjectDir\"") }
+        }
+        initialVersion?.let {
+            s.line { s.append("initialVersion = \"$initialVersion\"") }
+        }
+        mainBranch?.let {
+            s.line { s.append("mainBranch = \"$mainBranch\"") }
+        }
+        developmentBranch?.let {
+            s.line { s.append("developmentBranch = \"$developmentBranch\"") }
+        }
     }
 
     class Builder {

@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "io.github.tcrawford.gradle"
-version = "0.0.8"
+version = "0.0.9"
 
 val testImplementation: Configuration by configurations.getting
 

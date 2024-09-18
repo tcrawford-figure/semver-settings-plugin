@@ -1,28 +1,38 @@
 package io.github.tcrawford.versioning.specs
 
+import io.github.tcrawford.versioning.gradle.semver
 import io.github.tcrawford.versioning.kotest.GradleProjectsExtension
 import io.github.tcrawford.versioning.kotest.shouldOnlyHave
 import io.github.tcrawford.versioning.projects.RegularProject
 import io.github.tcrawford.versioning.projects.SettingsProject
 import io.github.tcrawford.versioning.projects.SubprojectProject
+import io.github.z4kn4fein.semver.nextPatch
+import io.github.z4kn4fein.semver.toVersion
 import io.kotest.core.extensions.install
 import io.kotest.core.spec.style.FunSpec
 import org.gradle.util.GradleVersion
 
 class UseInitialVersionSpec : FunSpec({
-    val projects = install(
-        GradleProjectsExtension(
-            RegularProject(projectName = "regular-project"),
-            SettingsProject(projectName = "settings-project"),
-            SubprojectProject(projectName = "subproject-project"),
-        ),
-    )
-
     val mainBranch = "main"
     val developmentBranch = "develop"
     val featureBranch = "patch-1"
 
+    val initialVersion = "1.1.1"
+    val expectedStableVersion = initialVersion.toVersion().nextPatch().toString()
+
     context("should use initial version") {
+        val semver = semver {
+            this.initialVersion = initialVersion
+        }
+
+        val projects = install(
+            GradleProjectsExtension(
+                RegularProject(projectName = "regular-project", semver = semver),
+                SettingsProject(projectName = "settings-project", semver = semver),
+                SubprojectProject(projectName = "subproject-project", semver = semver),
+            ),
+        )
+
         test("on main branch") {
             // Given
             // The default initial value is "0.0.0" which is supplied by the plugin
@@ -37,7 +47,7 @@ class UseInitialVersionSpec : FunSpec({
             projects.build(GradleVersion.current())
 
             // Then
-            projects.versions shouldOnlyHave "0.0.1"
+            projects.versions shouldOnlyHave expectedStableVersion
         }
 
         test("on development branch") {
@@ -57,7 +67,7 @@ class UseInitialVersionSpec : FunSpec({
             projects.build(GradleVersion.current())
 
             // Then
-            projects.versions shouldOnlyHave "0.0.1-develop.1"
+            projects.versions shouldOnlyHave "$expectedStableVersion-develop.1"
         }
 
         test("on feature branch") {
@@ -77,7 +87,7 @@ class UseInitialVersionSpec : FunSpec({
             projects.build(GradleVersion.current())
 
             // Then
-            projects.versions shouldOnlyHave "0.0.1-patch-1.1"
+            projects.versions shouldOnlyHave "$expectedStableVersion-patch-1.1"
         }
     }
 })
