@@ -1,4 +1,11 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_author: tcrawford-figure
+site_description: Gradle plugin for auto generating next semantic version
 site_name: Git Aware Versioning Plugin
+
+remote_branch: gh-pages
+repo_name: git-aware-versioning-plugin
+repo_url: https://github.com/tcrawford-figure/git-aware-versioning-plugin
+
 theme:
   name: material
