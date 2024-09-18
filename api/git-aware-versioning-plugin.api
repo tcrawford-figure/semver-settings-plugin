@@ -9,18 +9,17 @@ public final class io/github/tcrawford/versioning/GitAwareVersioningPlugin : org
 	public fun apply (Lorg/gradle/api/plugins/PluginAware;)V
 }
 
-public class io/github/tcrawford/versioning/SemverExtension {
+public abstract interface class io/github/tcrawford/versioning/SemverExtension {
 	public static final field Companion Lio/github/tcrawford/versioning/SemverExtension$Companion;
 	public static final field NAME Ljava/lang/String;
-	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
-	public final fun getDevelopmentBranch ()Lorg/gradle/api/provider/Property;
-	public final fun getInitialVersion ()Lorg/gradle/api/provider/Property;
-	public final fun getMainBranch ()Lorg/gradle/api/provider/Property;
-	public final fun getRootProjectDir ()Lorg/gradle/api/file/RegularFileProperty;
+	public abstract fun getDevelopmentBranch ()Lorg/gradle/api/provider/Property;
+	public abstract fun getInitialVersion ()Lorg/gradle/api/provider/Property;
+	public abstract fun getMainBranch ()Lorg/gradle/api/provider/Property;
+	public abstract fun getRootProjectDir ()Lorg/gradle/api/file/RegularFileProperty;
 }
 
 public final class io/github/tcrawford/versioning/SemverExtension$Companion {
-	public final fun invoke (Lorg/gradle/api/plugins/PluginAware;)Lio/github/tcrawford/versioning/SemverExtension;
+	public static final field NAME Ljava/lang/String;
 }
 
 public final class io/github/tcrawford/versioning/SemverExtensionKt {
