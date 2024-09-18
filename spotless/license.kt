@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Tyler Crawford
+ * Copyright (C) $YEAR Tyler Crawford
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.tcrawford.versioning.util
-
-import java.io.File
-
-private fun String.toFile() = File(this)
-
-fun resolveResource(resourcePath: String): File =
-    Thread.currentThread().contextClassLoader.getResource(resourcePath)?.file?.toFile()
-        ?: throw IllegalArgumentException("Resource not found: $resourcePath")
