@@ -12,7 +12,7 @@ import io.github.tcrawford.versioning.plugins.GradlePlugins
 
 class SettingsProject(
     override val projectName: String,
-    private val semver: SemverConfiguration = semver {  },
+    private val semver: SemverConfiguration = semver { },
 ) : AbstractProject() {
     override val gradleProject: GradleProject
         get() = build()
