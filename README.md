@@ -40,7 +40,7 @@ semver {
     // No "default", but the plugin will search for:
     // `develop`, `devel`, `dev` in that order
     developmentBranch = "development"
-   
+
     appendBuildMetadata = true
 }
 ```

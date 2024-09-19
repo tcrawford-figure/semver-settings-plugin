@@ -15,6 +15,10 @@
  */
 package io.github.tcrawford.versioning.internal.extensions
 
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions.ALWAYS
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions.LOCALLY
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions.NEVER
 import io.github.tcrawford.versioning.internal.properties.Modifier
 import io.github.tcrawford.versioning.internal.properties.Stage
 import io.github.z4kn4fein.semver.Inc
@@ -22,6 +26,8 @@ import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.inc
 import io.github.z4kn4fein.semver.nextPatch
 import io.github.z4kn4fein.semver.nextPreRelease
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Version = when {
     isInvalidVersionForComputation() -> {
@@ -61,6 +67,21 @@ fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Versi
     else -> {
         nextPatch("${providedStage.value}.1")
     }
+}
+
+fun Version.appendBuildMetadata(buildMetadataOptions: BuildMetadataOptions): Version {
+    val calculatedBuildMetadata = LocalDateTime.now().toBuildMetadata()
+    val withBuildMetadata = Version(major, minor, patch, preRelease, calculatedBuildMetadata)
+    return when (buildMetadataOptions) {
+        ALWAYS -> withBuildMetadata
+        NEVER -> this
+        LOCALLY -> withBuildMetadata.takeIf { System.getenv("CI") == null } ?: this
+    }
+}
+
+private fun LocalDateTime.toBuildMetadata(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm")
+    return this.format(formatter)
 }
 
 private fun Version.nextStable(incrementer: Inc): Version =

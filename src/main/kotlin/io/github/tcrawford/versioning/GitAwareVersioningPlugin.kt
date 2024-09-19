@@ -21,6 +21,7 @@ import io.github.tcrawford.versioning.internal.extensions.extensions
 import io.github.tcrawford.versioning.internal.extensions.providers
 import io.github.tcrawford.versioning.internal.extensions.rootDir
 import io.github.tcrawford.versioning.internal.logging.registerPostBuildVersionLogMessage
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions
 import io.github.tcrawford.versioning.internal.properties.forMajorVersion
 import io.github.tcrawford.versioning.internal.properties.forTesting
 import io.github.tcrawford.versioning.internal.properties.modifier
@@ -38,6 +39,7 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
     override fun apply(target: PluginAware) {
         val semverExtension = target.extensions.create<SemverExtension>("semver").apply {
             initialVersion.convention("0.0.0")
+            appendBuildMetadata.convention("")
         }
 
         when (target) {
@@ -70,6 +72,9 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
             rootDir = semverExtension.rootProjectDir.getOrElse { this.rootDir }.asFile,
             mainBranch = semverExtension.mainBranch.orNull,
             developmentBranch = semverExtension.developmentBranch.orNull,
+            appendBuildMetadata = semverExtension.appendBuildMetadata
+                .map { BuildMetadataOptions.from(it, BuildMetadataOptions.NEVER) }
+                .get(),
         )
 
         val nextVersion = this.providers.versionFactory(versionFactoryContext).get()

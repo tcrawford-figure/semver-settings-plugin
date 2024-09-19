@@ -33,6 +33,7 @@ interface SemverExtension {
     val initialVersion: Property<String>
     val mainBranch: Property<String>
     val developmentBranch: Property<String>
+    val appendBuildMetadata: Property<String>
 
     companion object {
         const val NAME = "semver"
