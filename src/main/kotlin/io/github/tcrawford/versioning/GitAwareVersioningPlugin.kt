@@ -44,9 +44,11 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
 
         when (target) {
             is Settings -> {
-                target.gradle.beforeProject {
+                target.gradle.settingsEvaluated {
                     val nextVersion = target.calculateVersion(semverExtension)
-                    it.version = nextVersion
+                    target.gradle.beforeProject {
+                        it.version = nextVersion
+                    }
                 }
             }
 
