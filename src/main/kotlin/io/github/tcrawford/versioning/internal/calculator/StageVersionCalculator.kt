@@ -27,7 +27,7 @@ object StageVersionCalculator : VersionCalculator {
         with(context) {
             return latestVersion
                 .nextVersion(stage, modifier)
-                .appendBuildMetadata(context.appendBuildMetadata)
+                .appendBuildMetadata(context.appendBuildMetadata, context.forTesting)
                 .toString()
         }
 }

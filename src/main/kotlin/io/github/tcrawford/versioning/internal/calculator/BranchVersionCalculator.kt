@@ -43,7 +43,7 @@ class BranchVersionCalculator(
 
         return latestVersion
             .inc(modifier.toInc(), prereleaseLabelWithCommitCount)
-            .appendBuildMetadata(context.appendBuildMetadata)
+            .appendBuildMetadata(context.appendBuildMetadata, context.forTesting)
             .toString()
     }
 }
