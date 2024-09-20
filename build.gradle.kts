@@ -15,6 +15,10 @@
  */
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -24,12 +28,17 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.spotless)
     alias(libs.plugins.best.practices)
+    alias(libs.plugins.github.release)
     alias(libs.plugins.dependency.analysis)
     alias(libs.plugins.binary.compatibility.validator)
 
     alias(libs.plugins.test.logger)
     alias(libs.plugins.gradle.testkit)
+
     idea
+    // if (System.getenv("CI") == "true") {
+    //     signing
+    // }
 }
 
 group = "io.github.tcrawford.semver"
@@ -73,8 +82,11 @@ tasks {
         // To be able to use withEnvironment: https://github.com/kotest/kotest/issues/2849
         jvmArgs("--add-opens=java.base/java.util=ALL-UNNAMED", "--add-opens=java.base/java.lang=ALL-UNNAMED")
         testLogging {
-            setExceptionFormat("full")
-            setEvents(listOf("skipped", "failed", "standardOut", "standardError"))
+            showStandardStreams = false
+            showCauses = true
+            showStackTraces = true
+            events = setOf(SKIPPED, FAILED, STANDARD_ERROR)
+            exceptionFormat = TestExceptionFormat.FULL
         }
     }
 
@@ -117,6 +129,11 @@ idea {
 
 kotlin {
     jvmToolchain(17)
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 detekt {
@@ -221,4 +238,10 @@ afterEvaluate {
             }
         }
     }
+}
+
+githubRelease {
+    generateReleaseNotes = true
+    owner = "tcrawford-figure"
+    providers.environmentVariable("GITHUB_TOKEN").map { token(it) }
 }
