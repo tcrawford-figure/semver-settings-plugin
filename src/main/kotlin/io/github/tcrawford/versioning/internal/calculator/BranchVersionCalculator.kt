@@ -16,6 +16,7 @@
 package io.github.tcrawford.versioning.internal.calculator
 
 import io.github.tcrawford.versioning.internal.command.KGit
+import io.github.tcrawford.versioning.internal.extensions.appendBuildMetadata
 import io.github.tcrawford.versioning.internal.extensions.sanitizedWithoutPrefix
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.inc
@@ -40,6 +41,9 @@ class BranchVersionCalculator(
         val prereleaseLabel = currentBranch.sanitizedWithoutPrefix()
         val prereleaseLabelWithCommitCount = "$prereleaseLabel.$commitCount"
 
-        return latestVersion.inc(modifier.toInc(), prereleaseLabelWithCommitCount).toString()
+        return latestVersion
+            .inc(modifier.toInc(), prereleaseLabelWithCommitCount)
+            .appendBuildMetadata(context.appendBuildMetadata)
+            .toString()
     }
 }

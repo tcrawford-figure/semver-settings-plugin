@@ -56,6 +56,7 @@ abstract class VersionFactory : ValueSource<String, VersionFactory.Params> {
                 gitState = gitState,
                 mainBranch = mainBranch,
                 developmentBranch = developmentBranch,
+                appendBuildMetadata = appendBuildMetadata,
             )
         }
 

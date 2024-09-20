@@ -63,6 +63,8 @@ dependencies {
 tasks {
     withType<Test>().configureEach {
         useJUnitPlatform()
+        // To be able to use withEnvironment: https://github.com/kotest/kotest/issues/2849
+        jvmArgs("--add-opens=java.base/java.util=ALL-UNNAMED", "--add-opens=java.base/java.lang=ALL-UNNAMED")
         testLogging {
             setExceptionFormat("full")
             setEvents(listOf("skipped", "failed", "standardOut", "standardError"))

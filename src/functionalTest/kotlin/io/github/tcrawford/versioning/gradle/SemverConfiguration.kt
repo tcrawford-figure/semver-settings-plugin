@@ -32,6 +32,7 @@ class SemverConfiguration(
     val initialVersion: String?,
     val mainBranch: String?,
     val developmentBranch: String?,
+    val appendBuildMetadata: String?,
 ) : Element.Block {
     override val name: String = "semver"
 
@@ -48,6 +49,9 @@ class SemverConfiguration(
         developmentBranch?.let {
             s.line { s.append("developmentBranch = \"$developmentBranch\"") }
         }
+        appendBuildMetadata?.let {
+            s.line { s.append("appendBuildMetadata = \"$appendBuildMetadata\"") }
+        }
     }
 
     class Builder {
@@ -55,6 +59,7 @@ class SemverConfiguration(
         var initialVersion: String? = null
         var mainBranch: String? = null
         var developmentBranch: String? = null
+        var appendBuildMetadata: String? = null
 
         fun build(): SemverConfiguration =
             SemverConfiguration(
@@ -62,6 +67,7 @@ class SemverConfiguration(
                 initialVersion = initialVersion,
                 mainBranch = mainBranch,
                 developmentBranch = developmentBranch,
+                appendBuildMetadata = appendBuildMetadata,
             )
     }
 }

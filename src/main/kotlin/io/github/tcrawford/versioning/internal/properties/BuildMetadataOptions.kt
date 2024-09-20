@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.tcrawford.versioning.kotest
+package io.github.tcrawford.versioning.internal.properties
 
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldMatch
+enum class BuildMetadataOptions {
+    ALWAYS,
+    NEVER,
+    LOCALLY,
+    ;
 
-infix fun <T : Any> Iterable<T>.shouldOnlyHave(t: T): Iterable<T> =
-    this.map { it shouldBe t }
-
-infix fun Iterable<String>.shouldOnlyContain(t: String): Iterable<String?> =
-    this.map { it shouldContain t }
-
-infix fun Iterable<String>.shouldOnlyMatch(t: Regex): Iterable<String?> =
-    this.map { it shouldMatch t }
+    companion object {
+        fun from(value: String, default: BuildMetadataOptions): BuildMetadataOptions =
+            BuildMetadataOptions.entries
+                .find { it.name.equals(value, ignoreCase = true) }
+                ?: default
+    }
+}

@@ -12,6 +12,7 @@ public final class io/github/tcrawford/versioning/GitAwareVersioningPlugin : org
 public abstract interface class io/github/tcrawford/versioning/SemverExtension {
 	public static final field Companion Lio/github/tcrawford/versioning/SemverExtension$Companion;
 	public static final field NAME Ljava/lang/String;
+	public abstract fun getAppendBuildMetadata ()Lorg/gradle/api/provider/Property;
 	public abstract fun getDevelopmentBranch ()Lorg/gradle/api/provider/Property;
 	public abstract fun getInitialVersion ()Lorg/gradle/api/provider/Property;
 	public abstract fun getMainBranch ()Lorg/gradle/api/provider/Property;

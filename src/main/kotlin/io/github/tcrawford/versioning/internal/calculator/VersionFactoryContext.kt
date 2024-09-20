@@ -15,6 +15,7 @@
  */
 package io.github.tcrawford.versioning.internal.calculator
 
+import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions
 import io.github.tcrawford.versioning.internal.properties.Modifier
 import io.github.tcrawford.versioning.internal.properties.Stage
 import java.io.File
@@ -30,6 +31,7 @@ data class VersionFactoryContext(
     val rootDir: File,
     val mainBranch: String?,
     val developmentBranch: String?,
+    val appendBuildMetadata: BuildMetadataOptions,
 ) : Serializable {
     companion object {
         private const val serialVersionUID: Long = 1L

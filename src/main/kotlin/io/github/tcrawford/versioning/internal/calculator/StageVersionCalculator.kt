@@ -15,6 +15,7 @@
  */
 package io.github.tcrawford.versioning.internal.calculator
 
+import io.github.tcrawford.versioning.internal.extensions.appendBuildMetadata
 import io.github.tcrawford.versioning.internal.extensions.nextVersion
 import io.github.z4kn4fein.semver.Version
 
@@ -22,7 +23,11 @@ import io.github.z4kn4fein.semver.Version
  * Calculates the next version based on the stage and modifier.
  */
 object StageVersionCalculator : VersionCalculator {
-    override fun calculate(latestVersion: Version, context: VersionCalculatorContext): String = with(context) {
-        return latestVersion.nextVersion(stage, modifier).toString()
-    }
+    override fun calculate(latestVersion: Version, context: VersionCalculatorContext): String =
+        with(context) {
+            return latestVersion
+                .nextVersion(stage, modifier)
+                .appendBuildMetadata(context.appendBuildMetadata)
+                .toString()
+        }
 }
