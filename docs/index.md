@@ -1,6 +1,6 @@
-# Git Aware Versioning Gradle Plugin
+# Semver Gradle Plugin
 
-This Git Aware Versioning Gradle plugin provides a simple approach to
+This Semver Gradle plugin provides a simple approach to
 adding semantic versioning to your gradle project using git
 history regardless of git strategies.
 
