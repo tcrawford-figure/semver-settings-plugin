@@ -69,13 +69,13 @@ fun Version.nextVersion(providedStage: Stage, providedModifier: Modifier): Versi
     }
 }
 
-fun Version.appendBuildMetadata(buildMetadataOptions: BuildMetadataOptions, forTesting: Boolean = false): Version {
+fun Version.appendBuildMetadata(buildMetadataOptions: BuildMetadataOptions): Version {
     val calculatedBuildMetadata = LocalDateTime.now().toBuildMetadata()
     val withBuildMetadata = Version(major, minor, patch, preRelease, calculatedBuildMetadata)
     return when (buildMetadataOptions) {
         ALWAYS -> withBuildMetadata
         NEVER -> this
-        LOCALLY -> withBuildMetadata.takeIf { System.getenv("CI") == null || forTesting } ?: this
+        LOCALLY -> withBuildMetadata.takeIf { System.getenv("CI") == null } ?: this
     }
 }
 
