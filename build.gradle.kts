@@ -33,7 +33,7 @@ plugins {
 }
 
 group = "io.github.tcrawford.gradle"
-version = "0.0.11"
+version = "0.1.0-SNAPSHOT"
 
 val testImplementation: Configuration by configurations.getting
 
@@ -127,7 +127,7 @@ detekt {
 
 spotless {
     format("misc") {
-        target("*.md", "*.gitignore")
+        target("*.md", "*.gitignore", "*.yml", "*.yaml", "*.toml", "*.properties")
         trimTrailingWhitespace()
         endWithNewline()
     }
