@@ -1,5 +1,20 @@
+# Modifiers with Stages
+
 To alter the next version incrementation and stage, use the Gradle
-properties together: `-Psemver.modifier=<modifier> -Psemver.stage=<stage>`.
+properties together:
+
+**Via command line:**
+
+```shell
+-Psemver.modifier=<modifier> -Psemver.stage=<stage>
+```
+
+**In any valid `gradle.properties`:**
+
+```properties
+semver.modifier=<modifier>
+semver.stage=<stage>
+```
 
 Latest tag: `v1.0.0-rc.1`
 

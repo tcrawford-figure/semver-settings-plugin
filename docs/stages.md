@@ -1,5 +1,14 @@
-To alter the next version stage, use the Gradle
-property: `-Psemver.stage=<stage>`.
+To alter the next version stage, use the Gradle property: 
+
+**Via command line:**
+```shell
+-Psemver.stage=<stage>
+```
+
+**In any valid `gradle.properties`:**
+```properties
+semver.stage=<stage>
+```
 
 ???+ note
     If no stage is provided, a default of `auto` will be used.
@@ -21,9 +30,11 @@ The following are possible values:
 
 ### Examples
 
-???+ tip
+???+ note "Important Note"
     Since no modifier is provided in these examples, the default modifier
     of `auto` used.
+
+    For how to use with modifiers, consult the [Modifiers with Stages](modifiers-with-stages.md) documentation.
 
 Latest tags: `v1.0.0-rc.1`
 
