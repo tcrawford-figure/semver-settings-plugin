@@ -21,6 +21,7 @@ enum class SemverProperty(val property: String) {
     TagPrefix("semver.tagPrefix"),
     OverrideVersion("semver.overrideVersion"),
     ForMajorVersion("semver.forMajorVersion"),
+    AppendBuildMetadata("semver.appendBuildMetadata"),
 
     ForTesting("semver.forTesting"),
 }

@@ -15,6 +15,7 @@
  */
 import com.adarshr.gradle.testlogger.theme.ThemeType
 import io.gitlab.arturbosch.detekt.Detekt
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -61,6 +62,12 @@ dependencies {
 }
 
 tasks {
+    withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            freeCompilerArgs.addAll("-Xjsr305=strict", "-opt-in=kotlin.RequiresOptIn")
+        }
+    }
+
     withType<Test>().configureEach {
         useJUnitPlatform()
         // To be able to use withEnvironment: https://github.com/kotest/kotest/issues/2849

@@ -41,6 +41,9 @@ val PluginAware.forMajorVersion: Provider<Int>
         }
     }
 
+val PluginAware.appendBuildMetadata: Provider<String>
+    get() = semverProperty(SemverProperty.AppendBuildMetadata)
+
 val PluginAware.forTesting: Provider<Boolean>
     get() = semverProperty(SemverProperty.ForTesting).map { it.toBoolean() }.orElse(false)
 

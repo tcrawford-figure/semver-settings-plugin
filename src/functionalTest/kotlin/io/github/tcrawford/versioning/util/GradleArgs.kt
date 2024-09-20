@@ -40,4 +40,7 @@ internal object GradleArgs {
 
     fun semverForMajorVersion(forMajorVersion: Int) =
         "-P${SemverProperty.ForMajorVersion.property}=$forMajorVersion"
+
+    fun semverAppendBuildMetadata(buildMetadataOptions: String) =
+        "-P${SemverProperty.AppendBuildMetadata.property}=$buildMetadataOptions"
 }
