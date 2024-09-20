@@ -42,13 +42,15 @@ plugins {
 
 ## Configuration
 
-???+ info "Important!"
-The most minimal configuration is to not provide any configuration at all. This
-will use the default settings and will generate a version based on the git
-history.
+> [!IMPORTANT]
+> The most minimal configuration is to not provide any configuration at all. This
+> will use the default settings and will generate a version based on the git
+> history.
+> 
+> However, configurations exist to allow for more control over the versioning 
+> calculation process.
 
-    However, configurations exist to allow for more control over the versioning
-    calculation process.
+
 
 ```kotlin
 // For older versions of gradle, you may need to import the configuration method
