@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
-site_name: 'Git Aware Gradle Plugin'
+site_name: 'Semver Gradle Plugin'
 site_description: 'Gradle plugin to automatically calculate the next semantic version based on the git history.'
 site_author: 'Tyler Crawford'
 remote_branch: gh-pages
