@@ -25,6 +25,7 @@ import io.github.tcrawford.versioning.projects.SettingsProject
 import io.github.tcrawford.versioning.projects.SubprojectProject
 import io.kotest.core.extensions.install
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.extensions.system.OverrideMode
 import io.kotest.extensions.system.withEnvironment
 import org.gradle.util.GradleVersion
 
@@ -89,7 +90,7 @@ class CalculateNextVersionWithBuildMetadataSpec : FunSpec({
         }
 
         test("when ${BuildMetadataOptions.LOCALLY} is specified but building in CI") {
-            withEnvironment("CI", "true") {
+            withEnvironment("CI", "true", mode = OverrideMode.SetOrOverride) {
                 // Given
                 val semver = semver {
                     appendBuildMetadata = BuildMetadataOptions.LOCALLY.name
@@ -228,7 +229,7 @@ class CalculateNextVersionWithBuildMetadataSpec : FunSpec({
             )
 
             test("and on $mainBranch branch") {
-                withEnvironment("CI", null) {
+                withEnvironment("CI", null, mode = OverrideMode.SetOrOverride) {
                     // Given
                     projects.git {
                         initialBranch = mainBranch
@@ -246,7 +247,7 @@ class CalculateNextVersionWithBuildMetadataSpec : FunSpec({
             }
 
             test("and on $developmentBranch branch") {
-                withEnvironment("CI", null) {
+                withEnvironment("CI", null, mode = OverrideMode.SetOrOverride) {
                     // Given
                     projects.git {
                         initialBranch = mainBranch
@@ -267,7 +268,7 @@ class CalculateNextVersionWithBuildMetadataSpec : FunSpec({
             }
 
             test("and on $featureBranch branch") {
-                withEnvironment("CI", null) {
+                withEnvironment("CI", null, mode = OverrideMode.SetOrOverride) {
                     // Given
                     projects.git {
                         initialBranch = mainBranch
