@@ -23,3 +23,12 @@ th:not(:last-child), td:not(:last-child) {
 [data-md-color-scheme="default"] .md-typeset__table tr:nth-child(2n) {
     background-color: var(--md-typeset-table-color--light);
 }
+
+/* Make sure tables are always 100% width */
+.md-typeset__table {
+    min-width: 100%;
+}
+
+.md-typeset table:not([class]) {
+    display: table;
+}

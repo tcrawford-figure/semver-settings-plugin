@@ -35,3 +35,17 @@ Branching from the development branch
 git commit --allow-empty -m "Empty commit"
 ```
 
+Alternatively, you can use the `semver.appendBuildMetadata` property to append build metadata to the version.
+
+**Via command line:**
+
+```shell
+./gradlew -Psemver.appendBuildMetadata=(always|never|locally)
+```
+
+**In any valid `gradle.properties`:**
+
+```properties
+semver.appendBuildMetadata=(always|never|locally)
+```
+

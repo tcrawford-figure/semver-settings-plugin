@@ -68,8 +68,12 @@ extra:
 nav:
   - "Getting Started": 'index.md'
   - Usage:
-      - 'usage.md'
-      - "Modifiers": 'modifiers.md'
-      - "Stages": 'stages.md'
-      - "Modifiers with Stages": 'modifiers-with-stages.md'
+      - quick-start.md
+      - modifiers.md
+      - stages.md
+      - modifiers-with-stages.md
+      - append-build-metadata.md
+      - for-major-version.md
+      - override-version.md
+      - tag-prefix.md
   - "Branch-based Version Calculation": 'branch-based-version-calculation.md'
