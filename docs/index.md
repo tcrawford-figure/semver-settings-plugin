@@ -25,8 +25,11 @@ At a glance, this plugin provides the following features:
 The following can be added to any of the following:
 
 - `settings.gradle.kts` (recommended)
+    - This will automatically apply the version to all projects
 - `build.gradle.kts` (root project)
+    - This will only automatically apply the version to the root project
 - `build.gradle.kts` (subproject)
+    - This will only automatically apply the version to the subproject
 
 If the semantic version is targeting the entire project, it's recommended to add
 this to the `settings.gradle.kts` file.
