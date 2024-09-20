@@ -67,7 +67,7 @@ semver {
     mainBranch = "trunk"
 
     // No "default", but the plugin will search in order for:
-    // `develop`, `devel`, `dev` 
+    // `develop`, `devel`, `dev`
     developmentBranch = "development"
 
     // Default: `never`
