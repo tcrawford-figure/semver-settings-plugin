@@ -22,6 +22,7 @@ import io.github.tcrawford.versioning.internal.extensions.providers
 import io.github.tcrawford.versioning.internal.extensions.rootDir
 import io.github.tcrawford.versioning.internal.logging.registerPostBuildVersionLogMessage
 import io.github.tcrawford.versioning.internal.properties.BuildMetadataOptions
+import io.github.tcrawford.versioning.internal.properties.appendBuildMetadata
 import io.github.tcrawford.versioning.internal.properties.forMajorVersion
 import io.github.tcrawford.versioning.internal.properties.forTesting
 import io.github.tcrawford.versioning.internal.properties.modifier
@@ -74,7 +75,7 @@ class GitAwareVersioningPlugin : Plugin<PluginAware> {
             rootDir = semverExtension.rootProjectDir.getOrElse { this.rootDir }.asFile,
             mainBranch = semverExtension.mainBranch.orNull,
             developmentBranch = semverExtension.developmentBranch.orNull,
-            appendBuildMetadata = semverExtension.appendBuildMetadata
+            appendBuildMetadata = (appendBuildMetadata.takeIf { it.isPresent } ?: semverExtension.appendBuildMetadata)
                 .map { BuildMetadataOptions.from(it, BuildMetadataOptions.NEVER) }
                 .get(),
         )
