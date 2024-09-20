@@ -36,7 +36,7 @@ this to the `settings.gradle.kts` file.
 
 ```kotlin
 plugins {
-    id("io.github.tcrawford.versioning") version "<current_version>"
+    id("io.github.tcrawford.semver") version "<current_version>"
 }
 ```
 
@@ -52,7 +52,7 @@ plugins {
 
 ```kotlin
 // For older versions of gradle, you may need to import the configuration method
-import io.github.tcrawford.versioning.semver
+import io.github.tcrawford.semver.semver
 
 // This is purely for example purposes
 semver {

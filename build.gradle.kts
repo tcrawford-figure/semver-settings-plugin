@@ -32,8 +32,8 @@ plugins {
     idea
 }
 
-group = "io.github.tcrawford.gradle"
-version = "0.1.0-SNAPSHOT"
+group = "io.github.tcrawford.semver"
+version = "2.0.0"
 
 val testImplementation: Configuration by configurations.getting
 
@@ -163,17 +163,62 @@ testlogger {
 apiValidation {
     ignoredPackages += listOf(
         // Internal package is not part of the public API
-        "io.github.tcrawford.versioning.internal",
+        "io.github.tcrawford.semver.internal",
     )
 }
 
+class PublishingConstants {
+    val name = "Gradle Semver Plugin"
+    val description = "Gradle Plugin for Automatic Semantic Versioning"
+    val pluginImplementation = "$group.SemverPlugin"
+    val tags = listOf("semver", "versioning", "git")
+
+    val website = "https://tcrawford-figure.github.io/gradle-semver-plugin"
+    val vcsUrl = "https://github.com/tcrawford-figure/gradle-semver-plugin.git"
+    val scmUrl = "scm:git:git://github.com/tcrawford-figure/gradle-semver-plugin.git"
+}
+
+val info = PublishingConstants()
+
 gradlePlugin {
+    website = info.website
+    vcsUrl = info.vcsUrl
     plugins {
-        register("versioning") {
-            id = "io.github.tcrawford.versioning"
-            displayName = "Git Aware Versioning Plugin"
-            description = "Git Aware Versioning Plugin"
-            implementationClass = "io.github.tcrawford.versioning.GitAwareVersioningPlugin"
+        register("semver") {
+            id = group.toString()
+            displayName = info.name
+            description = info.description
+            implementationClass = info.pluginImplementation
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications.filterIsInstance<MavenPublication>().forEach {
+            it.pom {
+                name = info.name
+                description = info.description
+                licenses {
+                    license {
+                        name = "The Apache Software License, Version 2.0"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                        distribution = "repo"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "tcrawford-figure"
+                        name = "Tyler Crawford"
+                        email = "tcrawford@figure.com"
+                    }
+                }
+                scm {
+                    connection = info.scmUrl
+                    developerConnection = info.scmUrl
+                    url = info.website
+                }
+            }
         }
     }
 }

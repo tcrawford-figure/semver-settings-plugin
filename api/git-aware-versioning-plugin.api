@@ -3,7 +3,7 @@ public final class io/github/tcrawford/versioning/Constants {
 	public static final field SEMVER_PROPERTY_PATH Ljava/lang/String;
 }
 
-public final class io/github/tcrawford/versioning/GitAwareVersioningPlugin : org/gradle/api/Plugin {
+public final class io/github/tcrawford/versioning/SemverPlugin : org/gradle/api/Plugin {
 	public fun <init> ()V
 	public synthetic fun apply (Ljava/lang/Object;)V
 	public fun apply (Lorg/gradle/api/plugins/PluginAware;)V
