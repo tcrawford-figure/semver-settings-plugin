@@ -73,4 +73,3 @@ nav:
       - "Stages": 'stages.md'
       - "Modifiers with Stages": 'modifiers-with-stages.md'
   - "Branch-based Version Calculation": 'branch-based-version-calculation.md'
-
