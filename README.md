@@ -1,3 +1,7 @@
+# ⚠️ ARCHIVED
+
+Moved to the maintained repository of: https://github.com/FigureTechnologies/gradle-semver-plugin. 
+
 # Semver Gradle Plugin
 
 This Semver Gradle plugin provides a simple approach to
