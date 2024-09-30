@@ -1,4 +1,4 @@
-# ⚠️ ARCHIVED
+# 🗂️ ARCHIVED
 
 Moved to the maintained repository of: https://github.com/FigureTechnologies/gradle-semver-plugin. 
 
