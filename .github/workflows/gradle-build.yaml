@@ -22,6 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check for head
+        run: git rev-parse HEAD
+
+      - name: Check for symbolic head
+        run: git symbolic-ref HEAD
+
+      - name: Show ref
+        run: git show-ref
+
+      - name: Git branch current
+        run: git branch --show-current
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
