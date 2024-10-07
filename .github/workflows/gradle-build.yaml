@@ -40,4 +40,4 @@ jobs:
             wrapper
 
       - name: Gradle Check
-        run: ./gradlew check -s --parallel --build-cache
+        run: ./gradlew build -s
