@@ -1,6 +1,6 @@
 # 🗂️ ARCHIVED
 
-Moved to the maintained repository of: https://github.com/FigureTechnologies/gradle-semver-plugin. 
+Moved to the maintained repository of: https://github.com/FigureTechnologies/gradle-semver-plugin.
 
 # Semver Gradle Plugin
 
