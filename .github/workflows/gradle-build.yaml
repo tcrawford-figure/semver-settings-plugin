@@ -47,4 +47,4 @@ jobs:
             wrapper
 
       - name: Gradle Check
-        run: ./gradlew build -s -x test -x functionalTest
+        run: ./gradlew build -s -x test -x functionalTest --parallel --build-cache

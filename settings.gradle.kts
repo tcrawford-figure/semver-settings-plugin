@@ -37,6 +37,20 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        maven {
+            url = uri("https://nexus.figure.com/repository/mirror")
+            credentials {
+                username = System.getenv("NEXUS_USER")
+                password = System.getenv("NEXUS_PASS")
+            }
+        }
+        maven {
+            url = uri("https://nexus.figure.com/repository/figure")
+            credentials {
+                username = System.getenv("NEXUS_USER")
+                password = System.getenv("NEXUS_PASS")
+            }
+        }
         mavenCentral()
     }
 }
