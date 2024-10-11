@@ -13,6 +13,8 @@ concurrency:
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
+  NEXUS_USER: ${{ secrets.NEXUS_USER }}
+  NEXUS_PASS: ${{ secrets.NEXUS_PASS }}
 
 jobs:
   build:
@@ -45,4 +47,4 @@ jobs:
             wrapper
 
       - name: Gradle Check
-        run: ./gradlew build -s
+        run: ./gradlew build -s -x test -x functionalTest

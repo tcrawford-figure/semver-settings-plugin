@@ -42,7 +42,7 @@ plugins {
 }
 
 group = "io.github.tcrawford.semver"
-version = "2.0.0"
+// version = "2.0.0"
 
 val testImplementation: Configuration by configurations.getting
 
