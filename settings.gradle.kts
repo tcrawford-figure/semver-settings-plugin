@@ -56,5 +56,5 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("com.figure.gradle.semver") version "2.0.1-rc.2"
+    id("com.figure.gradle.semver") version "2.0.1"
 }
